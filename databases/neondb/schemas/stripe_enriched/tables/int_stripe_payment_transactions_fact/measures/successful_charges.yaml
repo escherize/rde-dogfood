@@ -1,0 +1,30 @@
+created_at: '2026-10-13T22:27:58.995105Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: successful_charges
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - stripe_enriched
+            - int_stripe_payment_transactions_fact
+            - is_paid
+        - true
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft, provisional decisions: D1-D5 accepted by user, not yet reconciled to Stripe dashboard. Count of charges with status succeeded (includes those later refunded). Owner: unassigned.'
+entity_id: Jm897sqmxgXbAeyLQBVcU
+name: Successful charges
+serdes/meta:
+- id: Jm897sqmxgXbAeyLQBVcU
+  label: successful_charges
+  model: Measure

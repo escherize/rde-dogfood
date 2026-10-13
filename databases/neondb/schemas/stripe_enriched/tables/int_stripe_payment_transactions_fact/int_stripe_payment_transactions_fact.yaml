@@ -1,0 +1,196 @@
+caveats: 'Five currencies (usd, eur, gbp, cad, aud) with no FX rates: never sum amounts across currencies, break out by currency. refunded_amount is attributed to the charge date, not the refund date. Owner: unassigned (to be named by the user).'
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-13T22:26:45.492302Z'
+description: 'One row per Stripe charge (426 charges, 2024-07-04 to 2024-12-31), all statuses (succeeded, refunded, failed). Amounts are in major currency units, in the charge currency. Use the Stripe measures: failed charges are in this table and must not count as revenue.'
+description_set: true
+display_name: Stripe charges
+entity_type: entity/TransactionTable
+fields:
+- created_at: '2026-10-13T22:26:56.406843Z'
+  description: Amount charged in the charge currency, whether or not the charge succeeded. Do not sum without the Succeeded filter or the Gross revenue measure.
+  description_set: true
+  display_name: Charge amount
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: charge_amount
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:27:21.002558Z'
+  description: Calendar date of the charge; the date basis for all revenue metrics.
+  description_set: true
+  display_name: Charge date
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: charge_date
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:26:49.805699Z'
+  display_name: Charge ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: charge_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:27:14.595554Z'
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:26:54.302474Z'
+  display_name: Customer ID
+  fk_target_field_id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_customers_dim
+  - customer_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: customer_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:27:01.012239Z'
+  description: True when the charge succeeded (includes later-refunded charges).
+  description_set: true
+  display_name: Is paid
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: is_paid
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:27:02.42375Z'
+  description: True when part or all of the charge was refunded.
+  description_set: true
+  display_name: Is refunded
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: is_refunded
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:26:58.805651Z'
+  description: charge_amount minus refunded_amount. For failed charges this still equals charge_amount, so use Net revenue, not this column.
+  description_set: true
+  display_name: Net amount
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: net_amount
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:26:57.707288Z'
+  description: Amount refunded against this charge, in the charge currency.
+  description_set: true
+  display_name: Refunded amount
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: refunded_amount
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:27:03.695456Z'
+  description: 'Stripe charge status: succeeded or failed.'
+  description_set: true
+  display_name: Status
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-13T22:27:06.094034Z'
+  description: successful, refunded, or failed.
+  description_set: true
+  display_name: Transaction status
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_enriched
+    model: Schema
+  - id: int_stripe_payment_transactions_fact
+    model: Table
+  - id: transaction_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: stripe_enriched
+  model: Schema
+- id: int_stripe_payment_transactions_fact
+  model: Table
+- id: '1'
+  model: TableUserSettings

@@ -1,0 +1,37 @@
+name: Stripe gross revenue
+description: 'Draft, provisional decisions: D1-D5 accepted by user, not yet reconciled to Stripe. Succeeded Stripe charges before refunds, by charge month, per currency (never sum currencies; break out by currency). Excludes failed charges, which the older daily/monthly revenue tables wrongly include (+39%). Complete through Dec 2024. Owner: unassigned.'
+entity_id: stOosI_hodV0ZX9ODDm32
+created_at: '2026-10-13T22:28:25.785587Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - vYw1BSXqX_W1Ukw8gZ1TO
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - charge_date
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: stOosI_hodV0ZX9ODDm32
+  label: stripe_gross_revenue
+  model: Card
+type: metric
