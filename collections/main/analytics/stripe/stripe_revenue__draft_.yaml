@@ -1,0 +1,249 @@
+name: Stripe revenue (Draft)
+description: Draft Stripe revenue overview built on the Stripe semantic layer.
+entity_id: htWXqdnJo1E3fh-5JinIz
+created_at: '2026-10-13T22:29:59.99458Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+collection_id: Kq48oMLQRZu3wFxbZ3RNy
+parameters:
+- id: charge_date
+  name: Charge date
+  position: 1
+  sectionId: date
+  slug: charge_date
+  type: date/all-options
+- id: currency
+  name: Currency
+  position: 0
+  sectionId: string
+  slug: currency
+  type: string/=
+serdes/meta:
+- id: htWXqdnJo1E3fh-5JinIz
+  label: stripe_revenue__draft_
+  model: Dashboard
+dashcards:
+- entity_id: 3_-zO5D1OwzEGK6tJIioR
+  created_at: '2026-10-13T22:30:00.217087Z'
+  row: 0
+  col: 0
+  size_x: 24
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings: []
+  series: []
+  visualization_settings:
+    column_settings: null
+    text: '**Draft, provisional decisions D1-D5 (accepted defaults), not reconciled to Stripe.** Data: charges 4 Jul - 31 Dec 2024 (Dec treated as complete). Revenue counts succeeded charges only; failed charges are excluded (the older daily/monthly revenue tables include them, +39%). Five currencies with no FX: amounts are never added across currencies, use the Currency filter or read per currency.'
+    virtual_card:
+      display: text
+  serdes/meta:
+  - id: htWXqdnJo1E3fh-5JinIz
+    model: Dashboard
+  - id: 3_-zO5D1OwzEGK6tJIioR
+    model: DashboardCard
+- entity_id: JXFWyESOD80aA4tumQfyT
+  card_id: 8zfkinepPTD2qyr_k6oCJ
+  created_at: '2026-10-13T22:30:00.217087Z'
+  row: 3
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: 8zfkinepPTD2qyr_k6oCJ
+    parameter_id: charge_date
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - charge_date
+      - null
+  - card_id: 8zfkinepPTD2qyr_k6oCJ
+    parameter_id: currency
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - currency
+      - null
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: htWXqdnJo1E3fh-5JinIz
+    model: Dashboard
+  - id: JXFWyESOD80aA4tumQfyT
+    model: DashboardCard
+- entity_id: 5qZN82_ybQC96c7wZQ2IG
+  card_id: ovJ69as8W7LzhWpDP73Cj
+  created_at: '2026-10-13T22:30:00.217087Z'
+  row: 3
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: ovJ69as8W7LzhWpDP73Cj
+    parameter_id: charge_date
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - charge_date
+      - null
+  - card_id: ovJ69as8W7LzhWpDP73Cj
+    parameter_id: currency
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - currency
+      - null
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: htWXqdnJo1E3fh-5JinIz
+    model: Dashboard
+  - id: 5qZN82_ybQC96c7wZQ2IG
+    model: DashboardCard
+- entity_id: GZ__Eexi2_PskYxGCzaCP
+  card_id: OmJx8z0CRRDoNOecSwq8B
+  created_at: '2026-10-13T22:30:00.217087Z'
+  row: 9
+  col: 0
+  size_x: 24
+  size_y: 7
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: OmJx8z0CRRDoNOecSwq8B
+    parameter_id: charge_date
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - charge_date
+      - null
+  - card_id: OmJx8z0CRRDoNOecSwq8B
+    parameter_id: currency
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - currency
+      - null
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: htWXqdnJo1E3fh-5JinIz
+    model: Dashboard
+  - id: GZ__Eexi2_PskYxGCzaCP
+    model: DashboardCard
+- entity_id: _NGwLcSVlvevFcKdLxwOf
+  card_id: _FS6HqtQs4aMRj4NYForu
+  created_at: '2026-10-13T22:30:00.217087Z'
+  row: 16
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: _FS6HqtQs4aMRj4NYForu
+    parameter_id: charge_date
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - charge_date
+      - null
+  - card_id: _FS6HqtQs4aMRj4NYForu
+    parameter_id: currency
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - currency
+      - null
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: htWXqdnJo1E3fh-5JinIz
+    model: Dashboard
+  - id: _NGwLcSVlvevFcKdLxwOf
+    model: DashboardCard
+- entity_id: 9izn-6PPFYI5BLXC0y-rJ
+  card_id: DFpzNIg9Z4AYebHDmz3eL
+  created_at: '2026-10-13T22:30:00.217087Z'
+  row: 16
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: DFpzNIg9Z4AYebHDmz3eL
+    parameter_id: charge_date
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - charge_date
+      - null
+  - card_id: DFpzNIg9Z4AYebHDmz3eL
+    parameter_id: currency
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - currency
+      - null
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: htWXqdnJo1E3fh-5JinIz
+    model: Dashboard
+  - id: 9izn-6PPFYI5BLXC0y-rJ
+    model: DashboardCard
+- entity_id: TW9Xowqa2IXkOaJzG-ChX
+  created_at: '2026-10-13T22:30:00.217087Z'
+  row: 22
+  col: 0
+  size_x: 24
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings: []
+  series: []
+  visualization_settings:
+    column_settings: null
+    text: '**Definitions.** Gross revenue: succeeded charges before refunds. Refunded amount: refunds, dated by charge date. Net revenue: succeeded charges minus refunds. Success rate: succeeded / all charge attempts. Source: stripe_enriched.int_stripe_payment_transactions_fact (ties to stripe_data.charge to the cent). Owner: unassigned.'
+    virtual_card:
+      display: text
+  serdes/meta:
+  - id: htWXqdnJo1E3fh-5JinIz
+    model: Dashboard
+  - id: TW9Xowqa2IXkOaJzG-ChX
+    model: DashboardCard
+tabs: []
+width: fixed

@@ -1,0 +1,565 @@
+name: Stripe charge success rate
+description: 'Draft, provisional decisions: D1-D5 accepted by user, not yet reconciled to Stripe. Share of Stripe charge attempts that succeeded, by month. Owner: unassigned.'
+entity_id: ncdmhonu8GvkwVLyAlhTm
+created_at: '2026-10-13T22:28:36.534241Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - oJAtxYf_fCAnpIRVUy8t9
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - charge_date
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: ncdmhonu8GvkwVLyAlhTm
+  label: stripe_charge_success_rate
+  model: Card
+dimension_mappings:
+- dimension-id: 3543d12d-3ab6-4584-be40-738b339ccb68
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Text
+    effective-type: type/Text
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - charge_id
+  type: table
+- dimension-id: e0d9a1db-e92d-43cd-8757-c4c8a9b14556
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Text
+    effective-type: type/Text
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - customer_id
+  type: table
+- dimension-id: 44608ceb-924f-42b4-8b4d-3dae3c7885fd
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Text
+    effective-type: type/Text
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - customer_email
+  type: table
+- dimension-id: 26ddf061-bae1-4fbc-aa0d-791a5a9baaa7
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Text
+    effective-type: type/Text
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - customer_name
+  type: table
+- dimension-id: 2cf3ef00-ea82-4960-9ff1-f4819cd4e0ed
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/DateTime
+    effective-type: type/DateTime
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - charge_created_at
+  type: table
+- dimension-id: 2bf91190-f629-4f1f-b57c-568c8a847143
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Date
+    effective-type: type/Date
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - charge_date
+  type: table
+- dimension-id: 62f15b27-3eb4-4204-bda1-2bdd292fd5f3
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Decimal
+    effective-type: type/Decimal
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - charge_amount
+  type: table
+- dimension-id: 4867492a-e154-48ed-babc-547b2489ae7a
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Decimal
+    effective-type: type/Decimal
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - refunded_amount
+  type: table
+- dimension-id: 558b6251-6037-481d-89f8-a7ce428f9f71
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Decimal
+    effective-type: type/Decimal
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - net_amount
+  type: table
+- dimension-id: 21df4332-eaab-4fa1-b526-b4ff6a88e964
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Text
+    effective-type: type/Text
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - currency
+  type: table
+- dimension-id: 8bf1b435-cdad-407c-b309-9545fb08e187
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Text
+    effective-type: type/Text
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - status
+  type: table
+- dimension-id: a778016e-65a6-4fc3-b382-1b2c9db096fb
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Boolean
+    effective-type: type/Boolean
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - is_paid
+  type: table
+- dimension-id: fbf1a786-7f36-49de-a4cf-db356f58e59e
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Boolean
+    effective-type: type/Boolean
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - is_refunded
+  type: table
+- dimension-id: 67abf242-fc94-4ef3-8213-f395d3085aa7
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Boolean
+    effective-type: type/Boolean
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - is_captured
+  type: table
+- dimension-id: 90bd0e85-ae08-4528-a909-e4abe32f226f
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Text
+    effective-type: type/Text
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - description
+  type: table
+- dimension-id: 29fb0c86-5c6e-4bcb-8a95-af3fee10c8bd
+  table-id:
+  - neondb
+  - stripe_enriched
+  - int_stripe_payment_transactions_fact
+  target:
+  - field
+  - base-type: type/Text
+    effective-type: type/Text
+  - - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - transaction_status
+  type: table
+dimensions:
+- display-name: Charge ID
+  effective-type: type/Text
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: 3543d12d-3ab6-4584-be40-738b339ccb68
+  name: charge_id
+  semantic-type: type/PK
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - charge_id
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Customer ID
+  effective-type: type/Text
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: e0d9a1db-e92d-43cd-8757-c4c8a9b14556
+  name: customer_id
+  semantic-type: type/FK
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - customer_id
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Customer Email
+  effective-type: type/Text
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: 44608ceb-924f-42b4-8b4d-3dae3c7885fd
+  name: customer_email
+  semantic-type: type/Email
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - customer_email
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Customer Name
+  effective-type: type/Text
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: 26ddf061-bae1-4fbc-aa0d-791a5a9baaa7
+  name: customer_name
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - customer_name
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Charge Created At
+  effective-type: type/DateTime
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: none
+  id: 2cf3ef00-ea82-4960-9ff1-f4819cd4e0ed
+  name: charge_created_at
+  semantic-type: type/CreationTimestamp
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - charge_created_at
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Charge date
+  effective-type: type/Date
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: none
+  id: 2bf91190-f629-4f1f-b57c-568c8a847143
+  name: charge_date
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - charge_date
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Charge amount
+  effective-type: type/Decimal
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: none
+  id: 62f15b27-3eb4-4204-bda1-2bdd292fd5f3
+  name: charge_amount
+  semantic-type: type/Currency
+  sources:
+  - binning: true
+    field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - charge_amount
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Refunded amount
+  effective-type: type/Decimal
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: none
+  id: 4867492a-e154-48ed-babc-547b2489ae7a
+  name: refunded_amount
+  semantic-type: type/Currency
+  sources:
+  - binning: true
+    field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - refunded_amount
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Net amount
+  effective-type: type/Decimal
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: none
+  id: 558b6251-6037-481d-89f8-a7ce428f9f71
+  name: net_amount
+  semantic-type: type/Currency
+  sources:
+  - binning: true
+    field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - net_amount
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Currency
+  effective-type: type/Text
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: 21df4332-eaab-4fa1-b526-b4ff6a88e964
+  name: currency
+  semantic-type: type/Category
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - currency
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Status
+  effective-type: type/Text
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: 8bf1b435-cdad-407c-b309-9545fb08e187
+  name: status
+  semantic-type: type/Category
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - status
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Is paid
+  effective-type: type/Boolean
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: a778016e-65a6-4fc3-b382-1b2c9db096fb
+  name: is_paid
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - is_paid
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Is refunded
+  effective-type: type/Boolean
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: fbf1a786-7f36-49de-a4cf-db356f58e59e
+  name: is_refunded
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - is_refunded
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Is Captured
+  effective-type: type/Boolean
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: 67abf242-fc94-4ef3-8213-f395d3085aa7
+  name: is_captured
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - is_captured
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Description
+  effective-type: type/Text
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: 90bd0e85-ae08-4528-a909-e4abe32f226f
+  name: description
+  semantic-type: type/Description
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - description
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+- display-name: Transaction status
+  effective-type: type/Text
+  group:
+    display-name: Stripe charges
+    id: ff142428-4f68-398f-8821-ddd8ab5c8bf5
+    type: main
+  has-field-values: list
+  id: 29fb0c86-5c6e-4bcb-8a95-af3fee10c8bd
+  name: transaction_status
+  semantic-type: type/Category
+  sources:
+  - field-id:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    - transaction_status
+    type: field
+  status: status/active
+  lib/source: source/table-defaults
+type: metric

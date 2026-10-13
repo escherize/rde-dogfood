@@ -1,0 +1,28 @@
+created_at: '2026-10-13T22:28:16.59502Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_enriched
+          - int_stripe_payment_transactions_fact
+          - is_refunded
+      - true
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Charges with a refund (is_refunded = true), full or partial. Owner: unassigned.'
+entity_id: 0HW0MEcb1OxvFbEQjj2ez
+name: Refunded charges
+serdes/meta:
+- id: 0HW0MEcb1OxvFbEQjj2ez
+  label: refunded_charges
+  model: Segment

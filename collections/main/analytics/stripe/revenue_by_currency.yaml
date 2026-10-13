@@ -1,0 +1,43 @@
+name: Revenue by currency
+description: Draft. Gross, refunded and net revenue by currency, all months.
+entity_id: 8zfkinepPTD2qyr_k6oCJ
+created_at: '2026-10-13T22:29:33.65542Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+display: table
+collection_id: Kq48oMLQRZu3wFxbZ3RNy
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - vYw1BSXqX_W1Ukw8gZ1TO
+    - - measure
+      - {}
+      - mS78rk3Teg0JtocweJj-e
+    - - measure
+      - {}
+      - WsjLBa-6EkQdHFQ7dCQk1
+    breakout:
+    - - field
+      - {}
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - currency
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: 8zfkinepPTD2qyr_k6oCJ
+  label: revenue_by_currency
+  model: Card
+type: question

@@ -1,0 +1,43 @@
+name: Net revenue by month and currency
+description: Draft. Stripe net revenue metric, per currency; currencies are not added together.
+entity_id: OmJx8z0CRRDoNOecSwq8B
+created_at: '2026-10-13T22:29:30.298726Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+display: line
+collection_id: Kq48oMLQRZu3wFxbZ3RNy
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - P-TJdxOE9HqPPNeXWueYF
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - charge_date
+    - - field
+      - {}
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - currency
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: OmJx8z0CRRDoNOecSwq8B
+  label: net_revenue_by_month_and_currency
+  model: Card
+type: question

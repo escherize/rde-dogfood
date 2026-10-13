@@ -1,0 +1,41 @@
+name: Successful vs failed charges by month
+description: Draft. Counts of succeeded and failed charges.
+entity_id: DFpzNIg9Z4AYebHDmz3eL
+created_at: '2026-10-13T22:29:40.42444Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+display: bar
+collection_id: Kq48oMLQRZu3wFxbZ3RNy
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - Jm897sqmxgXbAeyLQBVcU
+    - - measure
+      - {}
+      - 9sBA7Mn4R2ZzQR3LQ4LZU
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_enriched
+        - int_stripe_payment_transactions_fact
+        - charge_date
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+  stackable.stack_type: stacked
+card_schema: 24
+serdes/meta:
+- id: DFpzNIg9Z4AYebHDmz3eL
+  label: successful_vs_failed_charges_by_month
+  model: Card
+type: question

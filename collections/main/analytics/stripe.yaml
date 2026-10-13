@@ -1,0 +1,11 @@
+name: Stripe
+description: Stripe revenue dashboards and questions (Draft).
+entity_id: Kq48oMLQRZu3wFxbZ3RNy
+slug: stripe
+created_at: '2026-10-13T22:29:21.624855Z'
+parent_id: Pp3y4AmB2aXGoL2oQyMTP
+serdes/meta:
+- id: Kq48oMLQRZu3wFxbZ3RNy
+  label: stripe
+  model: Collection
+is_remote_synced: true

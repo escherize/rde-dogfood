@@ -1,0 +1,36 @@
+created_at: '2026-10-13T22:27:48.019829Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - sum-where
+      - name: gross_revenue
+      - - field
+        - {}
+        - - neondb
+          - stripe_enriched
+          - int_stripe_payment_transactions_fact
+          - charge_amount
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - stripe_enriched
+            - int_stripe_payment_transactions_fact
+            - is_paid
+        - true
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft, provisional decisions: D1-D5 accepted by user, not yet reconciled to Stripe dashboard. Sum of charge_amount for succeeded charges (is_paid = true), before refunds, in the charge currency. Excludes failed charges (about 28.5% of all attempted charge value). Do not add across currencies. Owner: unassigned.'
+entity_id: vYw1BSXqX_W1Ukw8gZ1TO
+name: Gross revenue
+serdes/meta:
+- id: vYw1BSXqX_W1Ukw8gZ1TO
+  label: gross_revenue
+  model: Measure

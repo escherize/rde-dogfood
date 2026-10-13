@@ -1,0 +1,27 @@
+created_at: '2026-10-13T22:27:51.689623Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - sum
+      - name: refunded_amount
+      - - field
+        - {}
+        - - neondb
+          - stripe_enriched
+          - int_stripe_payment_transactions_fact
+          - refunded_amount
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft, provisional decisions: D1-D5 accepted by user, not yet reconciled to Stripe dashboard. Sum of refunded_amount, attributed to the charge date. Failed charges have none. Do not add across currencies. Owner: unassigned.'
+entity_id: mS78rk3Teg0JtocweJj-e
+name: Refunded amount
+serdes/meta:
+- id: mS78rk3Teg0JtocweJj-e
+  label: refunded_amount
+  model: Measure

@@ -1,0 +1,28 @@
+created_at: '2026-10-13T22:28:13.194321Z'
+creator_id: api-key-user-00a2ebe0-d23b-498a-8c4f-3e4b40a9bed2@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_enriched
+          - int_stripe_payment_transactions_fact
+          - is_paid
+      - false
+    source-table:
+    - neondb
+    - stripe_enriched
+    - int_stripe_payment_transactions_fact
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Charges that failed (is_paid = false). Not revenue. Owner: unassigned.'
+entity_id: -X2uU7TK8aBaWZxnv3QvW
+name: Failed charges
+serdes/meta:
+- id: -X2uU7TK8aBaWZxnv3QvW
+  label: failed_charges
+  model: Segment
