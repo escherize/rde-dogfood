@@ -1,5 +1,5 @@
 name: Customers
-description: 'Self-consistent only, no external reference. Total Stripe customers in the extract (200), all time, including those with no subscription. Owner: not yet assigned (see hand-back).'
+description: 'Self-consistent only, no external reference. Total Stripe customers in the extract (200), all time, including those with no subscription. Owner: bryan@metabase.com.'
 entity_id: twoc7TnmgWbZROzfy5RpY
 created_at: '2026-10-14T20:49:46.708137Z'
 creator_id: api-key-user-5529b435-8eb9-42f7-a719-35f38f02ef1e@api-key.invalid

@@ -177,7 +177,7 @@ document:
   - attrs:
       _id: 95b7fafa-7b6a-4cf9-996b-9eac114ca8e1
     content:
-    - text: No owner has been named yet. Whoever owns Stripe reporting should be set as owner on the three Library tables and asked to mark the metrics verified.
+    - text: Bryan (bryan@metabase.com) owns the Stripe definitions and is set as owner on the three Library tables and in each metric description. New or changed definitions go through him. Mark the metrics verified in the UI once accepted.
       type: text
     type: paragraph
   - attrs:
@@ -209,7 +209,7 @@ document:
   type: doc
 entity_id: B78lgzBXbej0a7lY0Mzj0
 name: How to use Stripe numbers
-updated_at: '2026-10-14T20:54:18.352326Z'
+updated_at: '2026-10-14T20:56:42.957527Z'
 serdes/meta:
 - id: B78lgzBXbej0a7lY0Mzj0
   label: how_to_use_stripe_numbers

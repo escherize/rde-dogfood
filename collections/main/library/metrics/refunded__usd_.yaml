@@ -1,5 +1,5 @@
 name: Refunded (USD)
-description: 'Self-consistent only, no external reference. Amount refunded on Stripe charges, in USD, by charge month (79 refunded charges). Includes 29 USD of refund beyond the charge on 3 over-refunded charges, which Cash collected does not subtract. Fixed 2024-average FX. Owner: not yet assigned (see hand-back).'
+description: 'Self-consistent only, no external reference. Amount refunded on Stripe charges, in USD, by charge month (79 refunded charges). Includes 29 USD of refund beyond the charge on 3 over-refunded charges, which Cash collected does not subtract. Fixed 2024-average FX. Owner: bryan@metabase.com.'
 entity_id: m2A_L0KyRi0maJQgVHUE5
 created_at: '2026-10-14T20:49:29.015601Z'
 creator_id: api-key-user-5529b435-8eb9-42f7-a719-35f38f02ef1e@api-key.invalid

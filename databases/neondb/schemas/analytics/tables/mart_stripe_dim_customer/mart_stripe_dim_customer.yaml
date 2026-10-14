@@ -2,7 +2,7 @@ caveats: Name, email and description (which embeds the email) are personal data 
 caveats_set: true
 collection_id: librarylibrarydatadat
 created_at: '2026-10-14T20:45:24.782696Z'
-description: One row per Stripe customer (200). Keyed by customer_id. Entity table the invoice and charge facts point at; slice revenue by customer attributes through the customer_id link.
+description: 'One row per Stripe customer (200). Keyed by customer_id. Entity table the invoice and charge facts point at; slice revenue by customer attributes through the customer_id link. Owner: bryan@metabase.com.'
 description_set: true
 display_name: Stripe Customers
 entity_type: entity/UserTable
@@ -121,6 +121,7 @@ fields:
   - id: '1'
     model: FieldUserSettings
 is_published: true
+owner_email: bryan@metabase.com
 serdes/meta:
 - id: neondb
   model: Database

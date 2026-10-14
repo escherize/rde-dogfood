@@ -2,7 +2,7 @@ caveats: 'Charges carry no invoice id, so they cannot be matched to invoices: Ca
 caveats_set: true
 collection_id: librarylibrarydatadat
 created_at: '2026-10-14T20:45:26.5733Z'
-description: 'One row per Stripe charge attempt (426), Jul-Dec 2024, all amounts also in USD. Includes failed attempts: filter or use the Cash collected measures, which count only captured, paid charges.'
+description: 'One row per Stripe charge attempt (426), Jul-Dec 2024, all amounts also in USD. Includes failed attempts: filter or use the Cash collected measures, which count only captured, paid charges. Owner: bryan@metabase.com.'
 description_set: true
 display_name: Stripe Charges
 entity_type: entity/TransactionTable
@@ -254,6 +254,7 @@ fields:
   - id: '1'
     model: FieldUserSettings
 is_published: true
+owner_email: bryan@metabase.com
 serdes/meta:
 - id: neondb
   model: Database

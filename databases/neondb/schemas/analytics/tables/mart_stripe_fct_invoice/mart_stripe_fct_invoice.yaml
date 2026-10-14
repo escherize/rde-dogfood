@@ -2,7 +2,7 @@ caveats: Month is the invoice creation month (no paid-date column). USD uses fix
 caveats_set: true
 collection_id: librarylibrarydatadat
 created_at: '2026-10-14T20:45:28.191049Z'
-description: One row per Stripe invoice (848), Jan-Dec 2024, with its subscription, plan and product, amounts in local currency and USD. Revenue counts only paid invoices.
+description: 'One row per Stripe invoice (848), Jan-Dec 2024, with its subscription, plan and product, amounts in local currency and USD. Revenue counts only paid invoices. Owner: bryan@metabase.com.'
 description_set: true
 display_name: Stripe Invoices
 entity_type: entity/SubscriptionTable
@@ -373,6 +373,7 @@ fields:
   - id: '1'
     model: FieldUserSettings
 is_published: true
+owner_email: bryan@metabase.com
 serdes/meta:
 - id: neondb
   model: Database
