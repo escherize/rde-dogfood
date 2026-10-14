@@ -1,0 +1,216 @@
+caveats: Name, email and description (which embeds the email) are personal data and blocked from queries. Created dates run 2023-01 to 2024-11.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-14T21:14:48.467303Z'
+data_layer: internal
+data_layer_set: true
+description: 'Built by Metabase transform. One row per Stripe customer (200). Keyed by customer_id. Entity table the invoice and charge facts point at; slice revenue by customer attributes through the customer_id link. Owner: bryan@metabase.com.'
+description_set: true
+display_name: Stripe Customers (v2)
+entity_type: entity/UserTable
+fields:
+- created_at: '2026-10-14T21:15:42.608064Z'
+  display_name: Account Balance Local
+  has_field_values: none
+  semantic_type: type/Currency
+  semantic_type_set: true
+  visibility_type: normal
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: account_balance_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:15:38.63124Z'
+  display_name: Customer created at
+  has_field_values: none
+  semantic_type: type/CreationTimestamp
+  semantic_type_set: true
+  visibility_type: normal
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: customer_created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:15:40.520429Z'
+  display_name: Customer Currency
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  visibility_type: normal
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: customer_currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:22:18.362991Z'
+  data_sensitivity: PII
+  visibility_type: sensitive
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: customer_description
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:22:16.552825Z'
+  data_sensitivity: PII
+  visibility_type: sensitive
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: customer_email
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:15:21.17302Z'
+  display_name: Customer ID
+  has_field_values: list
+  semantic_type: type/PK
+  semantic_type_set: true
+  visibility_type: normal
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: customer_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:22:14.74877Z'
+  data_sensitivity: PII
+  visibility_type: sensitive
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: customer_name
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:15:52.375133Z'
+  display_name: Has Subscription
+  has_field_values: list
+  visibility_type: normal
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: has_subscription
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:15:44.56886Z'
+  description: 'Stripe delinquent flag: the customer has an unpaid invoice that Stripe is retrying.'
+  description_set: true
+  display_name: Is delinquent
+  has_field_values: list
+  visibility_type: normal
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: is_delinquent
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:15:50.454821Z'
+  display_name: Subscriptions Canceled
+  has_field_values: list
+  semantic_type: type/Subscription
+  semantic_type_set: true
+  visibility_type: normal
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: subscriptions_canceled
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:15:48.500659Z'
+  display_name: Subscriptions Live
+  has_field_values: list
+  semantic_type: type/Subscription
+  semantic_type_set: true
+  visibility_type: normal
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: subscriptions_live
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T21:15:46.650565Z'
+  display_name: Subscriptions Total
+  has_field_values: list
+  semantic_type: type/Subscription
+  semantic_type_set: true
+  visibility_type: normal
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_dim_customer_v2
+    model: Table
+  - id: subscriptions_total
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+owner_email: bryan@metabase.com
+visibility_type_set: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: analytics
+  model: Schema
+- id: mart_stripe_dim_customer_v2
+  model: Table
+- id: '1'
+  model: TableUserSettings
