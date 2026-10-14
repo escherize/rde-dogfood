@@ -1,0 +1,11 @@
+name: Stripe
+description: Stripe revenue definitions and documentation.
+entity_id: cT14iCH0_rH4HyE16I41L
+slug: stripe
+created_at: '2026-10-14T20:54:10.108998Z'
+parent_id: JFZVmP8UO-qjIiG60EeVy
+serdes/meta:
+- id: cT14iCH0_rH4HyE16I41L
+  label: stripe
+  model: Collection
+is_remote_synced: true

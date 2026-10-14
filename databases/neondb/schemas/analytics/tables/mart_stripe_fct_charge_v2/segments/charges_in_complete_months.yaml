@@ -1,0 +1,28 @@
+created_at: '2026-10-14T20:48:44.390383Z'
+creator_id: api-key-user-5529b435-8eb9-42f7-a719-35f38f02ef1e@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_stripe_fct_charge_v2
+          - is_complete_period
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_stripe_fct_charge_v2
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Charges in fully loaded months (all of Jul-Dec 2024 at present).
+entity_id: xUhVtLYWvNn7dTTO-4EK6
+name: Charges in complete months
+serdes/meta:
+- id: xUhVtLYWvNn7dTTO-4EK6
+  label: charges_in_complete_months
+  model: Segment
