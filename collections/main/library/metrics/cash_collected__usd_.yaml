@@ -1,0 +1,37 @@
+name: Cash collected (USD)
+description: 'Self-consistent only, no external reference. Cash received from captured, paid Stripe charges, net of refunds, in USD, by charge month. Excludes failed attempts (109 charges). Net is floored at zero where a refund exceeds the charge (3 charges). Charges start Jul 2024 and carry no invoice id, so this does not reconcile to Revenue. Fixed 2024-average FX. Complete through Dec 2024. Tie-out: recomputed from stripe_data.charge (amount less refund, in cents at the cfg_stripe rates), all 6 months match within 0.05 USD. Owner: not yet assigned (see hand-back).'
+entity_id: X5OncNYSZ8CcWwxnJGuhO
+created_at: '2026-10-14T20:49:23.340189Z'
+creator_id: api-key-user-5529b435-8eb9-42f7-a719-35f38f02ef1e@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - CdJb2I9Zdb7cQ7LlVBPNl
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_stripe_fct_charge
+        - charge_month
+    source-table:
+    - neondb
+    - analytics
+    - mart_stripe_fct_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: X5OncNYSZ8CcWwxnJGuhO
+  label: cash_collected__usd_
+  model: Card
+type: metric

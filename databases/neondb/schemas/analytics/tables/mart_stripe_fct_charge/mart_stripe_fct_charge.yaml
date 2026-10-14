@@ -1,0 +1,265 @@
+caveats: 'Charges carry no invoice id, so they cannot be matched to invoices: Cash collected and Revenue are different sources and do not reconcile. USD uses fixed 2024-average FX rates (analytics.cfg_stripe). Net amounts are floored at zero when a refund exceeds the charge (3 charges).'
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-14T20:45:26.5733Z'
+description: 'One row per Stripe charge attempt (426), Jul-Dec 2024, all amounts also in USD. Includes failed attempts: filter or use the Cash collected measures, which count only captured, paid charges.'
+description_set: true
+display_name: Stripe Charges
+entity_type: entity/TransactionTable
+fields:
+- created_at: '2026-10-14T20:46:24.91965Z'
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: amount_gross_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:32.064596Z'
+  description: Charge amount in USD at the fixed 2024-average rate. Includes failed attempts.
+  description_set: true
+  display_name: Gross amount (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: amount_gross_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:30.168019Z'
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: amount_net_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:35.475386Z'
+  description: Gross minus refund applied, floored at zero, in USD. Equals gross for failed charges, so use Cash collected, not a plain sum.
+  description_set: true
+  display_name: Net amount (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: amount_net_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:28.449153Z'
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: amount_refund_applied_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:26.666242Z'
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: amount_refunded_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:33.759793Z'
+  description: Amount Stripe refunded, in USD. For 3 over-refunded charges this exceeds the charge by 29 USD in total.
+  description_set: true
+  display_name: Refunded amount (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: amount_refunded_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:05.067922Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: charge_currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:45:31.68276Z'
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: charge_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:47.764755Z'
+  description: Calendar month of the charge (first day). Date basis for Cash collected.
+  description_set: true
+  display_name: Charge month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: charge_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:03.377245Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: charge_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:45:35.062135Z'
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_stripe_dim_customer
+  - customer_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: customer_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:59.858611Z'
+  description: Fixed 2024-average rate from analytics.cfg_stripe.
+  description_set: true
+  display_name: FX rate (USD per unit)
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: fx_usd_per_unit
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:51.169134Z'
+  description: True for captured, paid charges. Failed attempts are false and are excluded from Cash collected.
+  description_set: true
+  display_name: Is cash collected
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: is_cash_collected
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:49.386204Z'
+  description: True when the month is fully loaded. Data ends 2024-12-31, so every month is complete.
+  description_set: true
+  display_name: Is complete period
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: is_complete_period
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:52.875481Z'
+  description: True when the refund exceeds the charge (3 charges). Net amount is floored at zero for these.
+  description_set: true
+  display_name: Is over-refunded
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_charge
+    model: Table
+  - id: is_over_refunded
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: analytics
+  model: Schema
+- id: mart_stripe_fct_charge
+  model: Table
+- id: '1'
+  model: TableUserSettings

@@ -1,0 +1,216 @@
+collection_id: cT14iCH0_rH4HyE16I41L
+content_type: application/json+vnd.prose-mirror
+created_at: '2026-10-14T20:54:18.352326Z'
+creator_id: api-key-user-5529b435-8eb9-42f7-a719-35f38f02ef1e@api-key.invalid
+document:
+  content:
+  - attrs:
+      _id: 90ddaa5b-17da-42e7-9655-3b2ca5148911
+      level: 1
+    content:
+    - text: How to use Stripe numbers
+      type: text
+    type: heading
+  - attrs:
+      _id: 6bed0203-992f-428e-b6c5-4d19acec7895
+    content:
+    - text: 'Status: Draft. Every metric below is labelled Self-consistent only: each ties to a recomputation from the raw Stripe tables (within cents), but none has been reconciled to a finance figure. Data runs to 31 Dec 2024, so December 2024 is the latest complete month. Amounts are USD at fixed 2024-average rates (EUR 1.082, GBP 1.278, CAD 0.73, AUD 0.66).'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: 3da4769d-ea97-4443-875a-4ef5ca749224
+      level: 2
+    content:
+    - text: Metrics (Library > Metrics)
+      type: text
+    type: heading
+  - attrs:
+      _id: d6ba7ee7-4156-417e-9ae3-92881609d6fe
+    content:
+    - content:
+      - attrs:
+          _id: 7278f6ee-ad16-4703-b233-bb34bb4f770c
+        content:
+        - text: 'Revenue (USD): amount paid on paid invoices, by invoice creation month. Jan-Dec 2024: 105.6k. Excludes open, void and uncollectible invoices.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: fd7ce68a-c834-4cdb-9486-fb29f67052e2
+        content:
+        - text: 'Cash collected (USD): captured, paid charges net of refunds, by charge month. Jul-Dec 2024: 141.7k. Excludes failed attempts.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 66466d91-70b3-437c-b708-dece39f51372
+        content:
+        - text: 'Refunded (USD): amount refunded on charges, by charge month. Includes 29 USD of refund beyond the charge on 3 charges.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 74d4e7e1-b943-428f-9191-dbf425e795ea
+        content:
+        - text: 'Paying customers: distinct customers with a paid invoice in the month.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: be5fe09b-0de4-40ce-bcec-1a2ecbbfdc8b
+        content:
+        - text: 'Charge success rate: share of charge attempts captured and paid, by month.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 9492e5df-162d-49ef-8f4e-0d46df4d13bc
+        content:
+        - text: 'Customers: all 200 customers in the extract.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: c62712f3-9d57-49c5-80c7-21519516b6f8
+        content:
+        - text: 'Delinquent customers: customers Stripe flags as delinquent (60 of 200).'
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: 1eb89720-f7da-4435-9aa2-b3bf562acba5
+      level: 2
+    content:
+    - text: Read this before comparing numbers
+      type: text
+    type: heading
+  - attrs:
+      _id: 85e08305-bd94-4fca-ad50-323d0a5f0d87
+    content:
+    - content:
+      - attrs:
+          _id: 21ae673b-6989-49fc-84cf-8ab59bb2f891
+        content:
+        - text: 'Revenue and Cash collected do not reconcile. Charges carry no invoice id, so they cannot be matched. December 2024: 9.9k revenue vs 30.4k cash.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: e66668f4-a4ea-4134-aab6-1b85905b1a60
+        content:
+        - text: Neither is monthly recurring revenue. Plans bill daily, weekly, monthly, quarterly and yearly. MRR and churn are not built yet.
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 74438783-cc68-489d-b0a1-a975e14226b5
+        content:
+        - text: Month for Revenue is the invoice creation month; there is no paid-date column.
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: b18ee3df-7ad0-4a18-86d1-23f845a9f47a
+      level: 2
+    content:
+    - text: Segments
+      type: text
+    type: heading
+  - attrs:
+      _id: 6c9d4d53-222f-4cb3-94eb-eb75d1b1b626
+    content:
+    - content:
+      - attrs:
+          _id: d7a42d19-5032-4e0a-b707-7d099ad078ae
+        content:
+        - text: 'Invoices: Paid, Open, Uncollectible, Void, in complete months.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 57c37a7c-e809-43fa-b06b-1502a1def7cc
+        content:
+        - text: 'Charges: Failed, Refunded, Over-refunded (3), in complete months.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: bdfc1e8c-ec90-49cc-b31a-9cf36d146d95
+        content:
+        - text: 'Customers: Delinquent, with a subscription.'
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: 902a1265-3e19-4016-9702-afc9beb4a087
+      level: 2
+    content:
+    - text: Personal data
+      type: text
+    type: heading
+  - attrs:
+      _id: 5f903206-608f-4da0-9efa-1a6dc0c9a986
+    content:
+    - text: Customer name, email and description (which embeds the email) are blocked from queries. Use customer counts and customer id.
+      type: text
+    type: paragraph
+  - attrs:
+      _id: c90912c1-a36e-424d-9f1b-8450831012c8
+      level: 2
+    content:
+    - text: Who owns the definitions
+      type: text
+    type: heading
+  - attrs:
+      _id: 95b7fafa-7b6a-4cf9-996b-9eac114ca8e1
+    content:
+    - text: No owner has been named yet. Whoever owns Stripe reporting should be set as owner on the three Library tables and asked to mark the metrics verified.
+      type: text
+    type: paragraph
+  - attrs:
+      _id: 902d6999-8c72-43b3-b376-0fd883a5b717
+      level: 2
+    content:
+    - text: Asking a new question
+      type: text
+    type: heading
+  - attrs:
+      _id: 3a7164c5-e91d-44c9-a676-9a1c11524040
+    content:
+    - text: Start from the Library tables Stripe Invoices, Stripe Charges or Stripe Customers and use the measures and segments on them. Slice by customer currency through the customer link. If a question needs a rule that is not here, ask for a new definition rather than saving a one-off query.
+      type: text
+    type: paragraph
+  - attrs:
+      _id: cefe9e89-c0c4-4dfc-8b95-e2c692a93ce4
+      level: 2
+    content:
+    - text: When a number looks wrong
+      type: text
+    type: heading
+  - attrs:
+      _id: 05364b51-df5e-4589-8d56-53a289cf69ba
+    content:
+    - text: Check the month is complete, the currency basis (USD at fixed rates), and whether you are comparing Revenue with Cash collected. If it still looks wrong, tell the definitions owner; the fix goes in the definition itself, with a dated note on the metric.
+      type: text
+    type: paragraph
+  type: doc
+entity_id: B78lgzBXbej0a7lY0Mzj0
+name: How to use Stripe numbers
+updated_at: '2026-10-14T20:54:18.352326Z'
+serdes/meta:
+- id: B78lgzBXbej0a7lY0Mzj0
+  label: how_to_use_stripe_numbers
+  model: Document

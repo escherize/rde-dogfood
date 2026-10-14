@@ -1,0 +1,384 @@
+caveats: Month is the invoice creation month (no paid-date column). USD uses fixed 2024-average FX rates (analytics.cfg_stripe). Plans bill daily, weekly, monthly, quarterly and yearly, so invoice amounts are not monthly recurring revenue.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-14T20:45:28.191049Z'
+description: One row per Stripe invoice (848), Jan-Dec 2024, with its subscription, plan and product, amounts in local currency and USD. Revenue counts only paid invoices.
+description_set: true
+display_name: Stripe Invoices
+entity_type: entity/SubscriptionTable
+fields:
+- created_at: '2026-10-14T20:46:37.258948Z'
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: amount_due_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:42.449187Z'
+  description: Invoice amount in USD at the fixed 2024-average rate.
+  description_set: true
+  display_name: Amount due (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: amount_due_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:38.952951Z'
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: amount_paid_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:44.174852Z'
+  description: Amount paid in USD. Zero unless the invoice is paid.
+  description_set: true
+  display_name: Amount paid (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: amount_paid_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:40.660685Z'
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: amount_remaining_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:45.960948Z'
+  description: Unpaid amount in USD.
+  description_set: true
+  display_name: Amount remaining (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: amount_remaining_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:45:59.874092Z'
+  data_sensitivity: PII
+  visibility_type: sensitive
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: customer_email
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:45:36.77899Z'
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_stripe_dim_customer
+  - customer_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: customer_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:45:58.263098Z'
+  data_sensitivity: PII
+  visibility_type: sensitive
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: customer_name
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:47:12.168559Z'
+  description: Fixed 2024-average rate from analytics.cfg_stripe.
+  description_set: true
+  display_name: FX rate (USD per unit)
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: fx_usd_per_unit
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:21.556676Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: invoice_currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:45:33.291691Z'
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: invoice_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:47:01.571224Z'
+  description: Calendar month the invoice was created (first day). Date basis for Revenue; there is no paid-date column.
+  description_set: true
+  display_name: Invoice month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: invoice_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:19.680853Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: invoice_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:47:03.376043Z'
+  description: True when the month is fully loaded. Data ends 2024-12-31, so every month is complete.
+  description_set: true
+  display_name: Is complete period
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: is_complete_period
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:47:05.062916Z'
+  description: True for paid invoices (rule D4 in analytics.cfg_stripe). Open, void and uncollectible invoices are false.
+  description_set: true
+  display_name: Is revenue invoice
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: is_revenue_invoice
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:14.481802Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: plan_currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:08.650028Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: plan_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:12.852229Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: plan_interval
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:47:13.969313Z'
+  description: Number of intervals per billing cycle, for example 3 with interval month is quarterly.
+  description_set: true
+  display_name: Plan interval count
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: plan_interval_count
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:10.367304Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: plan_name
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:16.360523Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: product_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:18.069722Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: product_name
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-14T20:46:06.870936Z'
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_stripe_fct_invoice
+    model: Table
+  - id: subscription_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: analytics
+  model: Schema
+- id: mart_stripe_fct_invoice
+  model: Table
+- id: '1'
+  model: TableUserSettings

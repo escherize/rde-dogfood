@@ -1,0 +1,30 @@
+created_at: '2026-10-14T20:47:59.252393Z'
+creator_id: api-key-user-5529b435-8eb9-42f7-a719-35f38f02ef1e@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: successful_charges
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - analytics
+            - mart_stripe_fct_charge
+            - is_cash_collected
+        - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_stripe_fct_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Number of captured, paid charges.
+entity_id: 8Qbxla2UMFaCzAuWhfunN
+name: Successful charge count
+serdes/meta:
+- id: 8Qbxla2UMFaCzAuWhfunN
+  label: successful_charge_count
+  model: Measure
