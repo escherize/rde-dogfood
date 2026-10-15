@@ -1,0 +1,50 @@
+name: How many reviews did we do last month?
+description: 'Counted reviews in the latest complete month vs the month before. Metric: Reviews per month. Draft, self-consistent only.'
+entity_id: YTkwOkPCDhHX-1JDi-yOF
+created_at: '2026-10-15T03:02:00.359624Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: smartscalar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - vdMRkFXRxif0iUtFTSUNm
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - submitted_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pr_review
+          - submitted_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pr_review
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+  scalar.comparisons:
+  - id: c1
+    type: previousPeriod
+card_schema: 24
+serdes/meta:
+- id: YTkwOkPCDhHX-1JDi-yOF
+  label: how_many_reviews_did_we_do_last_month_
+  model: Card
+type: question

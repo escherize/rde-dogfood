@@ -1,0 +1,48 @@
+collection_id: 56tGqQU9oz-XFH6VTkvtK
+created_at: '2026-10-15T01:42:55.45903Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: |
+  One row per GitHub account (key: user_id). Sources: raw_github.user. Definition: accounts that author PRs; login only, no email/name/company/location/bio (D5). Caveats: source-deleted accounts kept and flagged is_deleted_in_source (D4); account_type as GitHub reports it (User/Bot/Organization).
+entity_id: E1JYStUNtdOTp5em2DZx5
+indexes: []
+name: mart_github_dim_user
+owner_user_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: GitHub account (user, bot, or organization account)
+        -- Key:         user_id
+        -- Sources:     raw_github.user
+        -- Definition:  GitHub accounts that author PRs, reviews, commits. Login only: no email, display name, company, location or bio (D5).
+        -- Caveats:     source-deleted accounts are KEPT and flagged is_deleted_in_source, so every PR author resolves (D4); account_type is User/Bot/Organization as GitHub reports it.
+        SELECT
+          u.id                      AS user_id,
+          u.login                   AS github_login,
+          u.type                    AS account_type,
+          (u.type = 'Bot')          AS is_bot,
+          u.site_admin              AS is_site_admin,
+          u.created_at              AS account_created_at,
+          u._fivetran_deleted       AS is_deleted_in_source
+        FROM raw_github."user" u
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: _Sv_FGuU5_rl62dsrPbhi
+  position: 0
+  tag_id: TUL03jkG8FI-YFGiZNbrD
+  serdes/meta:
+  - id: _Sv_FGuU5_rl62dsrPbhi
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_github_dim_user
+  schema: analytics
+  type: table
+serdes/meta:
+- id: E1JYStUNtdOTp5em2DZx5
+  label: mart_github_dim_user
+  model: Transform

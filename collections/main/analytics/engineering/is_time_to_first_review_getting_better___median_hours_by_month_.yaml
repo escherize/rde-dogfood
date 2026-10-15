@@ -1,0 +1,56 @@
+name: Is time to first review getting better? (median hours by month)
+description: 'Median hours from PR creation to first counted review, by month of that review. Metric: Median hours to first review. Draft.'
+entity_id: gp5HlhuwTn7QcwWDkTfw5
+created_at: '2026-10-15T03:02:19.393262Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: line
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - Lsg9yXzOdGHjvFyVbuSd0
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - submitted_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pr_review
+          - is_first_review
+      - true
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pr_review
+          - submitted_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pr_review
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: gp5HlhuwTn7QcwWDkTfw5
+  label: is_time_to_first_review_getting_better___median_hours_by_month_
+  model: Card
+type: question

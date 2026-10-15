@@ -1,0 +1,47 @@
+name: Production deployments per month
+description: 'Draft, provisional: self-consistent only. Deployments to the environment named production (not the source production flag), rollbacks included (D9, D12), complete months. Deployment frequency. Owner: unassigned.'
+entity_id: wSyjydAa6m_rLPZtQLsT0
+created_at: '2026-10-15T03:33:44.190231Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - 05_UAgl8o-ctL66l2R6ld
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_deployment
+        - created_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_deployment
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_deployment
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: wSyjydAa6m_rLPZtQLsT0
+  label: production_deployments_per_month
+  model: Card
+type: metric

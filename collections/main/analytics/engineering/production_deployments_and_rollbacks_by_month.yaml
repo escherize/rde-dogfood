@@ -1,0 +1,50 @@
+name: Production deployments and rollbacks by month
+description: 'Production deployments (rollbacks included) and production rollbacks by month, complete months. Measures: Production deployments, Production rollbacks.'
+entity_id: KjATpwRyKaUb-huSmEphU
+created_at: '2026-10-15T03:34:49.888155Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: bar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - 05_UAgl8o-ctL66l2R6ld
+    - - measure
+      - {}
+      - 5SIIUArSRwPiKWIUS49vv
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_deployment
+        - created_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_deployment
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_deployment
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: KjATpwRyKaUb-huSmEphU
+  label: production_deployments_and_rollbacks_by_month
+  model: Card
+type: question

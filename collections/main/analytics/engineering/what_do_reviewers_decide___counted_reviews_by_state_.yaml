@@ -1,0 +1,37 @@
+name: What do reviewers decide? (counted reviews by state)
+description: 'Counted reviews by review state. Measure: Reviews submitted.'
+entity_id: voVKrmExZUTZZvkc7qYQU
+created_at: '2026-10-15T03:03:18.310993Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: bar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - gCMwnFSD33EWcuHAFaTEw
+    breakout:
+    - - field
+      - {}
+      - - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - review_state
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pr_review
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: voVKrmExZUTZZvkc7qYQU
+  label: what_do_reviewers_decide___counted_reviews_by_state_
+  model: Card
+type: question

@@ -1,0 +1,28 @@
+created_at: '2026-10-15T03:33:13.27471Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_workflow_run
+          - is_failed
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Conclusion failure or timed_out (D11).
+entity_id: 5Yk9MY_6lGzklblS1vEEZ
+name: Failed CI runs
+serdes/meta:
+- id: 5Yk9MY_6lGzklblS1vEEZ
+  label: failed_ci_runs
+  model: Segment

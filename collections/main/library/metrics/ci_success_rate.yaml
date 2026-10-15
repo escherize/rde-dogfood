@@ -1,0 +1,55 @@
+name: CI success rate
+description: 'Draft, provisional: self-consistent only, no external reference. Successful runs divided by decided runs (success, failure, timed_out), by month, complete months. Cancelled, skipped, neutral, action_required and unfinished runs are not in the denominator (D11); on all runs with a conclusion the rate would be 14.5%. Judged by conclusion; the source status is ignored (D8). Rows deleted in the source are excluded (D1). Owner: unassigned.'
+entity_id: ybDQsfKRoKEgmejfXuVLE
+created_at: '2026-10-15T03:33:38.946134Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - /
+      - name: ratio
+      - - measure
+        - {}
+        - tnEuu7DJOv1CYuRYlHVxk
+      - - measure
+        - {}
+        - 8_gU-8vr76hwTlFkK9U_5
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_workflow_run
+        - created_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_workflow_run
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings:
+    '["name","ratio"]':
+      decimals: 1
+      number_style: percent
+card_schema: 24
+serdes/meta:
+- id: ybDQsfKRoKEgmejfXuVLE
+  label: ci_success_rate
+  model: Card
+type: metric

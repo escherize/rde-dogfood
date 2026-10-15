@@ -1,0 +1,89 @@
+created_at: '2026-10-15T02:57:58.431804Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: 'Cases: team 1 live, user 10 active twice (duplicate row), user 11 active, user 12 pending, user 13 active but membership deleted -> 2 members; team 2 deleted in source and kept, no members -> 0.'
+entity_id: VUzrvQfaKzISLCCt0ov8d
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: team_id
+  - cast_type: BOOLEAN
+    name: is_deleted_in_source
+  - cast_type: BIGINT
+    name: active_member_count
+  format: rows
+  name: member counts and deleted flag
+  rows:
+  - active_member_count: 2
+    is_deleted_in_source: false
+    team_id: 1
+  - active_member_count: 0
+    is_deleted_in_source: true
+    team_id: 2
+  type: equals
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: VARCHAR(100)
+    name: name
+  - cast_type: VARCHAR(20)
+    name: privacy
+  - cast_type: TIMESTAMP
+    name: created_at
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    created_at: '2024-01-01 00:00:00'
+    id: 1
+    name: Platform
+    privacy: closed
+  - _fivetran_deleted: true
+    created_at: '2024-01-02 00:00:00'
+    id: 2
+    name: Data
+    privacy: secret
+  table:
+    name: team
+    schema: raw_github
+- columns:
+  - cast_type: BIGINT
+    name: team_id
+  - cast_type: BIGINT
+    name: user_id
+  - cast_type: VARCHAR(20)
+    name: state
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    state: active
+    team_id: 1
+    user_id: 10
+  - _fivetran_deleted: false
+    state: active
+    team_id: 1
+    user_id: 10
+  - _fivetran_deleted: false
+    state: active
+    team_id: 1
+    user_id: 11
+  - _fivetran_deleted: false
+    state: pending
+    team_id: 1
+    user_id: 12
+  - _fivetran_deleted: true
+    state: active
+    team_id: 1
+    user_id: 13
+  table:
+    name: team_membership
+    schema: raw_github
+name: 'mart_github_dim_team: deleted teams kept, active members counted once'
+transform_id: qy2WA09eye6TpWtQ-0S71
+serdes/meta:
+- id: VUzrvQfaKzISLCCt0ov8d
+  label: mart_github_dim_team__deleted_teams_kept__active_members_counted_once
+  model: TransformTest

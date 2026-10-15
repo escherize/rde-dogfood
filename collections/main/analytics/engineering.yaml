@@ -1,0 +1,10 @@
+name: Engineering
+entity_id: haZMMM4QsJpgF2dUkQxzm
+slug: engineering
+created_at: '2026-10-15T21:42:00.609237Z'
+parent_id: FZXRMeSE3lx0yOpFgqrUT
+serdes/meta:
+- id: haZMMM4QsJpgF2dUkQxzm
+  label: engineering
+  model: Collection
+is_remote_synced: true

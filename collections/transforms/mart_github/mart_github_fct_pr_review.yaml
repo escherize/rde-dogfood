@@ -1,0 +1,88 @@
+collection_id: 56tGqQU9oz-XFH6VTkvtK
+created_at: '2026-10-15T02:57:09.397859Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: |
+  One row per review on a live PR, review not deleted in the source (key: review_id). Sources: raw_github.pull_request_review, mart_github_fct_pull_request, cfg_github. Definition: COUNTED review = not PENDING and submitted at/after its PR was created (D10); hours_to_review = submitted_at - PR created_at for counted reviews; FIRST review = earliest counted review of a PR. Caveats: _fivetran_deleted reviews and reviews of deleted PRs excluded (D1); 37 PENDING and 48 pre-creation reviews kept but not counted; self-reviews flagged not excluded; months from cfg_github.cap_month incomplete. Constants: cfg_github.cap_month.
+entity_id: tAbAHFSefUUjdaEj-Un4j
+indexes: []
+name: mart_github_fct_pr_review
+owner_user_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: review on a PR that is in mart_github_fct_pull_request, review not deleted in the source
+        -- Key:         review_id
+        -- Sources:     raw_github.pull_request_review, analytics.mart_github_fct_pull_request, analytics.cfg_github
+        -- Definition:  a COUNTED review is not PENDING and was submitted at or after its PR was created (D10). hours_to_review = submitted_at - PR created_at, counted reviews only. The FIRST review of a PR is its earliest counted review (ties: lowest review_id).
+        -- Caveats:     _fivetran_deleted reviews excluded (D1); reviews of PRs deleted in the source are excluded with them (156 of 322 raw); 37 PENDING and 48 non-pending reviews submitted before the PR was created are kept but not counted (is_pending, is_before_pr_created); self-reviews (reviewer = author) flagged, not excluded; months from cfg_github.cap_month are incomplete.
+        WITH base AS (
+          SELECT
+            r.id            AS review_id,
+            r.pull_request_id,
+            f.repository_id,
+            f.author_user_id,
+            r.user_id       AS reviewer_user_id,
+            r.state         AS review_state,
+            r.submitted_at,
+            f.created_at    AS pr_created_at,
+            (r.state = 'PENDING')                               AS is_pending,
+            (r.state <> 'PENDING' AND r.submitted_at < f.created_at) AS is_before_pr_created,
+            (r.user_id = f.author_user_id)                      AS is_self_review,
+            c.cap_month
+          FROM raw_github.pull_request_review r
+          JOIN analytics.mart_github_fct_pull_request f ON f.pull_request_id = r.pull_request_id
+          CROSS JOIN analytics.cfg_github c
+          WHERE NOT r._fivetran_deleted
+        ),
+        counted AS (
+          SELECT b.*,
+            (NOT b.is_pending AND NOT b.is_before_pr_created) AS is_counted_review
+          FROM base b
+        ),
+        ranked AS (
+          SELECT k.*,
+            CASE WHEN k.is_counted_review
+                 THEN row_number() OVER (PARTITION BY k.pull_request_id, k.is_counted_review ORDER BY k.submitted_at, k.review_id)
+            END AS counted_rank
+          FROM counted k
+        )
+        SELECT
+          k.review_id,
+          k.pull_request_id,
+          k.repository_id,
+          k.author_user_id,
+          k.reviewer_user_id,
+          k.review_state,
+          k.submitted_at,
+          CAST(date_trunc('month', k.submitted_at) AS date)            AS submitted_month,
+          (CAST(date_trunc('month', k.submitted_at) AS date) < k.cap_month) AS submitted_in_complete_month,
+          k.is_pending,
+          k.is_before_pr_created,
+          k.is_counted_review,
+          k.is_self_review,
+          COALESCE(k.counted_rank = 1, false)                        AS is_first_review,
+          CASE WHEN k.is_counted_review
+               THEN CAST(extract(epoch FROM (k.submitted_at - k.pr_created_at)) / 3600.0 AS numeric(12,2)) END AS hours_to_review
+        FROM ranked k
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: pTt5JNegiQ-8dTgrD2zAu
+  position: 0
+  tag_id: TUL03jkG8FI-YFGiZNbrD
+  serdes/meta:
+  - id: pTt5JNegiQ-8dTgrD2zAu
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_github_fct_pr_review
+  schema: analytics
+  type: table
+serdes/meta:
+- id: tAbAHFSefUUjdaEj-Un4j
+  label: mart_github_fct_pr_review
+  model: Transform

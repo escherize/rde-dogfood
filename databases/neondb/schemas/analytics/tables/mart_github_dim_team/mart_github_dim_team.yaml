@@ -1,0 +1,101 @@
+caveats: Source-deleted teams kept and flagged (4 of 10). Team names are not unique across organizations.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-15T02:59:12.781255Z'
+description: One row per GitHub team. active_member_count counts live memberships in state active.
+description_set: true
+display_name: GitHub Teams
+entity_type: entity/GenericTable
+fields:
+- created_at: '2026-10-15T02:59:25.347413Z'
+  display_name: Active Members
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_team
+    model: Table
+  - id: active_member_count
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:23.844732Z'
+  display_name: Deleted In Source
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_team
+    model: Table
+  - id: is_deleted_in_source
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:22.24197Z'
+  display_name: Team Created At
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_team
+    model: Table
+  - id: team_created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:17.354895Z'
+  display_name: Team ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_team
+    model: Table
+  - id: team_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:18.961079Z'
+  display_name: Team
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_team
+    model: Table
+  - id: team_name
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:20.654306Z'
+  display_name: Team Privacy
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_team
+    model: Table
+  - id: team_privacy
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+visibility_type_set: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: analytics
+  model: Schema
+- id: mart_github_dim_team
+  model: Table
+- id: '1'
+  model: TableUserSettings

@@ -1,0 +1,41 @@
+created_at: '2026-10-15T03:33:07.75304Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: production_rollbacks
+      - - and
+        - {}
+        - - =
+          - {}
+          - - field
+            - {}
+            - - neondb
+              - analytics
+              - mart_github_fct_deployment
+              - is_production_rollback
+          - true
+        - - =
+          - {}
+          - - field
+            - {}
+            - - neondb
+              - analytics
+              - mart_github_fct_deployment
+              - created_in_complete_month
+          - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_deployment
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft, provisional: self-consistent only. Production deployments with task deploy:rollback, complete months (D12).'
+entity_id: 5SIIUArSRwPiKWIUS49vv
+name: Production rollbacks
+serdes/meta:
+- id: 5SIIUArSRwPiKWIUS49vv
+  label: production_rollbacks
+  model: Measure

@@ -1,0 +1,61 @@
+collection_id: 56tGqQU9oz-XFH6VTkvtK
+created_at: '2026-10-15T03:30:16.38705Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: |
+  One row per CI workflow run not deleted in the source (key: workflow_run_id). Sources: raw_github.workflow_run, raw_github.workflow (name), cfg_github. Definition: judged by conclusion, status ignored (D8); decided = success, failure or timed_out; is_failed = failure or timed_out; CI success rate = success / decided (D11). Caveats: _fivetran_deleted runs excluded (D1, 500 of 1000); status and conclusion independent in the source; cancelled/skipped/neutral/action_required/no-conclusion runs kept but not decided; 213 of 500 live runs belong to workflows deleted in the source (kept, flagged); no duration column because started_at precedes created_at on about half the runs. Constants: cfg_github.cap_month.
+entity_id: oliE4Roxz64-8zjKV0amF
+indexes: []
+name: mart_github_fct_workflow_run
+owner_user_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: CI workflow run not deleted in the source
+        -- Key:         workflow_run_id
+        -- Sources:     raw_github.workflow_run, raw_github.workflow (name only), analytics.cfg_github
+        -- Definition:  judged by CONCLUSION, status ignored (D8). DECIDED run = conclusion success, failure or timed_out; is_success = success; is_failed = failure or timed_out. CI success rate = success / decided runs (D11).
+        -- Caveats:     _fivetran_deleted runs excluded (D1, 500 of 1000); status and conclusion are independent in the source (e.g. queued with success); cancelled, skipped, neutral, action_required and conclusion-less runs are kept but not decided; workflow rows deleted in the source are kept and flagged (213 of 500 live runs); workflow_name is not unique; actor null on some runs; no duration (started_at is before created_at on about half the runs); months from cfg_github.cap_month are incomplete.
+        SELECT
+          r.id                                              AS workflow_run_id,
+          r.workflow_id                                     AS workflow_id,
+          r.repository_id                                   AS repository_id,
+          r.actor_id                                        AS actor_user_id,
+          w.name                                            AS workflow_name,
+          COALESCE(w._fivetran_deleted, false)              AS is_workflow_deleted_in_source,
+          r.event                                           AS trigger_event,
+          r.status                                          AS source_status,
+          r.conclusion                                      AS conclusion,
+          r.run_number                                      AS run_number,
+          r.run_attempt                                     AS run_attempt,
+          r.created_at                                      AS created_at,
+          CAST(date_trunc('month', r.created_at) AS date)   AS created_month,
+          (CAST(date_trunc('month', r.created_at) AS date) < c.cap_month) AS created_in_complete_month,
+          COALESCE(r.conclusion = 'success', false)         AS is_success,
+          COALESCE(r.conclusion IN ('failure', 'timed_out'), false) AS is_failed,
+          COALESCE(r.conclusion IN ('success', 'failure', 'timed_out'), false) AS is_decided
+        FROM raw_github.workflow_run r
+        CROSS JOIN analytics.cfg_github c
+        LEFT JOIN raw_github.workflow w ON w.id = r.workflow_id
+        WHERE NOT r._fivetran_deleted
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: 8snyQ_-2CtqtrtFXfoRfi
+  position: 0
+  tag_id: TUL03jkG8FI-YFGiZNbrD
+  serdes/meta:
+  - id: 8snyQ_-2CtqtrtFXfoRfi
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_github_fct_workflow_run
+  schema: analytics
+  type: table
+serdes/meta:
+- id: oliE4Roxz64-8zjKV0amF
+  label: mart_github_fct_workflow_run
+  model: Transform

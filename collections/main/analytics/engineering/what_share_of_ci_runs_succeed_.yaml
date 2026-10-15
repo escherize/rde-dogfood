@@ -1,0 +1,53 @@
+name: What share of CI runs succeed?
+description: 'CI success rate (success / decided runs) in the latest complete month vs the month before. Metric: CI success rate. Draft, self-consistent only.'
+entity_id: skGjrrH6_lmX2nFZTOhGU
+created_at: '2026-10-15T03:34:28.278842Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: smartscalar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - ybDQsfKRoKEgmejfXuVLE
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_workflow_run
+        - created_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_workflow_run
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings:
+    '["name","ratio"]':
+      decimals: 1
+      number_style: percent
+  scalar.comparisons:
+  - id: c1
+    type: previousPeriod
+card_schema: 24
+serdes/meta:
+- id: skGjrrH6_lmX2nFZTOhGU
+  label: what_share_of_ci_runs_succeed_
+  model: Card
+type: question

@@ -1,0 +1,28 @@
+created_at: '2026-10-15T03:00:57.96604Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pr_review
+          - is_first_review
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pr_review
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: The earliest counted review of each PR.
+entity_id: Hc3PAEOTh2sFoi2-V8XHe
+name: First reviews
+serdes/meta:
+- id: Hc3PAEOTh2sFoi2-V8XHe
+  label: first_reviews
+  model: Segment

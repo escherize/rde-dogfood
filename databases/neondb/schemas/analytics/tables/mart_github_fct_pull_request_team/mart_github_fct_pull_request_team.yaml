@@ -1,0 +1,236 @@
+caveats: Only 13 of 152 live PRs have an author on an active team. A PR counts in each of its author team, so team totals do not add up to the PR total. Membership is current state, not history.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-15T02:59:15.840772Z'
+description: One row per pull request and active team of its author. Use Team to compare teams.
+description_set: true
+display_name: GitHub PRs by Team
+entity_type: entity/TransactionTable
+fields:
+- created_at: '2026-10-15T02:59:57.159964Z'
+  display_name: Author
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_user
+  - user_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: author_user_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:58.663695Z'
+  display_name: Created At
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:00:01.872396Z'
+  display_name: Created In Complete Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: created_in_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:00:00.284006Z'
+  display_name: Created Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: created_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:00:09.548968Z'
+  display_name: Hours To Merge
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: hours_to_merge
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:00:03.4903Z'
+  display_name: Is Merged
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: is_merged
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:00:07.952204Z'
+  display_name: Merged Before Created (anomaly)
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: is_merged_before_created
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:00:11.054838Z'
+  display_name: Lines Changed
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: lines_changed
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:00:06.469037Z'
+  display_name: Merged In Complete Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: merged_in_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:00:04.966931Z'
+  display_name: Merged Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: merged_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:50.940872Z'
+  display_name: PR-Team Key
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: pr_team_key
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:52.467863Z'
+  display_name: Pull Request
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_fct_pull_request
+  - pull_request_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: pull_request_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:55.648998Z'
+  display_name: Repository
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_repository
+  - repository_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: repository_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:54.064332Z'
+  display_name: Team
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_team
+  - team_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request_team
+    model: Table
+  - id: team_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+visibility_type_set: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: analytics
+  model: Schema
+- id: mart_github_fct_pull_request_team
+  model: Table
+- id: '1'
+  model: TableUserSettings

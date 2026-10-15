@@ -1,0 +1,37 @@
+name: Are people or bots merging our PRs? (merged PRs by author type)
+description: 'Merged PRs by author account type (User, Bot, Organization). 20 of 71 are by User accounts. Metric: Merged PRs.'
+entity_id: wCK48gwfXi7N6Z8_MC4dm
+created_at: '2026-10-15T01:50:12.086347Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: bar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - HmAaLSvv1YLlKtIjxC7Kg
+    breakout:
+    - - field
+      - {}
+      - - neondb
+        - analytics
+        - mart_github_fct_pull_request
+        - author_type
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: wCK48gwfXi7N6Z8_MC4dm
+  label: are_people_or_bots_merging_our_prs___merged_prs_by_author_type_
+  model: Card
+type: question

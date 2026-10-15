@@ -1,0 +1,28 @@
+created_at: '2026-10-15T01:47:33.661433Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pull_request
+          - author_type
+      - User
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'PRs whose author account type is User. Excludes Bot, Organization and Unknown authors (D3: 20 of 71 merged PRs are by Users).'
+entity_id: ReYX-TD5i_ua7S6fiRJj3
+name: Authored by people (User accounts)
+serdes/meta:
+- id: ReYX-TD5i_ua7S6fiRJj3
+  label: authored_by_people__user_accounts_
+  model: Segment

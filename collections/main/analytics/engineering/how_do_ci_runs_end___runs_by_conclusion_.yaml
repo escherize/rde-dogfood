@@ -1,0 +1,37 @@
+name: How do CI runs end? (runs by conclusion)
+description: 'All CI runs in complete months by conclusion, including cancelled, skipped, neutral and action_required, which are not in the success rate. Blank conclusion = unfinished. Measure: CI runs.'
+entity_id: l0jKXHudoUih6QOVNjtCT
+created_at: '2026-10-15T03:34:55.276572Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: bar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - YbsGHxfneo23bYgIMoR-C
+    breakout:
+    - - field
+      - {}
+      - - neondb
+        - analytics
+        - mart_github_fct_workflow_run
+        - conclusion
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: l0jKXHudoUih6QOVNjtCT
+  label: how_do_ci_runs_end___runs_by_conclusion_
+  model: Card
+type: question

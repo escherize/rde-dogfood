@@ -1,0 +1,251 @@
+collection_id: haZMMM4QsJpgF2dUkQxzm
+content_type: application/json+vnd.prose-mirror
+created_at: '2026-10-15T03:37:03.379425Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+document:
+  content:
+  - attrs:
+      _id: dbc6c485-3999-4bfb-b1e3-15987b8a21c1
+      level: 1
+    content:
+    - text: How to use GitHub engineering numbers (Draft)
+      type: text
+    type: heading
+  - attrs:
+      _id: e6cec182-db8f-485b-a4eb-654bbac2aee9
+    content:
+    - text: 'Status: Draft. Every number is Self-consistent only, no external reference. Source: raw_github, a sampled 2024 extract (22 tables). Last complete month: November 2024. Refreshed daily 03:00 by the rde_github job. Owner of definitions: the person who requested this build (no owner email set yet).'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: 88769939-e861-46da-bee5-f4cc0af9d67c
+      level: 2
+    content:
+    - text: Where to look
+      type: text
+    type: heading
+  - attrs:
+      _id: 2a9db0ef-3c6b-46ff-9716-0d1b80204768
+    content:
+    - content:
+      - attrs:
+          _id: e2d853e9-4854-4ec3-a716-bd22207bfd0f
+        content:
+        - text: 'GitHub engineering KPIs (Draft): one page of headline numbers.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: a96e872e-2127-4aee-b557-3f1ec087b84b
+        content:
+        - text: 'GitHub engineering: PR throughput (Draft): merged and opened PRs, time to merge, PR size, by repository and author.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 0a007a48-3384-4fda-8587-2fdac841cb1a
+        content:
+        - text: 'GitHub engineering: team performance and reviews (Draft): review activity, time to first review, team comparisons.'
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: 0004005e-d423-45c4-ae0c-ee7ad045cc46
+      level: 2
+    content:
+    - text: Metrics and what they mean
+      type: text
+    type: heading
+  - attrs:
+      _id: e9288f10-57d9-43c9-87a5-e57c83777e82
+    content:
+    - content:
+      - attrs:
+          _id: 27defb3f-6048-432e-a1da-1fb30b7acfeb
+        content:
+        - text: 'Merged PRs per month: PRs with a merged_at date, by month of merge, complete months, rows deleted in the source excluded. 71 in total. Includes Bot and Organization authors (20 of 71 are by User accounts).'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: c349984a-8539-46ed-9540-a57111027b22
+        content:
+        - text: 'Opened PRs per month: PRs by created month.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 7e433f00-4788-4dc8-9ee5-d4e2d9f8a048
+        content:
+        - text: 'Median hours to merge: merged_at minus created_at, only where merged_at is not before created_at (40 of 71 merged PRs).'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: fa49e03b-f718-42c0-83a2-b2e857abaaf9
+        content:
+        - text: 'Average PR size: additions plus deletions as reported on the PR.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 4eccecdc-79b5-445d-932e-940090a986cc
+        content:
+        - text: 'Reviews per month: reviews not PENDING and submitted at or after the PR was created (71 of 156; 37 pending and 48 pre-creation reviews are not counted).'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: ecbe7412-2e0e-494b-ad35-51c068fdcf23
+        content:
+        - text: 'Median hours to first review: PR creation to the earliest counted review (53 PRs).'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 615ec03e-5766-4b93-9ca1-9f94b2797e12
+        content:
+        - text: 'Merged PRs by team: attributed to the active teams of the author. Only 13 of 152 live PRs have such an author, a PR counts in each of its author teams, and membership is today state.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: b5553d29-bd79-471a-ba77-c0ae7d9b22fd
+        content:
+        - text: 'CI success rate: successful runs / runs concluding success, failure or timed out (31.9% overall). Judged by conclusion; the source status is ignored.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 304396bd-0060-455e-a0d0-d0137a0eea8c
+        content:
+        - text: 'Production deployments per month: deployments to the environment named production, rollbacks included (17 in total).'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: a099dd49-d1bb-4bb5-993d-e28c8accbd83
+        content:
+        - text: 'Change failure rate: production rollbacks / production deployments (4 of 17, 23.5%).'
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: 38cdfb11-8eaf-430a-ba53-df444ba04908
+      level: 2
+    content:
+    - text: Known data problems
+      type: text
+    type: heading
+  - attrs:
+      _id: 9e44844b-f6ca-41d1-88c8-a15a460cabd5
+    content:
+    - content:
+      - attrs:
+          _id: 2a1739cb-7516-4bab-ace5-8e75aa1b71b3
+        content:
+        - text: 'About half of every table is flagged deleted by the loader and is excluded (PRs: 148 of 300).'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 1f5c984f-9ce7-4d14-a155-d12996dd6649
+        content:
+        - text: 'PR state, the merged flag, merged_at and closed_at contradict each other. Merged means merged_at is present. 31 of 71 merged PRs have a merge date before their creation date: flagged, counted as merged, no time to merge.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: cb4caa9a-9811-46f7-83de-6b00ddd9626b
+        content:
+        - text: Workflow status and conclusion are independent; 213 of 500 live runs belong to workflows deleted in the source.
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: cb9c12ce-e39c-4209-a878-3285bd3b6600
+        content:
+        - text: The source production flag on deployments disagrees with the environment name and is not used.
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 6df85568-c03e-400b-a399-255826c9634b
+        content:
+        - text: No deployment matches any PR or commit, so merge-to-deploy lead time is not available. CI duration is not available (timestamps unreliable).
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 24092e4c-eabd-4d5c-a689-c1d4a91a74d4
+        content:
+        - text: 'Time-to-merge and time-to-first-review values are very long (months) because the extract is synthetic and noisy: do not benchmark.'
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: 4c95929e-b022-4013-9f14-ab25214e22fc
+      level: 2
+    content:
+    - text: Definitions you can change
+      type: text
+    type: heading
+  - attrs:
+      _id: b1e33d5c-d999-42b1-9863-7cfb07404cf9
+    content:
+    - text: The ten defaults you accepted (D1-D10) and D11 (CI success denominator) and D12 (change failure) live in the metric descriptions and in the transform headers. To change one, say which; it is a transform patch plus a re-run, and the matching transform test is updated in the same change.
+      type: text
+    type: paragraph
+  - attrs:
+      _id: d4f739d0-e03a-49b1-b0a5-8f65925a043e
+      level: 2
+    content:
+    - text: Asking a new question
+      type: text
+    type: heading
+  - attrs:
+      _id: c439edaa-f95e-40d7-8857-8881e6ff1c67
+    content:
+    - text: 'Start from a table: GitHub Pull Requests, GitHub PR Reviews, GitHub PRs by Team, GitHub CI Runs, GitHub Deployments, GitHub Accounts, GitHub Repositories. Pick a measure or segment, break out by repository, author or team through the foreign keys. If a number needs raw SQL, tell the data owner: it is a gap in the layer.'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: acd6c2ef-8c89-4eb2-a1c1-46c8c83e64fd
+      level: 2
+    content:
+    - text: When a number looks wrong
+      type: text
+    type: heading
+  - attrs:
+      _id: 172de8e3-33b1-43e2-b620-ef5f9fc24813
+    content:
+    - text: Open the metric description for its definition, the table caveats for what was excluded, and compare with the raw table in raw_github. Report the metric, the month and the figure you expected.
+      type: text
+    type: paragraph
+  type: doc
+entity_id: u_2bHdsUdosWP51DFfNnP
+name: How to use GitHub engineering numbers (Draft)
+updated_at: '2026-10-15T21:43:27.880951Z'
+serdes/meta:
+- id: u_2bHdsUdosWP51DFfNnP
+  label: how_to_use_github_engineering_numbers__draft_
+  model: Document

@@ -1,0 +1,199 @@
+caveats: Draft. 17 production deployments in total, 4 of them rollbacks. No deployment matches a PR or commit, so merge-to-deploy lead time is not possible.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-15T03:32:09.26892Z'
+description: One row per deployment not deleted in the source (103 of 200 raw). Production means the environment is named production; the source production flag is not used.
+description_set: true
+display_name: GitHub Deployments
+entity_type: entity/EventTable
+fields:
+- created_at: '2026-10-15T03:32:46.63285Z'
+  display_name: Created At
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:49.566961Z'
+  display_name: Created In Complete Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: created_in_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:48.138275Z'
+  display_name: Created Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: created_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:40.357462Z'
+  display_name: Creator
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_user
+  - user_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: creator_user_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:37.242561Z'
+  display_name: Deployment ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: deployment_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:41.857198Z'
+  display_name: Environment
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: environment
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:51.048869Z'
+  display_name: Is Production
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: is_production
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:54.179888Z'
+  display_name: Is Production Rollback
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: is_production_rollback
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:52.538032Z'
+  display_name: Is Rollback
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: is_rollback
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:38.770351Z'
+  display_name: Repository
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_repository
+  - repository_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: repository_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:44.961973Z'
+  description: Source production_environment flag. Disagrees with the environment name; not used.
+  description_set: true
+  display_name: Source Production Flag
+  visibility_type: details-only
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: source_production_flag
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T03:32:43.450967Z'
+  display_name: Task
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: task
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+visibility_type_set: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: analytics
+  model: Schema
+- id: mart_github_fct_deployment
+  model: Table
+- id: '1'
+  model: TableUserSettings

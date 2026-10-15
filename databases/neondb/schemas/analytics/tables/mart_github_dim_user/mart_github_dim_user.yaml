@@ -1,0 +1,119 @@
+caveats: Source-deleted accounts are kept and flagged is_deleted_in_source so every PR author resolves.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-15T01:43:51.839515Z'
+data_layer: internal
+data_layer_set: true
+description: 'One row per GitHub account (user, bot or organization account). Login only: no email or name (D5).'
+description_set: true
+display_name: GitHub Accounts
+entity_type: entity/UserTable
+fields:
+- created_at: '2026-10-15T01:46:15.244918Z'
+  display_name: Account Created At
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: account_created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:10.159122Z'
+  display_name: Account Type
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: account_type
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:08.554819Z'
+  display_name: GitHub Login
+  has_field_values: search
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: github_login
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:11.760749Z'
+  display_name: Is Bot
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: is_bot
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:16.960304Z'
+  description: Flagged deleted by the loader. Kept so PR authors resolve.
+  description_set: true
+  display_name: Deleted In Source
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: is_deleted_in_source
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:13.543859Z'
+  display_name: Is Site Admin
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: is_site_admin
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:25.251192Z'
+  display_name: User ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: user_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+visibility_type_set: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: analytics
+  model: Schema
+- id: mart_github_dim_user
+  model: Table
+- id: '1'
+  model: TableUserSettings

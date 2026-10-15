@@ -1,0 +1,86 @@
+created_at: '2026-10-15T01:43:17.242147Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: 'Cases: 1 live repo with language; 2 source-deleted repo with null language (kept, flagged).'
+entity_id: ON8q_rzUXgObfQsUL1RAM
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: repository_id
+  - cast_type: VARCHAR(100)
+    name: repository_name
+  - cast_type: VARCHAR(50)
+    name: primary_language
+  - cast_type: BOOLEAN
+    name: is_archived
+  - cast_type: BOOLEAN
+    name: is_deleted_in_source
+  format: rows
+  name: deleted repo kept and flagged
+  rows:
+  - is_archived: false
+    is_deleted_in_source: false
+    primary_language: Go
+    repository_id: 10
+    repository_name: api
+  - is_archived: true
+    is_deleted_in_source: true
+    primary_language: null
+    repository_id: 11
+    repository_name: old
+  type: equals
+- name: repository_id is unique
+  sql: SELECT r.repository_id FROM analytics.mart_github_dim_repository r GROUP BY 1 HAVING count(*) > 1
+  type: empty
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: VARCHAR(100)
+    name: name
+  - cast_type: VARCHAR(100)
+    name: full_name
+  - cast_type: VARCHAR(50)
+    name: language
+  - cast_type: BOOLEAN
+    name: private
+  - cast_type: BOOLEAN
+    name: fork
+  - cast_type: BOOLEAN
+    name: archived
+  - cast_type: VARCHAR(50)
+    name: default_branch
+  - cast_type: TIMESTAMP
+    name: created_at
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    archived: false
+    created_at: '2024-01-01 00:00:00'
+    default_branch: main
+    fork: false
+    full_name: org/api
+    id: 10
+    language: Go
+    name: api
+    private: false
+  - _fivetran_deleted: true
+    archived: true
+    created_at: '2024-01-02 00:00:00'
+    default_branch: master
+    fork: true
+    full_name: org/old
+    id: 11
+    language: null
+    name: old
+    private: true
+  table:
+    name: repository
+    schema: raw_github
+name: 'mart_github_dim_repository: repos kept, deleted flagged'
+transform_id: lKmabQR2Jvm-DsM1YegYk
+serdes/meta:
+- id: ON8q_rzUXgObfQsUL1RAM
+  label: mart_github_dim_repository__repos_kept__deleted_flagged
+  model: TransformTest

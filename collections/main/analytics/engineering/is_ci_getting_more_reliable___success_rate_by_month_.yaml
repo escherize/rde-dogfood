@@ -1,0 +1,50 @@
+name: Is CI getting more reliable? (success rate by month)
+description: 'Successful runs / decided runs (success, failure, timed_out) by month, complete months. Metric: CI success rate. Draft.'
+entity_id: oTu-F3qw21W3YvM6Tpe4L
+created_at: '2026-10-15T03:34:44.661414Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: line
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - ybDQsfKRoKEgmejfXuVLE
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_workflow_run
+        - created_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_workflow_run
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings:
+    '["name","ratio"]':
+      decimals: 1
+      number_style: percent
+card_schema: 24
+serdes/meta:
+- id: oTu-F3qw21W3YvM6Tpe4L
+  label: is_ci_getting_more_reliable___success_rate_by_month_
+  model: Card
+type: question

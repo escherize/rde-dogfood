@@ -1,0 +1,72 @@
+collection_id: 56tGqQU9oz-XFH6VTkvtK
+created_at: '2026-10-15T01:43:59.193833Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: |
+  One row per pull request not deleted in the source (key: pull_request_id). Sources: raw_github.pull_request, mart_github_dim_user, cfg_github. Definition: MERGED = merged_at present (D2), counted in the month of merged_at; source merged flag/state/closed_at kept but unused because they contradict merged_at; hours_to_merge = merged_at - created_at only when merged_at >= created_at (D7). Caveats: _fivetran_deleted rows excluded (D1, 148 of 300); 31 of 71 merged PRs have merged_at before created_at, flagged is_merged_before_created and given no hours_to_merge; author_type 'Unknown' when the author is not in dim_user; months from cfg_github.cap_month on are incomplete; lines are as reported on the PR. Constants: cfg_github.cap_month = 2024-12-01, large_pr_lines = 1000.
+entity_id: z7BDTYCXplgzxdNl_z3O3
+indexes: []
+name: mart_github_fct_pull_request
+owner_user_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: pull request that is not deleted in the source
+        -- Key:         pull_request_id
+        -- Sources:     raw_github.pull_request, analytics.mart_github_dim_user, analytics.cfg_github
+        -- Definition:  a PR is MERGED when merged_at is present (D2), counted in the month of merged_at; the source merged flag, state and closed_at are kept as-is but not used (they contradict merged_at). hours_to_merge is merged_at - created_at, only when merged_at >= created_at (D7).
+        -- Caveats:     _fivetran_deleted rows excluded (D1, 148 of 300); merged_at before created_at is flagged is_merged_before_created and gets no hours_to_merge (31 of 71 merged); author_type 'Unknown' when the author is not in dim_user; months at or after cfg_github.cap_month are not complete (created_in_complete_month / merged_in_complete_month false); lines are additions+deletions as reported on the PR (do not match pull_request_file sums).
+        SELECT
+          p.id                                                         AS pull_request_id,
+          p.repository_id                                              AS repository_id,
+          p.user_id                                                    AS author_user_id,
+          p.number                                                     AS pr_number,
+          p.state                                                      AS source_state,
+          p.merged                                                     AS source_merged_flag,
+          p.created_at                                                 AS created_at,
+          p.closed_at                                                  AS closed_at,
+          p.merged_at                                                  AS merged_at,
+          (p.merged_at IS NOT NULL)                                    AS is_merged,
+          (p.merged_at IS NOT NULL AND p.merged_at < p.created_at)     AS is_merged_before_created,
+          CAST(date_trunc('month', p.created_at) AS date)              AS created_month,
+          CASE WHEN p.merged_at IS NOT NULL
+               THEN CAST(date_trunc('month', p.merged_at) AS date) END AS merged_month,
+          (CAST(date_trunc('month', p.created_at) AS date) < c.cap_month) AS created_in_complete_month,
+          (p.merged_at IS NOT NULL
+           AND CAST(date_trunc('month', p.merged_at) AS date) < c.cap_month) AS merged_in_complete_month,
+          CASE WHEN p.merged_at >= p.created_at
+               THEN CAST(extract(epoch FROM (p.merged_at - p.created_at)) / 3600.0 AS numeric(12,2)) END AS hours_to_merge,
+          p.additions                                                  AS additions,
+          p.deletions                                                  AS deletions,
+          (p.additions + p.deletions)                                  AS lines_changed,
+          ((p.additions + p.deletions) > c.large_pr_lines)             AS is_large_pr,
+          p.changed_files                                              AS changed_files,
+          p.commits                                                    AS commit_count,
+          p.comments                                                   AS comment_count,
+          p.review_comments                                            AS review_comment_count,
+          COALESCE(u.account_type, 'Unknown')                          AS author_type
+        FROM raw_github.pull_request p
+        CROSS JOIN analytics.cfg_github c
+        LEFT JOIN analytics.mart_github_dim_user u ON u.user_id = p.user_id
+        WHERE NOT p._fivetran_deleted
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: xL4aqEVQBmVpEYULoLtLL
+  position: 0
+  tag_id: TUL03jkG8FI-YFGiZNbrD
+  serdes/meta:
+  - id: xL4aqEVQBmVpEYULoLtLL
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_github_fct_pull_request
+  schema: analytics
+  type: table
+serdes/meta:
+- id: z7BDTYCXplgzxdNl_z3O3
+  label: mart_github_fct_pull_request
+  model: Transform

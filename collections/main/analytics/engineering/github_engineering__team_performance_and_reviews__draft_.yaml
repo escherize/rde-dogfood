@@ -1,0 +1,349 @@
+name: 'GitHub engineering: team performance and reviews (Draft)'
+description: Draft, self-consistent only. Team and review activity from the sampled 2024 GitHub extract.
+entity_id: nlAJYluYIBr1g-j9jz08Y
+created_at: '2026-10-15T03:03:59.962094Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+collection_id: haZMMM4QsJpgF2dUkQxzm
+collection_position: 2
+parameters:
+- id: review_month
+  name: Review month
+  position: 1
+  slug: review_month
+  type: date/all-options
+- id: team
+  name: Team
+  position: 0
+  slug: team
+  type: string/=
+  values_query_type: list
+serdes/meta:
+- id: nlAJYluYIBr1g-j9jz08Y
+  label: github_engineering__team_performance_and_reviews__draft_
+  model: Dashboard
+dashcards:
+- entity_id: dyUyT3Ua8O8IwYTVTHXNB
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 0
+  col: 0
+  size_x: 24
+  size_y: 2
+  inline_parameters: []
+  parameter_mappings: []
+  series: []
+  visualization_settings:
+    column_settings: null
+    text: '**GitHub engineering: team performance and reviews (Draft).** Data through November 2024 (last complete month), sampled 2024 extract, refreshed daily 03:00. Rows flagged deleted by the loader are excluded. Review numbers: Self-consistent only, no external reference. Team numbers: Self-consistent only and very thin.'
+    virtual_card:
+      display: text
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: dyUyT3Ua8O8IwYTVTHXNB
+    model: DashboardCard
+- entity_id: jlt9L7aHxXoIe8uadcf-5
+  card_id: YTkwOkPCDhHX-1JDi-yOF
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 2
+  col: 0
+  size_x: 6
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings: []
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: jlt9L7aHxXoIe8uadcf-5
+    model: DashboardCard
+- entity_id: kyUMLdnZC_35L5QrZ-Ubf
+  card_id: rfS7ur79BW42rG5fmIoXL
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 2
+  col: 6
+  size_x: 6
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings: []
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: kyUMLdnZC_35L5QrZ-Ubf
+    model: DashboardCard
+- entity_id: UQENlJIwlyCyornqZM_ST
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 2
+  col: 12
+  size_x: 12
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings: []
+  series: []
+  visualization_settings:
+    column_settings: null
+    text: '**Read team numbers with care.** Only 13 of 152 live PRs (4 merged) have an author on an active team in this extract, so team charts show direction, not performance. A PR counts in every team its author belongs to, so team totals do not add up to the PR total. Membership is today state, not history. Pending team invitations are not members.'
+    virtual_card:
+      display: text
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: UQENlJIwlyCyornqZM_ST
+    model: DashboardCard
+- entity_id: fQ7ftnbwdeaPB6CD8MvLy
+  card_id: 6VrvzHcMYrISjO1onaK2G
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 5
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: 6VrvzHcMYrISjO1onaK2G
+    parameter_id: review_month
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - submitted_month
+      - null
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: fQ7ftnbwdeaPB6CD8MvLy
+    model: DashboardCard
+- entity_id: ME-iuqlLMcPQ4w5KaAIL-
+  card_id: gp5HlhuwTn7QcwWDkTfw5
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 5
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: gp5HlhuwTn7QcwWDkTfw5
+    parameter_id: review_month
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - submitted_month
+      - null
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: ME-iuqlLMcPQ4w5KaAIL-
+    model: DashboardCard
+- entity_id: 9Q4uHqXhui5_ZqZRT_GD7
+  card_id: s7YMvuk1qgDiln1KOcH3p
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 11
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: s7YMvuk1qgDiln1KOcH3p
+    parameter_id: team
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_team
+        - team_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request_team
+        - team_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: 9Q4uHqXhui5_ZqZRT_GD7
+    model: DashboardCard
+- entity_id: 3looBqSWDTuTXmIJmDKmK
+  card_id: Alg7dATgdfXTS8k1T4aIF
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 11
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: Alg7dATgdfXTS8k1T4aIF
+    parameter_id: team
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_team
+        - team_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request_team
+        - team_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: 3looBqSWDTuTXmIJmDKmK
+    model: DashboardCard
+- entity_id: KPD6Pr4ug9I6YsARhVQgx
+  card_id: BnlIZGck7vRzD2FVc8gAa
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 17
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: BnlIZGck7vRzD2FVc8gAa
+    parameter_id: team
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_team
+        - team_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request_team
+        - team_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: KPD6Pr4ug9I6YsARhVQgx
+    model: DashboardCard
+- entity_id: LQL4KBIna6DlHA3RwDiNh
+  card_id: z9ZwNDTWqtC1bnJH-cUVf
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 17
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: z9ZwNDTWqtC1bnJH-cUVf
+    parameter_id: team
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_team
+        - team_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request_team
+        - team_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: LQL4KBIna6DlHA3RwDiNh
+    model: DashboardCard
+- entity_id: tNEgpnPnUIXHNYXjPueFQ
+  card_id: voVKrmExZUTZZvkc7qYQU
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 23
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: voVKrmExZUTZZvkc7qYQU
+    parameter_id: review_month
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - submitted_month
+      - null
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: tNEgpnPnUIXHNYXjPueFQ
+    model: DashboardCard
+- entity_id: 7YpHVa1noJnzmwuMHq58K
+  card_id: LL-ODPr6okbpIekJB9ykR
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 23
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: LL-ODPr6okbpIekJB9ykR
+    parameter_id: review_month
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - submitted_month
+      - null
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: 7YpHVa1noJnzmwuMHq58K
+    model: DashboardCard
+- entity_id: fX9Rj4P-_8b7fkACV4wzR
+  created_at: '2026-10-15T03:04:00.28426Z'
+  row: 29
+  col: 0
+  size_x: 24
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings: []
+  series: []
+  visualization_settings:
+    column_settings: null
+    text: '**Definitions.** *Reviews submitted*: reviews that are not PENDING and were submitted at or after their PR was created (37 pending and 48 pre-creation reviews are not counted). *Median hours to first review*: hours from PR creation to the earliest counted review of each PR (53 PRs). *Merged PRs by team* and *Median hours to merge by team*: as the PR throughput dashboard, attributed to the active teams of the author.'
+    virtual_card:
+      display: text
+  serdes/meta:
+  - id: nlAJYluYIBr1g-j9jz08Y
+    model: Dashboard
+  - id: fX9Rj4P-_8b7fkACV4wzR
+    model: DashboardCard
+tabs: []
+width: fixed

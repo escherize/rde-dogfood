@@ -1,0 +1,91 @@
+created_at: '2026-10-15T01:43:15.177374Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: 'Cases: 1 active User; 2 Bot; 3 source-deleted Organization (kept, flagged). Input carries email/name to prove they are not output.'
+entity_id: UQitpLrU6mX6UgP3bECF3
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: user_id
+  - cast_type: VARCHAR(100)
+    name: github_login
+  - cast_type: VARCHAR(30)
+    name: account_type
+  - cast_type: BOOLEAN
+    name: is_bot
+  - cast_type: BOOLEAN
+    name: is_deleted_in_source
+  format: rows
+  name: deleted account kept and flagged, bot flagged
+  rows:
+  - account_type: User
+    github_login: alice
+    is_bot: false
+    is_deleted_in_source: false
+    user_id: 1
+  - account_type: Bot
+    github_login: ci-bot
+    is_bot: true
+    is_deleted_in_source: false
+    user_id: 2
+  - account_type: Organization
+    github_login: acme-org
+    is_bot: false
+    is_deleted_in_source: true
+    user_id: 3
+  type: equals
+- name: user_id is unique
+  sql: SELECT u.user_id FROM analytics.mart_github_dim_user u GROUP BY 1 HAVING count(*) > 1
+  type: empty
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: VARCHAR(100)
+    name: login
+  - cast_type: VARCHAR(100)
+    name: name
+  - cast_type: VARCHAR(100)
+    name: email
+  - cast_type: VARCHAR(30)
+    name: type
+  - cast_type: BOOLEAN
+    name: site_admin
+  - cast_type: TIMESTAMP
+    name: created_at
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    created_at: '2024-01-01 00:00:00'
+    email: a@example.com
+    id: 1
+    login: alice
+    name: Alice A
+    site_admin: false
+    type: User
+  - _fivetran_deleted: false
+    created_at: '2024-01-02 00:00:00'
+    email: null
+    id: 2
+    login: ci-bot
+    name: null
+    site_admin: true
+    type: Bot
+  - _fivetran_deleted: true
+    created_at: '2024-01-03 00:00:00'
+    email: o@example.com
+    id: 3
+    login: acme-org
+    name: Acme
+    site_admin: false
+    type: Organization
+  table:
+    name: user
+    schema: raw_github
+name: 'mart_github_dim_user: accounts kept, flagged, no personal columns'
+transform_id: E1JYStUNtdOTp5em2DZx5
+serdes/meta:
+- id: UQitpLrU6mX6UgP3bECF3
+  label: mart_github_dim_user__accounts_kept__flagged__no_personal_columns
+  model: TransformTest

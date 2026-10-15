@@ -1,0 +1,53 @@
+name: What share of production deployments are rolled back?
+description: 'Change failure rate: production rollbacks / production deployments, latest complete month vs the month before. 4 of 17 in total; single months are noisy. Metric: Change failure rate. Draft, self-consistent only.'
+entity_id: rlLlYsd7MhcCLWcAON14h
+created_at: '2026-10-15T03:34:39.26187Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: smartscalar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - C7tIZ79DqKaW0kjAn6Xoe
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_deployment
+        - created_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_deployment
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_deployment
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings:
+    '["name","ratio"]':
+      decimals: 1
+      number_style: percent
+  scalar.comparisons:
+  - id: c1
+    type: previousPeriod
+card_schema: 24
+serdes/meta:
+- id: rlLlYsd7MhcCLWcAON14h
+  label: what_share_of_production_deployments_are_rolled_back_
+  model: Card
+type: question

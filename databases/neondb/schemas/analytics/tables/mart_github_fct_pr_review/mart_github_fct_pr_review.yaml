@@ -1,0 +1,256 @@
+caveats: Draft. 37 PENDING and 48 pre-creation reviews are kept but not counted. Self-reviews flagged, not excluded. Median time to first review is about 84 days in this noisy extract.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-15T02:59:14.34097Z'
+description: One row per review on a live PR, not deleted in the source. COUNTED review = not PENDING and submitted at or after the PR was created (D10). First review = earliest counted review of a PR.
+description_set: true
+display_name: GitHub PR Reviews
+entity_type: entity/EventTable
+fields:
+- created_at: '2026-10-15T02:59:31.550212Z'
+  display_name: PR Author
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_user
+  - user_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: author_user_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:49.355321Z'
+  description: Hours from PR creation to this review; counted reviews only.
+  description_set: true
+  display_name: Hours To Review
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: hours_to_review
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:43.056089Z'
+  display_name: Submitted Before PR Created (anomaly)
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: is_before_pr_created
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:44.750625Z'
+  description: Not PENDING and submitted at or after the PR was created (D10).
+  description_set: true
+  display_name: Is Counted Review
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: is_counted_review
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:47.866406Z'
+  description: Earliest counted review of its PR.
+  description_set: true
+  display_name: Is First Review
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: is_first_review
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:41.542602Z'
+  display_name: Is Pending (draft)
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: is_pending
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:46.27515Z'
+  display_name: Is Self Review
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: is_self_review
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:28.457158Z'
+  display_name: Pull Request
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_fct_pull_request
+  - pull_request_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: pull_request_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:29.978218Z'
+  display_name: Repository
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_repository
+  - repository_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: repository_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:26.884745Z'
+  display_name: Review ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: review_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:34.548378Z'
+  display_name: Review State
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: review_state
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:33.062563Z'
+  display_name: Reviewer
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_user
+  - user_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: reviewer_user_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:36.741162Z'
+  display_name: Submitted At
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: submitted_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:39.969224Z'
+  display_name: Submitted In Complete Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: submitted_in_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T02:59:38.460705Z'
+  display_name: Submitted Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pr_review
+    model: Table
+  - id: submitted_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+visibility_type_set: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: analytics
+  model: Schema
+- id: mart_github_fct_pr_review
+  model: Table
+- id: '1'
+  model: TableUserSettings

@@ -1,0 +1,41 @@
+created_at: '2026-10-15T03:00:46.759704Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: merged_prs_by_team
+      - - and
+        - {}
+        - - =
+          - {}
+          - - field
+            - {}
+            - - neondb
+              - analytics
+              - mart_github_fct_pull_request_team
+              - is_merged
+          - true
+        - - =
+          - {}
+          - - field
+            - {}
+            - - neondb
+              - analytics
+              - mart_github_fct_pull_request_team
+              - merged_in_complete_month
+          - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request_team
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft, provisional: self-consistent only. Merged PRs (merged_at present) attributed to the active teams of their author, complete months. A PR counts in every team its author is on. Owner: unassigned.'
+entity_id: 7UJPxaiOnCW_o8vhn_BEx
+name: Merged PRs by team
+serdes/meta:
+- id: 7UJPxaiOnCW_o8vhn_BEx
+  label: merged_prs_by_team
+  model: Measure

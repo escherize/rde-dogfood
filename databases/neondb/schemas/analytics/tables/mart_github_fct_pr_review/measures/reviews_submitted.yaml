@@ -1,0 +1,41 @@
+created_at: '2026-10-15T03:00:41.153118Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: reviews_submitted
+      - - and
+        - {}
+        - - =
+          - {}
+          - - field
+            - {}
+            - - neondb
+              - analytics
+              - mart_github_fct_pr_review
+              - is_counted_review
+          - true
+        - - =
+          - {}
+          - - field
+            - {}
+            - - neondb
+              - analytics
+              - mart_github_fct_pr_review
+              - submitted_in_complete_month
+          - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pr_review
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft, provisional: self-consistent only. Counted reviews (not PENDING, submitted at or after the PR was created; D10) in complete months. Excludes reviews on PRs deleted in the source. Owner: unassigned.'
+entity_id: gCMwnFSD33EWcuHAFaTEw
+name: Reviews submitted
+serdes/meta:
+- id: gCMwnFSD33EWcuHAFaTEw
+  label: reviews_submitted
+  model: Measure

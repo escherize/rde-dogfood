@@ -1,0 +1,59 @@
+collection_id: 56tGqQU9oz-XFH6VTkvtK
+created_at: '2026-10-15T02:57:20.542478Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: |
+  One row per pull request and active team of its author (key: pr_team_key). Sources: mart_github_fct_pull_request, raw_github.team_membership, mart_github_dim_team. Definition: attributes each live PR to the live teams its author actively belongs to (D6). Caveats: only 13 of 152 live PRs have an author on an active team; a PR counts in each of its author's teams so team totals do not sum to the PR total; membership is today's state, not history.
+entity_id: sZto98m60Ak0WkDWY2w2t
+indexes: []
+name: mart_github_fct_pull_request_team
+owner_user_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: pull request and active team of its author (a PR whose author is on two teams has two rows)
+        -- Key:         pr_team_key (pull_request_id || '-' || team_id)
+        -- Sources:     analytics.mart_github_fct_pull_request, raw_github.team_membership, analytics.mart_github_dim_team
+        -- Definition:  attributes each live PR to the live teams its author actively belongs to (D6). Only active, non-deleted memberships of non-deleted teams count.
+        -- Caveats:     only 13 of 152 live PRs have an author on an active team, so team figures are small; a PR is counted in each of its author's teams, so team totals do NOT add up to the PR total; membership is current state, not history (a PR is attributed to the author's teams today).
+        SELECT
+          CAST(f.pull_request_id AS varchar) || '-' || CAST(m.team_id AS varchar) AS pr_team_key,
+          f.pull_request_id,
+          m.team_id,
+          f.repository_id,
+          f.author_user_id,
+          f.created_at,
+          f.created_month,
+          f.created_in_complete_month,
+          f.is_merged,
+          f.merged_month,
+          f.merged_in_complete_month,
+          f.is_merged_before_created,
+          f.hours_to_merge,
+          f.lines_changed
+        FROM analytics.mart_github_fct_pull_request f
+        JOIN (SELECT DISTINCT x.user_id, x.team_id
+                FROM raw_github.team_membership x
+               WHERE NOT x._fivetran_deleted AND x.state = 'active') m ON m.user_id = f.author_user_id
+        JOIN analytics.mart_github_dim_team t ON t.team_id = m.team_id AND NOT t.is_deleted_in_source
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: JF___n5mVAcqwyfcyr6TB
+  position: 0
+  tag_id: TUL03jkG8FI-YFGiZNbrD
+  serdes/meta:
+  - id: JF___n5mVAcqwyfcyr6TB
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_github_fct_pull_request_team
+  schema: analytics
+  type: table
+serdes/meta:
+- id: sZto98m60Ak0WkDWY2w2t
+  label: mart_github_fct_pull_request_team
+  model: Transform

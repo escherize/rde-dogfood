@@ -1,0 +1,180 @@
+created_at: '2026-10-15T02:58:02.72303Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: Author 1 is active on teams A and B (and A twice) -> PR1 two rows; author 2 pending on A -> none; author 3 on deleted team C -> none; author 4 membership deleted -> none; author 5 no team -> none.
+entity_id: rCV_uEDyBWjhUHnyKw62w
+expectations:
+- columns:
+  - cast_type: VARCHAR(50)
+    name: pr_team_key
+  - cast_type: BIGINT
+    name: pull_request_id
+  - cast_type: BIGINT
+    name: team_id
+  - cast_type: BOOLEAN
+    name: is_merged
+  format: rows
+  name: PR1 appears once per active team; no row for pending, deleted-team, deleted-membership or teamless authors
+  rows:
+  - is_merged: true
+    pr_team_key: 1-100
+    pull_request_id: 1
+    team_id: 100
+  - is_merged: true
+    pr_team_key: 1-200
+    pull_request_id: 1
+    team_id: 200
+  type: equals
+- name: pr_team_key is unique
+  sql: SELECT t.pr_team_key FROM analytics.mart_github_fct_pull_request_team t GROUP BY 1 HAVING count(*) > 1
+  type: empty
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: team_id
+  - cast_type: BOOLEAN
+    name: is_deleted_in_source
+  format: rows
+  rows:
+  - is_deleted_in_source: false
+    team_id: 100
+  - is_deleted_in_source: false
+    team_id: 200
+  - is_deleted_in_source: true
+    team_id: 300
+  table:
+    name: mart_github_dim_team
+    schema: analytics
+- columns:
+  - cast_type: BIGINT
+    name: team_id
+  - cast_type: BIGINT
+    name: user_id
+  - cast_type: VARCHAR(20)
+    name: state
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    state: active
+    team_id: 100
+    user_id: 1
+  - _fivetran_deleted: false
+    state: active
+    team_id: 100
+    user_id: 1
+  - _fivetran_deleted: false
+    state: active
+    team_id: 200
+    user_id: 1
+  - _fivetran_deleted: false
+    state: pending
+    team_id: 100
+    user_id: 2
+  - _fivetran_deleted: false
+    state: active
+    team_id: 300
+    user_id: 3
+  - _fivetran_deleted: true
+    state: active
+    team_id: 100
+    user_id: 4
+  table:
+    name: team_membership
+    schema: raw_github
+- columns:
+  - cast_type: BIGINT
+    name: pull_request_id
+  - cast_type: BIGINT
+    name: repository_id
+  - cast_type: BIGINT
+    name: author_user_id
+  - cast_type: TIMESTAMP
+    name: created_at
+  - cast_type: DATE
+    name: created_month
+  - cast_type: BOOLEAN
+    name: created_in_complete_month
+  - cast_type: BOOLEAN
+    name: is_merged
+  - cast_type: DATE
+    name: merged_month
+  - cast_type: BOOLEAN
+    name: merged_in_complete_month
+  - cast_type: BOOLEAN
+    name: is_merged_before_created
+  - cast_type: NUMERIC(12,2)
+    name: hours_to_merge
+  - cast_type: INTEGER
+    name: lines_changed
+  format: rows
+  rows:
+  - author_user_id: 1
+    created_at: '2024-10-01 10:00:00'
+    created_in_complete_month: true
+    created_month: '2024-10-01'
+    hours_to_merge: 24
+    is_merged: true
+    is_merged_before_created: false
+    lines_changed: 10
+    merged_in_complete_month: true
+    merged_month: '2024-10-01'
+    pull_request_id: 1
+    repository_id: 5
+  - author_user_id: 2
+    created_at: '2024-10-01 10:00:00'
+    created_in_complete_month: true
+    created_month: '2024-10-01'
+    hours_to_merge: null
+    is_merged: false
+    is_merged_before_created: false
+    lines_changed: 10
+    merged_in_complete_month: false
+    merged_month: null
+    pull_request_id: 2
+    repository_id: 5
+  - author_user_id: 3
+    created_at: '2024-10-01 10:00:00'
+    created_in_complete_month: true
+    created_month: '2024-10-01'
+    hours_to_merge: null
+    is_merged: false
+    is_merged_before_created: false
+    lines_changed: 10
+    merged_in_complete_month: false
+    merged_month: null
+    pull_request_id: 3
+    repository_id: 5
+  - author_user_id: 4
+    created_at: '2024-10-01 10:00:00'
+    created_in_complete_month: true
+    created_month: '2024-10-01'
+    hours_to_merge: null
+    is_merged: false
+    is_merged_before_created: false
+    lines_changed: 10
+    merged_in_complete_month: false
+    merged_month: null
+    pull_request_id: 4
+    repository_id: 5
+  - author_user_id: 5
+    created_at: '2024-10-01 10:00:00'
+    created_in_complete_month: true
+    created_month: '2024-10-01'
+    hours_to_merge: null
+    is_merged: false
+    is_merged_before_created: false
+    lines_changed: 10
+    merged_in_complete_month: false
+    merged_month: null
+    pull_request_id: 5
+    repository_id: 5
+  table:
+    name: mart_github_fct_pull_request
+    schema: analytics
+name: 'mart_github_fct_pull_request_team: active live teams only, one row per PR and team'
+transform_id: sZto98m60Ak0WkDWY2w2t
+serdes/meta:
+- id: rCV_uEDyBWjhUHnyKw62w
+  label: mart_github_fct_pull_request_team__active_live_teams_only__one_row_per_pr_and_team
+  model: TransformTest
