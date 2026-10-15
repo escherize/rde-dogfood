@@ -1,0 +1,45 @@
+collection_id: 56tGqQU9oz-XFH6VTkvtK
+created_at: '2026-10-15T01:42:52.284873Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: |
+  One row (constants). Sources: none. Definition: constants for the GitHub marts: last_complete_month = 2024-11-01 and cap_month = 2024-12-01 (first month NOT complete), pinned to the extract (newest PR created 2024-12-01), not current_date; large_pr_lines = 1000. Caveats: re-pin after every reload of raw_github.
+entity_id: JrYzjo7t4Z9KpYi9X0jTV
+indexes: []
+name: cfg_github
+owner_user_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: constant set (one row)
+        -- Key:         none (single row)
+        -- Sources:     none (literals)
+        -- Definition:  constants read by the GitHub marts
+        -- Caveats:     freshness pinned to the extract, not current_date; update when raw_github reloads
+        SELECT
+          DATE '2024-11-01'                                         AS last_complete_month,
+          DATE '2024-12-01'                                         AS cap_month,
+          'max(pull_request.created_at)=2024-12-01, 1 day of Dec; pinned to the extract' AS last_complete_month_note,
+          1000                                                      AS large_pr_lines,
+          'D-default: PRs over 1000 changed lines are Large'        AS large_pr_lines_note
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: HcCPt2hIaTLhoc5JLLVzN
+  position: 0
+  tag_id: TUL03jkG8FI-YFGiZNbrD
+  serdes/meta:
+  - id: HcCPt2hIaTLhoc5JLLVzN
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: cfg_github
+  schema: analytics
+  type: table
+serdes/meta:
+- id: JrYzjo7t4Z9KpYi9X0jTV
+  label: cfg_github
+  model: Transform

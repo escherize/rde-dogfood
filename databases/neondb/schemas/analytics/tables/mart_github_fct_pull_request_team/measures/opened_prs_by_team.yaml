@@ -1,0 +1,30 @@
+created_at: '2026-10-15T03:00:49.477494Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: opened_prs_by_team
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - analytics
+            - mart_github_fct_pull_request_team
+            - created_in_complete_month
+        - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request_team
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft, provisional: self-consistent only. PRs opened by authors on active teams, complete months. A PR counts in every team its author is on. Owner: unassigned.'
+entity_id: 7aqBPdqehtdXPxAPEDVa7
+name: Opened PRs by team
+serdes/meta:
+- id: 7aqBPdqehtdXPxAPEDVa7
+  label: opened_prs_by_team
+  model: Measure

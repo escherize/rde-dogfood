@@ -1,0 +1,47 @@
+name: Merged PRs by team per month
+description: 'Draft, provisional: self-consistent only. Merged PRs of authors on active teams, by month of merge. Only 13 of 152 live PRs have an author on an active team (4 merged). A PR counts in each of its author teams. Owner: unassigned.'
+entity_id: UHzPAh0sDyGpez1i74_js
+created_at: '2026-10-15T03:01:31.832261Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - 7UJPxaiOnCW_o8vhn_BEx
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_pull_request_team
+        - merged_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pull_request_team
+          - merged_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request_team
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: UHzPAh0sDyGpez1i74_js
+  label: merged_prs_by_team_per_month
+  model: Card
+type: metric

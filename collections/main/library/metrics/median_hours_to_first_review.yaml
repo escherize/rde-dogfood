@@ -1,0 +1,56 @@
+name: Median hours to first review
+description: 'Draft, provisional: self-consistent only. Median hours from PR creation to the first counted review, by month of that review. 53 PRs have one. Very long (about 84 days) because the extract is synthetic and noisy; do not benchmark. Owner: unassigned.'
+entity_id: Lsg9yXzOdGHjvFyVbuSd0
+created_at: '2026-10-15T03:01:26.392384Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - sikyZB9fM0Ka74u2IE6JU
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - submitted_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pr_review
+          - is_first_review
+      - true
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pr_review
+          - submitted_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pr_review
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: Lsg9yXzOdGHjvFyVbuSd0
+  label: median_hours_to_first_review
+  model: Card
+type: metric

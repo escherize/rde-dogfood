@@ -1,0 +1,47 @@
+name: Average PR size (lines changed)
+description: 'Draft, provisional: self-consistent only. Average additions plus deletions per PR, by month opened, complete months only. Owner: unassigned.'
+entity_id: mOEXrO4SaTBs8OHSxrbui
+created_at: '2026-10-15T01:48:11.689998Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - Sk-IhKM2FU2yIau50x_1L
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_pull_request
+        - created_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pull_request
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: mOEXrO4SaTBs8OHSxrbui
+  label: average_pr_size__lines_changed_
+  model: Card
+type: metric

@@ -1,0 +1,37 @@
+name: Where do we deploy? (deployments by environment)
+description: 'All deployments in complete months by environment. Only the environment named production counts as production. Measure: Deployments (all environments).'
+entity_id: 22I3gtQNCcdK7UEpMLxZM
+created_at: '2026-10-15T03:35:00.494944Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: bar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - cE-XhA-LBFS--T4dN3Bli
+    breakout:
+    - - field
+      - {}
+      - - neondb
+        - analytics
+        - mart_github_fct_deployment
+        - environment
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_deployment
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: 22I3gtQNCcdK7UEpMLxZM
+  label: where_do_we_deploy___deployments_by_environment_
+  model: Card
+type: question

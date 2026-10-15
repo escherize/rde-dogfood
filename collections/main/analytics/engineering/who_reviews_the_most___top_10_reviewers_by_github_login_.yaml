@@ -1,0 +1,48 @@
+name: Who reviews the most? (top 10 reviewers by GitHub login)
+description: 'Counted reviews by reviewer GitHub login, top 10, complete months. Includes bot and organization accounts. Measure: Reviews submitted.'
+entity_id: LL-ODPr6okbpIekJB9ykR
+created_at: '2026-10-15T03:03:24.511694Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: bar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - lib/uuid: 9d13c789-6dfe-49ec-9187-09f578b5384d
+      - gCMwnFSD33EWcuHAFaTEw
+    breakout:
+    - - field
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - reviewer_user_id
+      - - neondb
+        - analytics
+        - mart_github_dim_user
+        - github_login
+    limit: 10
+    order-by:
+    - - desc
+      - {}
+      - - aggregation
+        - {}
+        - 9d13c789-6dfe-49ec-9187-09f578b5384d
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pr_review
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: LL-ODPr6okbpIekJB9ykR
+  label: who_reviews_the_most___top_10_reviewers_by_github_login_
+  model: Card
+type: question

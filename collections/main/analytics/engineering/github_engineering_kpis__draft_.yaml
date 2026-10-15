@@ -1,0 +1,431 @@
+name: GitHub engineering KPIs (Draft)
+description: 'Draft, self-consistent only. Engineering KPIs from the sampled 2024 GitHub extract: PR throughput, review speed, CI success, deployment frequency, change failure rate.'
+entity_id: Ab0qGWFjVZiCIEc6FqyWG
+created_at: '2026-10-15T03:35:54.895378Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+collection_id: haZMMM4QsJpgF2dUkQxzm
+collection_position: 3
+parameters:
+- id: repository
+  name: Repository
+  position: 0
+  slug: repository
+  type: string/=
+  values_query_type: search
+serdes/meta:
+- id: Ab0qGWFjVZiCIEc6FqyWG
+  label: github_engineering_kpis__draft_
+  model: Dashboard
+dashcards:
+- entity_id: ZlKHioHHoi-PFZtyhpxHq
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 0
+  col: 0
+  size_x: 24
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings: []
+  series: []
+  visualization_settings:
+    column_settings: null
+    text: '**GitHub engineering KPIs (Draft).** Data through November 2024 (last complete month; December has one day), sampled 2024 extract of raw_github, refreshed daily 03:00. Rows the loader flagged deleted (about half of every table) are excluded. All numbers: Self-consistent only, no external reference; the source is noisy, so treat trends as direction. Not available: merge-to-deploy lead time (no deployment matches a PR or commit) and CI duration (timestamps unreliable).'
+    virtual_card:
+      display: text
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: ZlKHioHHoi-PFZtyhpxHq
+    model: DashboardCard
+- entity_id: W5xW2iBsIFklE2qAimXQC
+  card_id: -Plk-q0Dl-6dJz03uzKir
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 3
+  col: 0
+  size_x: 8
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: -Plk-q0Dl-6dJz03uzKir
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: W5xW2iBsIFklE2qAimXQC
+    model: DashboardCard
+- entity_id: srsxV9tZPBLWhy5sF58Jd
+  card_id: CHxwBD8mK-xPgYzlUdH02
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 3
+  col: 8
+  size_x: 8
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: CHxwBD8mK-xPgYzlUdH02
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: srsxV9tZPBLWhy5sF58Jd
+    model: DashboardCard
+- entity_id: WQIjMExnZkZyr9oyyHBh4
+  card_id: rfS7ur79BW42rG5fmIoXL
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 3
+  col: 16
+  size_x: 8
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: rfS7ur79BW42rG5fmIoXL
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pr_review
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: WQIjMExnZkZyr9oyyHBh4
+    model: DashboardCard
+- entity_id: 9wibDvBxaere4FsYW5cNo
+  card_id: skGjrrH6_lmX2nFZTOhGU
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 6
+  col: 0
+  size_x: 8
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: skGjrrH6_lmX2nFZTOhGU
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_workflow_run
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: 9wibDvBxaere4FsYW5cNo
+    model: DashboardCard
+- entity_id: He6da5prRy3h2EQHO-Ofa
+  card_id: oG5pv0oD6kMiYnVQlk3v5
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 6
+  col: 8
+  size_x: 8
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: oG5pv0oD6kMiYnVQlk3v5
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_deployment
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: He6da5prRy3h2EQHO-Ofa
+    model: DashboardCard
+- entity_id: 7EWlYUSzijCtUc6Qt6t6W
+  card_id: rlLlYsd7MhcCLWcAON14h
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 6
+  col: 16
+  size_x: 8
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: rlLlYsd7MhcCLWcAON14h
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_deployment
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: 7EWlYUSzijCtUc6Qt6t6W
+    model: DashboardCard
+- entity_id: 4_RURwteqO7HhhmYEcc15
+  card_id: NcDkLBA1ivw-pYDovD1mp
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 9
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: NcDkLBA1ivw-pYDovD1mp
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: 4_RURwteqO7HhhmYEcc15
+    model: DashboardCard
+- entity_id: cr3eCRVYuIU7rrU0sOJ0j
+  card_id: oTu-F3qw21W3YvM6Tpe4L
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 9
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: oTu-F3qw21W3YvM6Tpe4L
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_workflow_run
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: cr3eCRVYuIU7rrU0sOJ0j
+    model: DashboardCard
+- entity_id: 5UpzUbmkVCene0z3FRRTL
+  card_id: c-wQ05mpvhMgcIg6GV6Lo
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 15
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: c-wQ05mpvhMgcIg6GV6Lo
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: 5UpzUbmkVCene0z3FRRTL
+    model: DashboardCard
+- entity_id: dsVztbjwGcySMLNwUu44b
+  card_id: KjATpwRyKaUb-huSmEphU
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 15
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: KjATpwRyKaUb-huSmEphU
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_deployment
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: dsVztbjwGcySMLNwUu44b
+    model: DashboardCard
+- entity_id: wIx7QpYMhM0upGN0ZOZCm
+  card_id: l0jKXHudoUih6QOVNjtCT
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 21
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: l0jKXHudoUih6QOVNjtCT
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_workflow_run
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: wIx7QpYMhM0upGN0ZOZCm
+    model: DashboardCard
+- entity_id: -ZcB2mb0ZZM-uYVtGMFNZ
+  card_id: 22I3gtQNCcdK7UEpMLxZM
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 21
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: 22I3gtQNCcdK7UEpMLxZM
+    parameter_id: repository
+    target:
+    - dimension
+    - - field
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_deployment
+        - repository_id
+  series: []
+  visualization_settings:
+    column_settings: null
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: -ZcB2mb0ZZM-uYVtGMFNZ
+    model: DashboardCard
+- entity_id: G8O_3Sgbw23eZaT0Q9X9-
+  created_at: '2026-10-15T03:35:55.221145Z'
+  row: 27
+  col: 0
+  size_x: 24
+  size_y: 4
+  inline_parameters: []
+  parameter_mappings: []
+  series: []
+  visualization_settings:
+    column_settings: null
+    text: '**Definitions.** *Merged PRs*: PRs with a merge date, by month of merge. *Median hours to merge*: merge date minus created date, PRs whose merge date is not before creation (40 of 71). *Median hours to first review*: PR creation to earliest counted review (not pending, not before the PR existed). *CI success rate*: successful runs / runs concluding success, failure or timed out (D11); cancelled, skipped, neutral, action_required and unfinished runs excluded. *Production deployments*: deployments to the environment named production, rollbacks included (D12); the source production flag is ignored. *Change failure rate*: production rollbacks / production deployments (4 of 17).'
+    virtual_card:
+      display: text
+  serdes/meta:
+  - id: Ab0qGWFjVZiCIEc6FqyWG
+    model: Dashboard
+  - id: G8O_3Sgbw23eZaT0Q9X9-
+    model: DashboardCard
+tabs: []
+width: fixed

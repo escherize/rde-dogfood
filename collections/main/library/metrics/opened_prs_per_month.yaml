@@ -1,0 +1,47 @@
+name: Opened PRs per month
+description: 'Draft, provisional: self-consistent only, no external reference. Count of pull requests by month opened, complete months only. Excludes source-deleted PRs. Owner: unassigned.'
+entity_id: ywXGp6cL3N0qtI_LSVTZF
+created_at: '2026-10-15T01:48:00.295939Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - 8eK82qDxSUSMJi2kzBXoh
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - analytics
+        - mart_github_fct_pull_request
+        - created_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pull_request
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: ywXGp6cL3N0qtI_LSVTZF
+  label: opened_prs_per_month
+  model: Card
+type: metric

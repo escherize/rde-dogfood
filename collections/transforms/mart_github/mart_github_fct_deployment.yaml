@@ -1,0 +1,55 @@
+collection_id: 56tGqQU9oz-XFH6VTkvtK
+created_at: '2026-10-15T03:30:19.524262Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: |
+  One row per deployment not deleted in the source (key: deployment_id). Sources: raw_github.deployment, cfg_github. Definition: PRODUCTION = environment named 'production' (D9; the source production_environment flag is kept but unused); ROLLBACK = task deploy:rollback; rollbacks count as production deployments; change failure rate = production rollbacks / production deployments (D12). Caveats: _fivetran_deleted excluded (D1, 97 of 200); no deployment matches any PR or commit sha, so merge-to-deploy lead time is not possible; 17 production rows (8 deploy, 5 migrations, 4 rollback). Constants: cfg_github.cap_month.
+entity_id: JzJ5xl8np-9m__l8C4WEZ
+indexes: []
+name: mart_github_fct_deployment
+owner_user_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: deployment not deleted in the source
+        -- Key:         deployment_id
+        -- Sources:     raw_github.deployment, analytics.cfg_github
+        -- Definition:  PRODUCTION = environment named 'production' (D9); the source production_environment flag is kept but not used (it agrees with the name on only 9 of 17 named-production rows). ROLLBACK = task 'deploy:rollback'. Rollbacks count as production deployments; change failure rate = production rollbacks / production deployments (D12).
+        -- Caveats:     _fivetran_deleted deployments excluded (D1, 97 of 200); no deployment sha matches any PR merge commit or commit, so merge-to-deploy lead time is not possible; 17 production rows in total (8 deploy, 5 migrations, 4 rollback); months from cfg_github.cap_month are incomplete.
+        SELECT
+          d.id                                              AS deployment_id,
+          d.repository_id                                   AS repository_id,
+          d.creator_id                                      AS creator_user_id,
+          d.environment                                     AS environment,
+          d.task                                            AS task,
+          d.production_environment                          AS source_production_flag,
+          d.created_at                                      AS created_at,
+          CAST(date_trunc('month', d.created_at) AS date)   AS created_month,
+          (CAST(date_trunc('month', d.created_at) AS date) < c.cap_month) AS created_in_complete_month,
+          (d.environment = 'production')                    AS is_production,
+          (d.task = 'deploy:rollback')                      AS is_rollback,
+          (d.environment = 'production' AND d.task = 'deploy:rollback') AS is_production_rollback
+        FROM raw_github.deployment d
+        CROSS JOIN analytics.cfg_github c
+        WHERE NOT d._fivetran_deleted
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: Qg8u9xpql3whJq-lwqc2R
+  position: 0
+  tag_id: TUL03jkG8FI-YFGiZNbrD
+  serdes/meta:
+  - id: Qg8u9xpql3whJq-lwqc2R
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_github_fct_deployment
+  schema: analytics
+  type: table
+serdes/meta:
+- id: JzJ5xl8np-9m__l8C4WEZ
+  label: mart_github_fct_deployment
+  model: Transform

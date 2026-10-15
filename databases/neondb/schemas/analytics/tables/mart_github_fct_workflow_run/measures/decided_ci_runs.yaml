@@ -1,0 +1,41 @@
+created_at: '2026-10-15T03:32:59.456195Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: decided_ci_runs
+      - - and
+        - {}
+        - - =
+          - {}
+          - - field
+            - {}
+            - - neondb
+              - analytics
+              - mart_github_fct_workflow_run
+              - is_decided
+          - true
+        - - =
+          - {}
+          - - field
+            - {}
+            - - neondb
+              - analytics
+              - mart_github_fct_workflow_run
+              - created_in_complete_month
+          - true
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft, provisional: self-consistent only. Runs with conclusion success, failure or timed_out, complete months. Cancelled, skipped, neutral, action_required and unfinished runs are not decided (D11).'
+entity_id: 8_gU-8vr76hwTlFkK9U_5
+name: Decided CI runs
+serdes/meta:
+- id: 8_gU-8vr76hwTlFkK9U_5
+  label: decided_ci_runs
+  model: Measure

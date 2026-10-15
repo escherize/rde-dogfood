@@ -1,0 +1,48 @@
+name: Which repositories merge the most PRs?
+description: 'Merged PRs by repository, top 10, complete months. Repository reached through the PR''s repository foreign key. Metric: Merged PRs.'
+entity_id: CEej9Acy0Mh-tjiUy6a90
+created_at: '2026-10-15T01:50:23.850035Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: bar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - lib/uuid: ed559960-b3b7-4e6f-94e8-c3b8e2306e96
+      - HmAaLSvv1YLlKtIjxC7Kg
+    breakout:
+    - - field
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request
+        - repository_id
+      - - neondb
+        - analytics
+        - mart_github_dim_repository
+        - repository_name
+    limit: 10
+    order-by:
+    - - desc
+      - {}
+      - - aggregation
+        - {}
+        - ed559960-b3b7-4e6f-94e8-c3b8e2306e96
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: CEej9Acy0Mh-tjiUy6a90
+  label: which_repositories_merge_the_most_prs_
+  model: Card
+type: question

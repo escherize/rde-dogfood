@@ -1,0 +1,150 @@
+created_at: '2026-10-15T03:30:51.170506Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+description: D1 production deploy; D2 production rollback; D3 staging flagged production by the source (not production); D4 production migrations; D5 preview rollback (rollback but not production); D6 deleted in source (excluded); D7 production in the incomplete month 2024-12.
+entity_id: yJn9re6v-maqIgpFnBTjr
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: deployment_id
+  - cast_type: BOOLEAN
+    name: is_production
+  - cast_type: BOOLEAN
+    name: is_rollback
+  - cast_type: BOOLEAN
+    name: is_production_rollback
+  - cast_type: BOOLEAN
+    name: created_in_complete_month
+  format: rows
+  name: production comes from the environment name; rollbacks are production deployments when in production
+  rows:
+  - created_in_complete_month: true
+    deployment_id: 1
+    is_production: true
+    is_production_rollback: false
+    is_rollback: false
+  - created_in_complete_month: true
+    deployment_id: 2
+    is_production: true
+    is_production_rollback: true
+    is_rollback: true
+  - created_in_complete_month: true
+    deployment_id: 3
+    is_production: false
+    is_production_rollback: false
+    is_rollback: false
+  - created_in_complete_month: true
+    deployment_id: 4
+    is_production: true
+    is_production_rollback: false
+    is_rollback: false
+  - created_in_complete_month: true
+    deployment_id: 5
+    is_production: false
+    is_production_rollback: false
+    is_rollback: true
+  - created_in_complete_month: false
+    deployment_id: 7
+    is_production: true
+    is_production_rollback: false
+    is_rollback: false
+  type: equals
+- name: one row per deployment
+  sql: SELECT d.deployment_id FROM analytics.mart_github_fct_deployment d GROUP BY 1 HAVING count(*) > 1
+  type: empty
+- name: deleted deployment 6 is excluded
+  sql: SELECT d.deployment_id FROM analytics.mart_github_fct_deployment d WHERE d.deployment_id = 6
+  type: empty
+inputs:
+- columns:
+  - cast_type: DATE
+    name: cap_month
+  format: rows
+  rows:
+  - cap_month: '2024-12-01'
+  table:
+    name: cfg_github
+    schema: analytics
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: BIGINT
+    name: repository_id
+  - cast_type: BIGINT
+    name: creator_id
+  - cast_type: VARCHAR(40)
+    name: environment
+  - cast_type: VARCHAR(40)
+    name: task
+  - cast_type: BOOLEAN
+    name: production_environment
+  - cast_type: TIMESTAMP
+    name: created_at
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    created_at: '2024-10-01 10:00:00'
+    creator_id: 10
+    environment: production
+    id: 1
+    production_environment: false
+    repository_id: 5
+    task: deploy
+  - _fivetran_deleted: false
+    created_at: '2024-10-02 10:00:00'
+    creator_id: 10
+    environment: production
+    id: 2
+    production_environment: true
+    repository_id: 5
+    task: deploy:rollback
+  - _fivetran_deleted: false
+    created_at: '2024-10-03 10:00:00'
+    creator_id: 10
+    environment: staging
+    id: 3
+    production_environment: true
+    repository_id: 5
+    task: deploy
+  - _fivetran_deleted: false
+    created_at: '2024-10-04 10:00:00'
+    creator_id: 10
+    environment: production
+    id: 4
+    production_environment: true
+    repository_id: 5
+    task: deploy:migrations
+  - _fivetran_deleted: false
+    created_at: '2024-10-05 10:00:00'
+    creator_id: 10
+    environment: preview
+    id: 5
+    production_environment: false
+    repository_id: 5
+    task: deploy:rollback
+  - _fivetran_deleted: true
+    created_at: '2024-10-06 10:00:00'
+    creator_id: 10
+    environment: production
+    id: 6
+    production_environment: true
+    repository_id: 5
+    task: deploy
+  - _fivetran_deleted: false
+    created_at: '2024-12-01 10:00:00'
+    creator_id: 10
+    environment: production
+    id: 7
+    production_environment: true
+    repository_id: 5
+    task: deploy
+  table:
+    name: deployment
+    schema: raw_github
+name: 'mart_github_fct_deployment: production by name, rollbacks (D9, D12)'
+transform_id: JzJ5xl8np-9m__l8C4WEZ
+serdes/meta:
+- id: yJn9re6v-maqIgpFnBTjr
+  label: mart_github_fct_deployment__production_by_name__rollbacks__d9__d12_
+  model: TransformTest

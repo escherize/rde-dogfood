@@ -1,0 +1,27 @@
+created_at: '2026-10-15T01:47:28.072862Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - avg
+      - name: avg_lines_changed
+      - - field
+        - {}
+        - - neondb
+          - analytics
+          - mart_github_fct_pull_request
+          - lines_changed
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft, provisional: self-consistent only. Average additions+deletions per PR as reported on the PR. Owner: unassigned.'
+entity_id: Sk-IhKM2FU2yIau50x_1L
+name: Average PR size (lines)
+serdes/meta:
+- id: Sk-IhKM2FU2yIau50x_1L
+  label: average_pr_size__lines_
+  model: Measure

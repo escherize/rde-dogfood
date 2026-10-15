@@ -1,0 +1,48 @@
+name: Who merges the most PRs? (by GitHub login)
+description: 'Merged PRs by author GitHub login, top 10, complete months. Includes bot and organization accounts; use the Author type filter. Metric: Merged PRs.'
+entity_id: X76BrNPqNXg8wrur9fUVR
+created_at: '2026-10-15T01:50:29.918044Z'
+creator_id: api-key-user-700846e3-8c64-4e58-95f1-c97ff16e92dc@api-key.invalid
+display: bar
+collection_id: haZMMM4QsJpgF2dUkQxzm
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - lib/uuid: d280c684-bad9-4a95-823d-49bff946f07f
+      - HmAaLSvv1YLlKtIjxC7Kg
+    breakout:
+    - - field
+      - source-field:
+        - neondb
+        - analytics
+        - mart_github_fct_pull_request
+        - author_user_id
+      - - neondb
+        - analytics
+        - mart_github_dim_user
+        - github_login
+    limit: 10
+    order-by:
+    - - desc
+      - {}
+      - - aggregation
+        - {}
+        - d280c684-bad9-4a95-823d-49bff946f07f
+    source-table:
+    - neondb
+    - analytics
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: X76BrNPqNXg8wrur9fUVR
+  label: who_merges_the_most_prs___by_github_login_
+  model: Card
+type: question

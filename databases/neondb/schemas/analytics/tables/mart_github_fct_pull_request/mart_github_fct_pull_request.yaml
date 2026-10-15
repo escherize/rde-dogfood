@@ -1,0 +1,395 @@
+caveats: 'Draft: sampled 2024 extract, last complete month 2024-11. 31 of 71 merged PRs have merged_at before created_at: flagged, no hours_to_merge. Author types include Bot and Organization accounts. Lines are as reported on the PR.'
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-15T01:45:21.948398Z'
+description: One row per pull request not deleted in the source (152 of 300 raw rows). MERGED means merged_at is present; the source merged flag, state and closed_at are kept but not used because they contradict merged_at.
+description_set: true
+display_name: GitHub Pull Requests
+entity_type: entity/TransactionTable
+fields:
+- created_at: '2026-10-15T01:45:52.858886Z'
+  display_name: Additions
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: additions
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:06.870639Z'
+  description: 'GitHub account type of the author: User, Bot, Organization or Unknown. Copied from the account table so segments can use it.'
+  description_set: true
+  display_name: Author Type
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: author_type
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:30.045137Z'
+  display_name: Author
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_user
+  - user_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: author_user_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:59.372684Z'
+  display_name: Changed Files
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: changed_files
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:38.456282Z'
+  description: Source closed_at. Not coherent with state/merged_at in this extract.
+  description_set: true
+  display_name: Closed At
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: closed_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:03.373449Z'
+  display_name: Comments
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: comment_count
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:01.049691Z'
+  display_name: Commits
+  semantic_type: type/Quantity
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: commit_count
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:36.843259Z'
+  description: When the PR was opened.
+  description_set: true
+  display_name: Created At
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:47.943589Z'
+  display_name: Created In Complete Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: created_in_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:45.275436Z'
+  display_name: Created Month
+  semantic_type: type/CreationDate
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: created_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:54.450583Z'
+  display_name: Deletions
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: deletions
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:51.162143Z'
+  description: merged_at minus created_at in hours; null when not merged or merged_at is before created_at (D7).
+  description_set: true
+  display_name: Hours To Merge
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: hours_to_merge
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:57.843599Z'
+  description: More than cfg_github.large_pr_lines (1000) changed lines.
+  description_set: true
+  display_name: Is Large PR
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: is_large_pr
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:41.739573Z'
+  description: True when merged_at is present.
+  description_set: true
+  display_name: Is Merged
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: is_merged
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:43.552198Z'
+  description: 'merged_at is earlier than created_at: a data anomaly in the source. Excluded from time-to-merge.'
+  description_set: true
+  display_name: Merged Before Created (anomaly)
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: is_merged_before_created
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:56.152349Z'
+  description: additions + deletions as reported on the PR.
+  description_set: true
+  display_name: Lines Changed
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: lines_changed
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:40.137377Z'
+  description: When the PR was merged. Its presence defines a merged PR (D2).
+  description_set: true
+  display_name: Merged At
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: merged_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:49.549728Z'
+  display_name: Merged In Complete Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: merged_in_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:44.776672Z'
+  description: First day of the month of merged_at; null when not merged.
+  description_set: true
+  display_name: Merged Month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: merged_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:31.740478Z'
+  display_name: PR Number
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: pr_number
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:23.550756Z'
+  display_name: Pull Request ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: pull_request_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:28.36822Z'
+  display_name: Repository
+  fk_target_field_id:
+  - neondb
+  - analytics
+  - mart_github_dim_repository
+  - repository_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: repository_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:46:05.152374Z'
+  display_name: Review Comments
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: review_comment_count
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:35.155093Z'
+  description: The source merged flag. Disagrees with merged_at on many rows; not used for definitions.
+  description_set: true
+  display_name: Source Merged Flag
+  visibility_type: details-only
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: source_merged_flag
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-15T01:45:33.351749Z'
+  description: State as reported by GitHub. Contradicts merged_at on many rows; not used for definitions.
+  description_set: true
+  display_name: Source State
+  visibility_type: details-only
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: analytics
+    model: Schema
+  - id: mart_github_fct_pull_request
+    model: Table
+  - id: source_state
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+visibility_type_set: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: analytics
+  model: Schema
+- id: mart_github_fct_pull_request
+  model: Table
+- id: '1'
+  model: TableUserSettings
