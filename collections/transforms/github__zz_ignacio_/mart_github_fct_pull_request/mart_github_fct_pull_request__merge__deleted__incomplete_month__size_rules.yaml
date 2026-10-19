@@ -1,0 +1,328 @@
+created_at: '2026-10-19T17:46:46.843939Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+description: 'Cases (cfg last complete month Nov 2024, large over 10000): PR 1 merged normally in 48h; PR 2 open with source merged flag true but no merged_at (not merged); PR 3 merged_at before created_at (merged, no hours, flagged); PR 4 created in December (incomplete month); PR 5 deleted in source (excluded); PR 6 in a repo deleted in source with exactly 10000 lines (kept, not large); PR 7 10001 lines (large) in repo 99 missing from repository; PR 8 merged in the last complete month.'
+entity_id: JOfgp2VYmVh-I94Pi3lU2
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: pull_request_id
+  - cast_type: BOOLEAN
+    name: is_merged
+  - cast_type: BOOLEAN
+    name: source_merged_flag
+  - cast_type: BOOLEAN
+    name: is_merged_before_created
+  - cast_type: NUMERIC(12,1)
+    name: hours_to_merge
+  - cast_type: BOOLEAN
+    name: merged_in_complete_month
+  format: rows
+  name: 'merge rules: merged_at decides, before-created flagged, hours only when sane'
+  rows:
+  - hours_to_merge: 48
+    is_merged: true
+    is_merged_before_created: false
+    merged_in_complete_month: true
+    pull_request_id: 1
+    source_merged_flag: true
+  - hours_to_merge: null
+    is_merged: false
+    is_merged_before_created: false
+    merged_in_complete_month: false
+    pull_request_id: 2
+    source_merged_flag: true
+  - hours_to_merge: null
+    is_merged: true
+    is_merged_before_created: true
+    merged_in_complete_month: true
+    pull_request_id: 3
+    source_merged_flag: true
+  - hours_to_merge: null
+    is_merged: false
+    is_merged_before_created: false
+    merged_in_complete_month: false
+    pull_request_id: 4
+    source_merged_flag: false
+  - hours_to_merge: null
+    is_merged: false
+    is_merged_before_created: false
+    merged_in_complete_month: false
+    pull_request_id: 6
+    source_merged_flag: false
+  - hours_to_merge: null
+    is_merged: false
+    is_merged_before_created: false
+    merged_in_complete_month: false
+    pull_request_id: 7
+    source_merged_flag: false
+  - hours_to_merge: 120
+    is_merged: true
+    is_merged_before_created: false
+    merged_in_complete_month: true
+    pull_request_id: 8
+    source_merged_flag: true
+  type: equals
+- columns:
+  - cast_type: BIGINT
+    name: pull_request_id
+  - cast_type: BOOLEAN
+    name: is_repository_deleted_in_source
+  - cast_type: INTEGER
+    name: lines_changed
+  - cast_type: BOOLEAN
+    name: is_large_pr
+  - cast_type: BOOLEAN
+    name: created_in_complete_month
+  - cast_type: DATE
+    name: created_month
+  format: rows
+  name: deleted PR excluded, deleted repo flagged, size threshold, incomplete month flagged
+  rows:
+  - created_in_complete_month: true
+    created_month: '2024-10-01'
+    is_large_pr: false
+    is_repository_deleted_in_source: false
+    lines_changed: 60
+    pull_request_id: 1
+  - created_in_complete_month: true
+    created_month: '2024-10-01'
+    is_large_pr: false
+    is_repository_deleted_in_source: false
+    lines_changed: 10
+    pull_request_id: 2
+  - created_in_complete_month: true
+    created_month: '2024-11-01'
+    is_large_pr: false
+    is_repository_deleted_in_source: false
+    lines_changed: 2
+    pull_request_id: 3
+  - created_in_complete_month: false
+    created_month: '2024-12-01'
+    is_large_pr: false
+    is_repository_deleted_in_source: false
+    lines_changed: 2
+    pull_request_id: 4
+  - created_in_complete_month: true
+    created_month: '2024-09-01'
+    is_large_pr: false
+    is_repository_deleted_in_source: true
+    lines_changed: 10000
+    pull_request_id: 6
+  - created_in_complete_month: true
+    created_month: '2024-09-01'
+    is_large_pr: true
+    is_repository_deleted_in_source: false
+    lines_changed: 10001
+    pull_request_id: 7
+  - created_in_complete_month: true
+    created_month: '2024-11-01'
+    is_large_pr: false
+    is_repository_deleted_in_source: false
+    lines_changed: 2
+    pull_request_id: 8
+  type: equals
+- name: one row per pull request
+  sql: SELECT m.pull_request_id FROM zz_ignacio.mart_github_fct_pull_request m GROUP BY 1 HAVING count(*) > 1
+  type: empty
+- name: hours to merge never negative
+  sql: SELECT m.pull_request_id FROM zz_ignacio.mart_github_fct_pull_request m WHERE m.hours_to_merge < 0
+  type: empty
+inputs:
+- columns:
+  - cast_type: DATE
+    name: last_complete_month
+  - cast_type: INTEGER
+    name: large_pr_lines
+  format: rows
+  rows:
+  - large_pr_lines: 10000
+    last_complete_month: '2024-11-01'
+  table:
+    name: cfg_github
+    schema: zz_ignacio
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    id: 10
+  - _fivetran_deleted: true
+    id: 20
+  table:
+    name: repository
+    schema: raw_github
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: BIGINT
+    name: repository_id
+  - cast_type: BIGINT
+    name: user_id
+  - cast_type: INTEGER
+    name: number
+  - cast_type: VARCHAR(20)
+    name: state
+  - cast_type: BOOLEAN
+    name: merged
+  - cast_type: TIMESTAMP
+    name: created_at
+  - cast_type: TIMESTAMP
+    name: closed_at
+  - cast_type: TIMESTAMP
+    name: merged_at
+  - cast_type: INTEGER
+    name: additions
+  - cast_type: INTEGER
+    name: deletions
+  - cast_type: INTEGER
+    name: changed_files
+  - cast_type: INTEGER
+    name: commits
+  - cast_type: INTEGER
+    name: comments
+  - cast_type: INTEGER
+    name: review_comments
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    additions: 50
+    changed_files: 2
+    closed_at: '2024-10-12T10:00:00'
+    comments: 0
+    commits: 1
+    created_at: '2024-10-10T10:00:00'
+    deletions: 10
+    id: 1
+    merged: true
+    merged_at: '2024-10-12T10:00:00'
+    number: 1
+    repository_id: 10
+    review_comments: 0
+    state: closed
+    user_id: 1
+  - _fivetran_deleted: false
+    additions: 5
+    changed_files: 1
+    closed_at: null
+    comments: 0
+    commits: 1
+    created_at: '2024-10-15T10:00:00'
+    deletions: 5
+    id: 2
+    merged: true
+    merged_at: null
+    number: 2
+    repository_id: 10
+    review_comments: 0
+    state: open
+    user_id: 1
+  - _fivetran_deleted: false
+    additions: 1
+    changed_files: 1
+    closed_at: '2024-02-04T04:00:00'
+    comments: 0
+    commits: 1
+    created_at: '2024-11-03T11:00:00'
+    deletions: 1
+    id: 3
+    merged: true
+    merged_at: '2024-02-04T04:00:00'
+    number: 3
+    repository_id: 10
+    review_comments: 0
+    state: closed
+    user_id: 1
+  - _fivetran_deleted: false
+    additions: 1
+    changed_files: 1
+    closed_at: null
+    comments: 0
+    commits: 1
+    created_at: '2024-12-01T18:00:00'
+    deletions: 1
+    id: 4
+    merged: false
+    merged_at: null
+    number: 4
+    repository_id: 10
+    review_comments: 0
+    state: open
+    user_id: 2
+  - _fivetran_deleted: true
+    additions: 1
+    changed_files: 1
+    closed_at: null
+    comments: 0
+    commits: 1
+    created_at: '2024-09-01T10:00:00'
+    deletions: 1
+    id: 5
+    merged: false
+    merged_at: null
+    number: 5
+    repository_id: 10
+    review_comments: 0
+    state: open
+    user_id: 2
+  - _fivetran_deleted: false
+    additions: 6000
+    changed_files: 9
+    closed_at: null
+    comments: 1
+    commits: 3
+    created_at: '2024-09-01T10:00:00'
+    deletions: 4000
+    id: 6
+    merged: false
+    merged_at: null
+    number: 6
+    repository_id: 20
+    review_comments: 2
+    state: open
+    user_id: 3
+  - _fivetran_deleted: false
+    additions: 6001
+    changed_files: 9
+    closed_at: null
+    comments: 1
+    commits: 3
+    created_at: '2024-09-02T10:00:00'
+    deletions: 4000
+    id: 7
+    merged: false
+    merged_at: null
+    number: 7
+    repository_id: 99
+    review_comments: 2
+    state: open
+    user_id: 3
+  - _fivetran_deleted: false
+    additions: 1
+    changed_files: 1
+    closed_at: '2024-11-25T10:00:00'
+    comments: 0
+    commits: 1
+    created_at: '2024-11-20T10:00:00'
+    deletions: 1
+    id: 8
+    merged: true
+    merged_at: '2024-11-25T10:00:00'
+    number: 8
+    repository_id: 10
+    review_comments: 0
+    state: closed
+    user_id: 3
+  table:
+    name: pull_request
+    schema: raw_github
+name: 'mart_github_fct_pull_request: merge, deleted, incomplete month, size rules'
+transform_id: ztDQpBEVdNFX4luue8aA8
+serdes/meta:
+- id: JOfgp2VYmVh-I94Pi3lU2
+  label: mart_github_fct_pull_request__merge__deleted__incomplete_month__size_rules
+  model: TransformTest

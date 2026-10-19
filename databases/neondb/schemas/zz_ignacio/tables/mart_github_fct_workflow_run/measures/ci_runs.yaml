@@ -1,0 +1,21 @@
+created_at: '2026-10-19T17:56:36.760843Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count
+      - name: ci_runs
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Self-consistent only, no external reference; D1 confirmed 2026-10-19. Count of GitHub Actions workflow runs live in the source (500 of 1000; the rest are Fivetran-deleted). Owner: not yet assigned.'
+entity_id: dReyOSNw7ZZtCatrWyzmC
+name: CI runs
+serdes/meta:
+- id: dReyOSNw7ZZtCatrWyzmC
+  label: ci_runs
+  model: Measure

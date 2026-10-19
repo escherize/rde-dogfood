@@ -1,0 +1,86 @@
+created_at: '2026-10-19T17:45:03.8159Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+description: 'Cases: user 1 plain User; user 2 Bot; user 3 Organization deleted in source (kept, flagged); user 4 site admin.'
+entity_id: GSvijc8d5JFGydor5pNiJ
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: user_id
+  - cast_type: BOOLEAN
+    name: is_bot
+  - cast_type: BOOLEAN
+    name: is_site_admin
+  - cast_type: BOOLEAN
+    name: is_deleted_in_source
+  format: rows
+  name: bot flag follows account type, deleted account kept and flagged
+  rows:
+  - is_bot: false
+    is_deleted_in_source: false
+    is_site_admin: false
+    user_id: 1
+  - is_bot: true
+    is_deleted_in_source: false
+    is_site_admin: false
+    user_id: 2
+  - is_bot: false
+    is_deleted_in_source: true
+    is_site_admin: false
+    user_id: 3
+  - is_bot: false
+    is_deleted_in_source: false
+    is_site_admin: true
+    user_id: 4
+  type: equals
+- name: one row per user
+  sql: SELECT m.user_id FROM zz_ignacio.mart_github_dim_user m GROUP BY 1 HAVING count(*) > 1
+  type: empty
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: VARCHAR(100)
+    name: login
+  - cast_type: VARCHAR(30)
+    name: type
+  - cast_type: BOOLEAN
+    name: site_admin
+  - cast_type: TIMESTAMP
+    name: created_at
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    created_at: '2024-01-01T00:00:00'
+    id: 1
+    login: alice
+    site_admin: false
+    type: User
+  - _fivetran_deleted: false
+    created_at: '2024-01-01T00:00:00'
+    id: 2
+    login: ci-bot
+    site_admin: false
+    type: Bot
+  - _fivetran_deleted: true
+    created_at: '2024-01-01T00:00:00'
+    id: 3
+    login: acme
+    site_admin: false
+    type: Organization
+  - _fivetran_deleted: false
+    created_at: '2024-01-01T00:00:00'
+    id: 4
+    login: root
+    site_admin: true
+    type: User
+  table:
+    name: user
+    schema: raw_github
+name: 'mart_github_dim_user: bot flag and deleted accounts'
+transform_id: 0COyJ7R8Oi6RRW92rVMkm
+serdes/meta:
+- id: GSvijc8d5JFGydor5pNiJ
+  label: mart_github_dim_user__bot_flag_and_deleted_accounts
+  model: TransformTest

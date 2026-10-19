@@ -1,0 +1,130 @@
+caveats: 'Source: raw_github.user. 54 of 100 accounts are deleted in the source.'
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-19T17:55:29.662281Z'
+description: One row per GitHub account (users, bots and organizations), including accounts Fivetran marks deleted. Email, name, company and bio are deliberately not carried. Self-consistent only, no external reference; D1 confirmed 2026-10-19.
+description_set: true
+display_name: GitHub users
+entity_type: entity/UserTable
+fields:
+- created_at: '2026-10-19T17:53:27.481912Z'
+  description: When the account was created
+  description_set: true
+  display_name: Account created at
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: account_created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:22.783945Z'
+  description: User, Bot or Organization
+  description_set: true
+  display_name: Account type
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: account_type
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:21.163087Z'
+  description: Public GitHub handle
+  description_set: true
+  display_name: GitHub login
+  has_field_values: search
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: github_login
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:24.289984Z'
+  description: True when the account type is Bot
+  description_set: true
+  display_name: Is bot
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: is_bot
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:29.156474Z'
+  description: True when Fivetran marks the account deleted. Kept so facts still join to it (D1, confirmed)
+  description_set: true
+  display_name: Deleted in source
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: is_deleted_in_source
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:25.955633Z'
+  description: True when the account is a GitHub site admin
+  description_set: true
+  display_name: Is site admin
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: is_site_admin
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:19.669923Z'
+  description: GitHub account id
+  description_set: true
+  display_name: User ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_user
+    model: Table
+  - id: user_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: zz_ignacio
+  model: Schema
+- id: mart_github_dim_user
+  model: Table
+- id: '1'
+  model: TableUserSettings

@@ -1,0 +1,47 @@
+name: Pull requests opened
+description: 'Self-consistent only, no external reference; D1 D4 confirmed 2026-10-19. Pull requests opened per month, from the Pull requests opened measure, complete months only (through November 2024). Excludes 148 Fivetran-deleted PRs; December 2024 (one day of data) is left out. Do not compare with GitHub''s own totals, which include deleted rows. Owner: not yet assigned.'
+entity_id: FWppefg4wG57iCU3ynhGJ
+created_at: '2026-10-19T17:58:18.308656Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - BSmdu-tznSbMtA73ZWfsm
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_pull_request
+        - created_at
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_pull_request
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: FWppefg4wG57iCU3ynhGJ
+  label: pull_requests_opened
+  model: Card
+type: metric

@@ -1,0 +1,47 @@
+name: Median hours to merge
+description: 'Self-consistent only, no external reference; D1 D2 D3 confirmed 2026-10-19. Median hours from opened to merged, by month merged, complete months only. PRs merged before they were created (31 of 71) are left out, so this rests on 40 PRs. Owner: not yet assigned. Values run to thousands of hours because in the source merged_at is not tied to created_at (31 of 71 merged PRs were merged before they were opened); treat as a data-quality signal, not a delivery fact.'
+entity_id: hQCG-oWxJCBV7ma01EOLq
+created_at: '2026-10-19T17:58:29.103869Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - AQAw6oFJ_ZeecENXh1c7_
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_pull_request
+        - merged_at
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_pull_request
+          - merged_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: hQCG-oWxJCBV7ma01EOLq
+  label: median_hours_to_merge
+  model: Card
+type: metric

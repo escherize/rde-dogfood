@@ -1,0 +1,180 @@
+caveats: 'Source: raw_github.repository. Extract ends 2024-12-01. 24 of 50 repositories are deleted in the source.'
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-19T17:55:27.865173Z'
+description: One row per GitHub repository, including repositories Fivetran marks deleted (flagged Deleted in source). No owner or description text carried. Self-consistent only, no external reference; D1 confirmed 2026-10-19.
+description_set: true
+display_name: GitHub repositories
+entity_type: entity/GenericTable
+fields:
+- created_at: '2026-10-19T17:53:14.754424Z'
+  description: Default branch name
+  description_set: true
+  display_name: Default branch
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: default_branch
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:13.059517Z'
+  description: True when the repository is archived
+  description_set: true
+  display_name: Is archived
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: is_archived
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:18.049648Z'
+  description: True when Fivetran marks the repository deleted. Kept so facts still join to it (D1, confirmed)
+  description_set: true
+  display_name: Deleted in source
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: is_deleted_in_source
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:11.386102Z'
+  description: True when the repository is a fork
+  description_set: true
+  display_name: Is fork
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: is_fork
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:09.761295Z'
+  description: True for private repositories
+  description_set: true
+  display_name: Is private
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: is_private
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:08.177512Z'
+  description: Main language reported by GitHub; Unknown when none is set
+  description_set: true
+  display_name: Primary language
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: primary_language
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:16.353754Z'
+  description: When the repository was created
+  description_set: true
+  display_name: Repository created at
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: repository_created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:06.572911Z'
+  description: owner/name of the repository
+  description_set: true
+  display_name: Repository full name
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: repository_full_name
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:03.237751Z'
+  description: GitHub repository id
+  description_set: true
+  display_name: Repository ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: repository_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:53:04.867587Z'
+  description: Short repository name
+  description_set: true
+  display_name: Repository name
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_dim_repository
+    model: Table
+  - id: repository_name
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: zz_ignacio
+  model: Schema
+- id: mart_github_dim_repository
+  model: Table
+- id: '1'
+  model: TableUserSettings

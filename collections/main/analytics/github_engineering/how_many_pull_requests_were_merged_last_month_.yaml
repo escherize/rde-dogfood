@@ -1,0 +1,41 @@
+name: How many pull requests were merged last month?
+description: 'Pull requests merged in the latest complete month, against the month before. Metric: Pull requests merged. Self-consistent only, no external reference; D1 D2 D3 confirmed 2026-10-19.'
+entity_id: AjocyawYt3_kbPzCMmVVu
+created_at: '2026-10-19T18:02:31.765635Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: smartscalar
+collection_id: 6d8oexqXA1CnO6tMW9Ic4
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - aLD7LiVgUIQ6JIrIdoZXs
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_pull_request
+        - merged_at
+    filters:
+    - - segment
+      - {}
+      - oqy1d2nG6FcdNJwVB1Bfo
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: AjocyawYt3_kbPzCMmVVu
+  label: how_many_pull_requests_were_merged_last_month_
+  model: Card
+type: question

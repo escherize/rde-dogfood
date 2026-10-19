@@ -1,0 +1,41 @@
+name: How many production deployments happened last month?
+description: 'Deployments to the production environment in the latest complete month, against the month before. Metric: Production deployments. Self-consistent only, no external reference; D1 D6 confirmed 2026-10-19.'
+entity_id: 4JuUonOBMdirv22hw7qzH
+created_at: '2026-10-19T18:02:48.281451Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: smartscalar
+collection_id: 6d8oexqXA1CnO6tMW9Ic4
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - spLw_yxn4PiU9YLhjpTXU
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_deployment
+        - created_at
+    filters:
+    - - segment
+      - {}
+      - _PeMrddQ5JtfREuKFrfj7
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_deployment
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: 4JuUonOBMdirv22hw7qzH
+  label: how_many_production_deployments_happened_last_month_
+  model: Card
+type: question

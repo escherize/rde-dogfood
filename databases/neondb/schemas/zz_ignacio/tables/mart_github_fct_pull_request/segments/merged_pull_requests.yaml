@@ -1,0 +1,28 @@
+created_at: '2026-10-19T17:57:04.556913Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_pull_request
+          - is_merged
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Pull requests with merged_at filled (D2, confirmed). Includes the 31 PRs whose merged_at is before created_at. Excludes the source merged flag. Warning: the source''s own merged flag disagrees on most PRs.'
+entity_id: oqy1d2nG6FcdNJwVB1Bfo
+name: Merged pull requests
+serdes/meta:
+- id: oqy1d2nG6FcdNJwVB1Bfo
+  label: merged_pull_requests
+  model: Segment

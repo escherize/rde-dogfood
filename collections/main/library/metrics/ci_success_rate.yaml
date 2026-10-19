@@ -1,0 +1,55 @@
+name: CI success rate
+description: 'Self-consistent only, no external reference; D1 D5 D9 confirmed 2026-10-19. Successful runs divided by decided runs (success, failure, timed_out), per month, complete months only. 315 of 500 runs are cancelled, skipped, neutral, action_required or have no conclusion and are not in the denominator. Counting only failure as a loss would give 44.7% overall instead of 31.9%. Owner: not yet assigned.'
+entity_id: KCA5DME8-t-MCrzHFMAsm
+created_at: '2026-10-19T17:58:39.729146Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - /
+      - name: ci_success_rate
+      - - measure
+        - {}
+        - FdopYC2RxiTlbSER5zSbo
+      - - measure
+        - {}
+        - 1nb3CkYWXfsPYrQI9BcaE
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_workflow_run
+        - created_at
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_workflow_run
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings:
+    '["name","ci_success_rate"]':
+      decimals: 1
+      number_style: percent
+card_schema: 24
+serdes/meta:
+- id: KCA5DME8-t-MCrzHFMAsm
+  label: ci_success_rate
+  model: Card
+type: metric

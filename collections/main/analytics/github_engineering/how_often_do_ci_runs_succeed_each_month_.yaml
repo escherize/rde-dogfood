@@ -1,0 +1,44 @@
+name: How often do CI runs succeed each month?
+description: 'CI success rate per month: successful runs over runs that succeeded, failed or timed out. Metric: CI success rate. Self-consistent only, no external reference; D1 D5 D9 confirmed 2026-10-19.'
+entity_id: yxOOlMG6YwOlUGBrjTeYG
+created_at: '2026-10-19T18:03:10.17174Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: line
+collection_id: 6d8oexqXA1CnO6tMW9Ic4
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - KCA5DME8-t-MCrzHFMAsm
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_workflow_run
+        - created_at
+    filters:
+    - - segment
+      - {}
+      - tZ2uSajK4dAB7oF6vP3_W
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings:
+    '["name","ci_success_rate"]':
+      decimals: 1
+      number_style: percent
+card_schema: 24
+serdes/meta:
+- id: yxOOlMG6YwOlUGBrjTeYG
+  label: how_often_do_ci_runs_succeed_each_month_
+  model: Card
+type: question

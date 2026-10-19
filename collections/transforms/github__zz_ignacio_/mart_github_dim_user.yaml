@@ -1,0 +1,47 @@
+collection_id: y-ZCapaI5nYwfOp3ekIpm
+created_at: '2026-10-19T17:44:36.771028Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+description: 'One row per GitHub account (key: user_id). Sources: raw_github.user. Definition: public login and account type of each account, including accounts Fivetran marked deleted (flagged is_deleted_in_source). Caveats: email, name, company, location and bio are deliberately not carried (personal data masked); is_bot means account type = Bot. Self-consistent only, no external reference; D1 confirmed 2026-10-19.'
+entity_id: 0COyJ7R8Oi6RRW92rVMkm
+indexes: []
+name: mart_github_dim_user
+owner_user_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: GitHub account (all accounts, including ones deleted in the source)
+        -- Key:         user_id
+        -- Sources:     raw_github."user"
+        -- Definition:  the public handle and type of each account; Fivetran-deleted accounts kept and flagged
+        -- Caveats:     no email, name, company, location or bio carried (personal data masked); is_bot is account type = 'Bot'
+        SELECT
+          u.id               AS user_id,
+          u.login            AS github_login,
+          u.type             AS account_type,
+          (u.type = 'Bot')   AS is_bot,
+          u.site_admin       AS is_site_admin,
+          u.created_at       AS account_created_at,
+          u._fivetran_deleted AS is_deleted_in_source
+        FROM raw_github."user" u
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: kKZncpF25L8pediEojbkm
+  position: 0
+  tag_id: OXo5KRqp1bMx5MVXiSIcO
+  serdes/meta:
+  - id: kKZncpF25L8pediEojbkm
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_github_dim_user
+  schema: zz_ignacio
+  type: table
+serdes/meta:
+- id: 0COyJ7R8Oi6RRW92rVMkm
+  label: mart_github_dim_user
+  model: Transform

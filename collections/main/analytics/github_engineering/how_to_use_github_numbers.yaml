@@ -1,0 +1,175 @@
+collection_id: 6d8oexqXA1CnO6tMW9Ic4
+collection_position: 2
+content_type: application/json+vnd.prose-mirror
+created_at: '2026-10-19T18:51:24.88673Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+document:
+  content:
+  - attrs:
+      _id: 8b133056-0c4f-49bc-a841-e2dd58c46985
+      level: 1
+    content:
+    - text: How to use GitHub numbers
+      type: text
+    type: heading
+  - attrs:
+      _id: 7306ad0b-d6d3-4543-9012-20f2e29d1f3e
+    content:
+    - text: 'What this covers: pull request flow, CI reliability and production deployments for the GitHub repositories in raw_github (loaded by Fivetran). Data runs through November 2024; December 2024 holds one day and is left out of every chart. Dashboard: GitHub engineering delivery, in this collection.'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: b52b07ae-0a15-436f-9db9-2130cc5401db
+    content:
+    - text: 'Trust label on every number below: Self-consistent only, no external reference. The definitions D1 to D9 were confirmed by the person who asked for this work on 2026-10-19; no figure has been reconciled to a number from outside Metabase.'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: 864daf90-a646-46df-8e66-f2a48a3aeaf6
+      level: 2
+    content:
+    - text: Metrics (in the Library Metrics collection)
+      type: text
+    type: heading
+  - attrs:
+      _id: 5892fb65-4f92-4e3a-bc69-ecb0e80bb0b3
+    content:
+    - content:
+      - attrs:
+          _id: 4c05f598-1acf-4cb6-b992-2f9272272d85
+        content:
+        - text: 'Pull requests opened: pull requests opened per month, complete months only. Excludes the 148 pull requests Fivetran marks deleted (152 of 300 remain).'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 43c73058-c60a-4137-8a39-4824fbc59f87
+        content:
+        - text: 'Pull requests merged: pull requests per month, by merged date. A pull request is merged when its merged date is filled; GitHub''s own merged flag is not used because it agrees on only 35 pull requests. 31 of the 71 merged have a merged date before they were opened and are still counted.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: f16993c3-4e6e-43ff-835c-6a84ff78d762
+        content:
+        - text: 'Median hours to merge: median hours from opened to merged, by month merged. The 31 that were merged before being opened are left out. Values run to thousands of hours, a data-quality signal in the source rather than a delivery fact.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 8b007661-cf39-474a-8e8d-9987bf00a451
+        content:
+        - text: 'CI runs: GitHub Actions workflow runs per month, whatever their outcome. 500 of 1,000 runs remain after Fivetran-deleted rows are dropped.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 171de677-814e-4fbd-8123-f0a1813129a8
+        content:
+        - text: 'CI success rate: successful runs divided by runs that succeeded, failed or timed out. Cancelled, skipped, neutral, action-required and empty conclusions (315 of 500 runs) are not in the denominator. Overall 31.9%; counting only failures as losses would give 44.7%.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 7d47142f-f7bd-4e38-832f-d59dd6994792
+        content:
+        - text: 'Production deployments: deployments whose environment is production, per month. Only 17 in the extract. GitHub''s own production flag marks 53 and agrees on 9, so it is not used. Includes rollbacks and migrations.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 7a1bd0dc-ddb8-4a09-923a-db5cf63c1c92
+        content:
+        - text: 'Production rollbacks: production deployments whose task is deploy:rollback. 4 in the extract.'
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: df99725a-c1be-4ba8-b322-458cfb712a1d
+      level: 2
+    content:
+    - text: Segments (on the published tables)
+      type: text
+    type: heading
+  - attrs:
+      _id: c2b54f1f-6da3-4327-a511-ec985073b24e
+    content:
+    - content:
+      - attrs:
+          _id: b47b5a90-ef4a-40a5-bac1-09c1cde11d99
+        content:
+        - text: Merged pull requests, Complete months (pull requests), Large pull requests (over 10,000 changed lines; at 1,000 every PR would be large), In live repositories (pull requests) (74 of 152; the effect of keeping pull requests in deleted repositories).
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: accad7fa-24ea-40bc-ab0d-5d75c4726755
+        content:
+        - text: Failed CI runs, Decided CI runs, Complete months (CI runs).
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 76089775-a464-48f1-8027-0ff45c7fe3ae
+        content:
+        - text: Production deployments, Complete months (deployments).
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: e26b9173-0b80-43b7-a9d2-de3533528267
+      level: 2
+    content:
+    - text: Who owns the definitions
+      type: text
+    type: heading
+  - attrs:
+      _id: 1b415eff-2cde-454f-a206-c993d1dc68c5
+    content:
+    - text: The person who commissioned this work confirmed the definitions. No named owner or owner email is set yet; assign one and add it to the three fact tables.
+      type: text
+    type: paragraph
+  - attrs:
+      _id: eda556ff-be45-49d4-a044-ca44c836b57c
+      level: 2
+    content:
+    - text: Asking a new question
+      type: text
+    type: heading
+  - attrs:
+      _id: aaf2139b-9d8b-4fdd-b9b4-4128295b8043
+    content:
+    - text: Start from the published tables in the Library (GitHub pull requests, GitHub workflow runs, GitHub deployments). Use the measures and segments on them, and break down by repository (language, private, archived) or user through the foreign keys. If a number needs a rule that is not there, ask the owner to add a measure or segment rather than writing SQL.
+      type: text
+    type: paragraph
+  - attrs:
+      _id: 7642769f-b3b3-4aa6-825e-5e830fa7dd49
+      level: 2
+    content:
+    - text: When a number looks wrong
+      type: text
+    type: heading
+  - attrs:
+      _id: a90b2646-a01d-490d-ad71-ea560ece0f04
+    content:
+    - text: 'Read the table caveats first: most surprises are the known source quirks above (deleted rows, status and conclusion disagreeing, merged before opened). If it is still wrong, tell the owner. A definition change is made in place on the same metric, with a dated note in its description, and the dashboard text says which past months moved.'
+      type: text
+    type: paragraph
+  type: doc
+entity_id: rlDxh9jJDm3NCbemxlP4x
+name: How to use GitHub numbers
+updated_at: '2026-10-19T18:51:24.88673Z'
+serdes/meta:
+- id: rlDxh9jJDm3NCbemxlP4x
+  label: how_to_use_github_numbers
+  model: Document

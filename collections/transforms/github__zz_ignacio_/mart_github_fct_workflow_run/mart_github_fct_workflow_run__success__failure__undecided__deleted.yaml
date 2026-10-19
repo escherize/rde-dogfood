@@ -1,0 +1,243 @@
+created_at: '2026-10-19T17:48:36.163986Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+description: 'Cases (last complete month Nov 2024): run 1 queued with conclusion success (counts as success); run 2 failure; run 3 timed_out (failed); run 4 cancelled (undecided); run 5 null conclusion (undecided); run 6 deleted in source (excluded); run 7 of a workflow deleted in source, created in December (kept, flagged, incomplete month); run 8 whose workflow row is missing.'
+entity_id: kUBBVFJZsUBpKmGrTKoEJ
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: workflow_run_id
+  - cast_type: BOOLEAN
+    name: is_success
+  - cast_type: BOOLEAN
+    name: is_failed
+  - cast_type: BOOLEAN
+    name: is_decided
+  format: rows
+  name: success reads conclusion only; failed and decided follow D9; deleted run excluded
+  rows:
+  - is_decided: true
+    is_failed: false
+    is_success: true
+    workflow_run_id: 1
+  - is_decided: true
+    is_failed: true
+    is_success: false
+    workflow_run_id: 2
+  - is_decided: true
+    is_failed: true
+    is_success: false
+    workflow_run_id: 3
+  - is_decided: false
+    is_failed: false
+    is_success: false
+    workflow_run_id: 4
+  - is_decided: false
+    is_failed: false
+    is_success: false
+    workflow_run_id: 5
+  - is_decided: true
+    is_failed: false
+    is_success: true
+    workflow_run_id: 7
+  - is_decided: true
+    is_failed: true
+    is_success: false
+    workflow_run_id: 8
+  type: equals
+- columns:
+  - cast_type: BIGINT
+    name: workflow_run_id
+  - cast_type: VARCHAR(100)
+    name: workflow_name
+  - cast_type: BOOLEAN
+    name: is_workflow_deleted_in_source
+  - cast_type: BOOLEAN
+    name: created_in_complete_month
+  format: rows
+  name: deleted workflow flagged, missing workflow kept, incomplete month flagged
+  rows:
+  - created_in_complete_month: true
+    is_workflow_deleted_in_source: false
+    workflow_name: build
+    workflow_run_id: 1
+  - created_in_complete_month: true
+    is_workflow_deleted_in_source: false
+    workflow_name: build
+    workflow_run_id: 2
+  - created_in_complete_month: true
+    is_workflow_deleted_in_source: false
+    workflow_name: build
+    workflow_run_id: 3
+  - created_in_complete_month: true
+    is_workflow_deleted_in_source: false
+    workflow_name: build
+    workflow_run_id: 4
+  - created_in_complete_month: true
+    is_workflow_deleted_in_source: false
+    workflow_name: build
+    workflow_run_id: 5
+  - created_in_complete_month: false
+    is_workflow_deleted_in_source: true
+    workflow_name: old
+    workflow_run_id: 7
+  - created_in_complete_month: true
+    is_workflow_deleted_in_source: false
+    workflow_name: null
+    workflow_run_id: 8
+  type: equals
+- name: one row per run
+  sql: SELECT m.workflow_run_id FROM zz_ignacio.mart_github_fct_workflow_run m GROUP BY 1 HAVING count(*) > 1
+  type: empty
+- name: a run is never both success and failed
+  sql: SELECT m.workflow_run_id FROM zz_ignacio.mart_github_fct_workflow_run m WHERE m.is_success AND m.is_failed
+  type: empty
+inputs:
+- columns:
+  - cast_type: DATE
+    name: last_complete_month
+  format: rows
+  rows:
+  - last_complete_month: '2024-11-01'
+  table:
+    name: cfg_github
+    schema: zz_ignacio
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: VARCHAR(100)
+    name: name
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    id: 100
+    name: build
+  - _fivetran_deleted: true
+    id: 200
+    name: old
+  table:
+    name: workflow
+    schema: raw_github
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: BIGINT
+    name: workflow_id
+  - cast_type: BIGINT
+    name: repository_id
+  - cast_type: BIGINT
+    name: actor_id
+  - cast_type: VARCHAR(50)
+    name: event
+  - cast_type: VARCHAR(30)
+    name: status
+  - cast_type: VARCHAR(30)
+    name: conclusion
+  - cast_type: INTEGER
+    name: run_number
+  - cast_type: INTEGER
+    name: run_attempt
+  - cast_type: TIMESTAMP
+    name: created_at
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    actor_id: 1
+    conclusion: success
+    created_at: '2024-10-05T10:00:00'
+    event: push
+    id: 1
+    repository_id: 1
+    run_attempt: 1
+    run_number: 1
+    status: queued
+    workflow_id: 100
+  - _fivetran_deleted: false
+    actor_id: 1
+    conclusion: failure
+    created_at: '2024-10-06T10:00:00'
+    event: push
+    id: 2
+    repository_id: 1
+    run_attempt: 1
+    run_number: 2
+    status: completed
+    workflow_id: 100
+  - _fivetran_deleted: false
+    actor_id: null
+    conclusion: timed_out
+    created_at: '2024-10-07T10:00:00'
+    event: push
+    id: 3
+    repository_id: 1
+    run_attempt: 1
+    run_number: 3
+    status: completed
+    workflow_id: 100
+  - _fivetran_deleted: false
+    actor_id: 1
+    conclusion: cancelled
+    created_at: '2024-11-07T10:00:00'
+    event: push
+    id: 4
+    repository_id: 1
+    run_attempt: 1
+    run_number: 4
+    status: completed
+    workflow_id: 100
+  - _fivetran_deleted: false
+    actor_id: 1
+    conclusion: null
+    created_at: '2024-11-08T10:00:00'
+    event: push
+    id: 5
+    repository_id: 1
+    run_attempt: 1
+    run_number: 5
+    status: in_progress
+    workflow_id: 100
+  - _fivetran_deleted: true
+    actor_id: 1
+    conclusion: success
+    created_at: '2024-11-09T10:00:00'
+    event: push
+    id: 6
+    repository_id: 1
+    run_attempt: 1
+    run_number: 6
+    status: completed
+    workflow_id: 100
+  - _fivetran_deleted: false
+    actor_id: 1
+    conclusion: success
+    created_at: '2024-12-01T10:00:00'
+    event: schedule
+    id: 7
+    repository_id: 1
+    run_attempt: 1
+    run_number: 7
+    status: completed
+    workflow_id: 200
+  - _fivetran_deleted: false
+    actor_id: 1
+    conclusion: failure
+    created_at: '2024-11-30T10:00:00'
+    event: schedule
+    id: 8
+    repository_id: 1
+    run_attempt: 2
+    run_number: 8
+    status: completed
+    workflow_id: 300
+  table:
+    name: workflow_run
+    schema: raw_github
+name: 'mart_github_fct_workflow_run: success, failure, undecided, deleted'
+transform_id: m6ZMd0vRk119ka63KSPMY
+serdes/meta:
+- id: kUBBVFJZsUBpKmGrTKoEJ
+  label: mart_github_fct_workflow_run__success__failure__undecided__deleted
+  model: TransformTest

@@ -1,0 +1,41 @@
+name: How many pull requests are merged each month?
+description: 'Pull requests merged per month by merged_at. Metric: Pull requests merged. Self-consistent only, no external reference; D1 D2 D3 confirmed 2026-10-19.'
+entity_id: tzvSvEl02_2xmek9s_64H
+created_at: '2026-10-19T18:02:59.145218Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: bar
+collection_id: 6d8oexqXA1CnO6tMW9Ic4
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - aLD7LiVgUIQ6JIrIdoZXs
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_pull_request
+        - merged_at
+    filters:
+    - - segment
+      - {}
+      - oqy1d2nG6FcdNJwVB1Bfo
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: tzvSvEl02_2xmek9s_64H
+  label: how_many_pull_requests_are_merged_each_month_
+  model: Card
+type: question

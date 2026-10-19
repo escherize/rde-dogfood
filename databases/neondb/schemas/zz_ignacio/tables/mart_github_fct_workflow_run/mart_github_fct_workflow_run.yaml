@@ -1,0 +1,304 @@
+caveats: 'Fivetran-deleted runs excluded (500 of 1000 remain). Status and conclusion disagree in the source (e.g. status queued with conclusion success). 315 of 500 runs have no decisive conclusion. No duration: started_at precedes created_at on 265 runs.'
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-19T17:55:33.17013Z'
+description: One row per GitHub Actions workflow run live in the source. Success reads conclusion only. Self-consistent only, no external reference; D1 D5 D9 confirmed 2026-10-19.
+description_set: true
+display_name: GitHub workflow runs
+entity_type: entity/EventTable
+fields:
+- created_at: '2026-10-19T17:54:16.166216Z'
+  description: Account that triggered the run; empty on 26 runs
+  description_set: true
+  display_name: Actor
+  fk_target_field_id:
+  - neondb
+  - zz_ignacio
+  - mart_github_dim_user
+  - user_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: actor_user_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:24.17574Z'
+  description: Conclusion reported by GitHub; empty on 92 runs
+  description_set: true
+  display_name: Conclusion
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: conclusion
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:28.967511Z'
+  description: When the run was created
+  description_set: true
+  display_name: Created at
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:32.265596Z'
+  description: False for December 2024
+  description_set: true
+  display_name: Created in complete month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: created_in_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:30.557377Z'
+  description: Month the run was created
+  description_set: true
+  display_name: Created month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: created_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:37.262904Z'
+  description: True when the run succeeded or failed. Cancelled, skipped, neutral, action_required and empty are undecided (D9, confirmed)
+  description_set: true
+  display_name: Is decided
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: is_decided
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:35.565576Z'
+  description: True when conclusion is failure or timed_out (D9, confirmed)
+  description_set: true
+  display_name: Is failed
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: is_failed
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:33.865428Z'
+  description: True when conclusion is success, whatever the status (D5, confirmed)
+  description_set: true
+  display_name: Is success
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: is_success
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:19.285374Z'
+  description: True when the workflow is deleted in the source. Run kept (D1, confirmed)
+  description_set: true
+  display_name: Workflow deleted in source
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: is_workflow_deleted_in_source
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:14.576221Z'
+  description: Repository the run belongs to
+  description_set: true
+  display_name: Repository
+  fk_target_field_id:
+  - neondb
+  - zz_ignacio
+  - mart_github_dim_repository
+  - repository_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: repository_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:27.304894Z'
+  description: Attempt number of the run
+  description_set: true
+  display_name: Run attempt
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: run_attempt
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:25.75158Z'
+  description: Sequential run number
+  description_set: true
+  display_name: Run number
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: run_number
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:22.558767Z'
+  description: Status reported by GitHub. Not reliable for outcome; use Is success or Is failed
+  description_set: true
+  display_name: Source status
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: source_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:20.8775Z'
+  description: Event that triggered the run
+  description_set: true
+  display_name: Trigger event
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: trigger_event
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:12.880662Z'
+  description: GitHub Actions workflow id
+  description_set: true
+  display_name: Workflow ID
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: workflow_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:17.760736Z'
+  description: Name of the workflow
+  description_set: true
+  display_name: Workflow name
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: workflow_name
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:11.258311Z'
+  description: GitHub Actions run id
+  description_set: true
+  display_name: Workflow run ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_workflow_run
+    model: Table
+  - id: workflow_run_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: zz_ignacio
+  model: Schema
+- id: mart_github_fct_workflow_run
+  model: Table
+- id: '1'
+  model: TableUserSettings

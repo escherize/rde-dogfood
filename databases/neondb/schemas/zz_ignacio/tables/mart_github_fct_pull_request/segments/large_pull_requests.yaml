@@ -1,0 +1,28 @@
+created_at: '2026-10-19T17:57:10.059871Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_pull_request
+          - is_large_pr
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Pull requests over 10000 changed lines (D8, confirmed). At 1000 every PR would qualify.
+entity_id: F6O92CIVDeQoN2jTbVDKB
+name: Large pull requests
+serdes/meta:
+- id: F6O92CIVDeQoN2jTbVDKB
+  label: large_pull_requests
+  model: Segment

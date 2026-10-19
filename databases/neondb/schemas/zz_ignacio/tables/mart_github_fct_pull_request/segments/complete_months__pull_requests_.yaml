@@ -1,0 +1,28 @@
+created_at: '2026-10-19T17:57:07.347489Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_pull_request
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Pull requests opened up to November 2024. Excludes December 2024, which holds one day of data.
+entity_id: lzCALwCxV1VxURV1eOLgo
+name: Complete months (pull requests)
+serdes/meta:
+- id: lzCALwCxV1VxURV1eOLgo
+  label: complete_months__pull_requests_
+  model: Segment

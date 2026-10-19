@@ -1,0 +1,27 @@
+created_at: '2026-10-19T17:56:31.277089Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - median
+      - name: median_hours_to_merge
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_pull_request
+          - hours_to_merge
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Self-consistent only, no external reference; D1 D2 D3 confirmed 2026-10-19. Median hours from opened to merged. PRs merged before they were created (31 of 71) and unmerged PRs have no value and are skipped. Owner: not yet assigned.'
+entity_id: AQAw6oFJ_ZeecENXh1c7_
+name: Median hours to merge
+serdes/meta:
+- id: AQAw6oFJ_ZeecENXh1c7_
+  label: median_hours_to_merge
+  model: Measure

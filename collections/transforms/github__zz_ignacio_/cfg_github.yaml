@@ -1,0 +1,45 @@
+collection_id: y-ZCapaI5nYwfOp3ekIpm
+created_at: '2026-10-19T17:43:51.489445Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+description: 'One row (single row of constants). Sources: none. Definition: named constants read by every GitHub model: last_complete_month = 2024-11-01 (pinned to the extract; newest raw_github row is 2024-12-01, one day of December), cap_month = 2024-12-01, large_pr_lines = 10000 (D8, default to confirm; 1000 would flag all 152 live PRs, the smallest has 1029 lines). Caveats: change a constant with mb transform update, run the tests, then rerun the job.'
+entity_id: 8qv-441mn9fNRFzLSGUvk
+indexes: []
+name: cfg_github
+owner_user_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: configuration set (exactly one row)
+        -- Key:         none (single row)
+        -- Sources:     none (constants)
+        -- Definition:  named constants read by every GitHub model
+        -- Caveats:     last_complete_month pinned to the extract: newest raw_github row is 2024-12-01, one day of December; large_pr_lines is a default to confirm (D8)
+        SELECT
+          DATE '2024-11-01' AS last_complete_month,
+          'Pinned to extract: max(pull_request.created_at)=2024-12-01 18:56, 1 day of Dec' AS last_complete_month_note,
+          DATE '2024-12-01' AS cap_month,
+          'First, incomplete month in the extract' AS cap_month_note,
+          10000 AS large_pr_lines,
+          'D8 default: PRs over 10000 changed lines (additions + deletions) are Large; 1000 flags all 152 live PRs (min is 1029)' AS large_pr_lines_note
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: IZ9qvg_WVDXrAV7Faf3CI
+  position: 0
+  tag_id: OXo5KRqp1bMx5MVXiSIcO
+  serdes/meta:
+  - id: IZ9qvg_WVDXrAV7Faf3CI
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: cfg_github
+  schema: zz_ignacio
+  type: table
+serdes/meta:
+- id: 8qv-441mn9fNRFzLSGUvk
+  label: cfg_github
+  model: Transform

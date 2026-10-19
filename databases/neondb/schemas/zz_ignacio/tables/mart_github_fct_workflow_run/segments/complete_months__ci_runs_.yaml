@@ -1,0 +1,28 @@
+created_at: '2026-10-19T17:57:15.579049Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_workflow_run
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: CI runs created up to November 2024. Excludes December 2024, which holds one day of data.
+entity_id: tZ2uSajK4dAB7oF6vP3_W
+name: Complete months (CI runs)
+serdes/meta:
+- id: tZ2uSajK4dAB7oF6vP3_W
+  label: complete_months__ci_runs_
+  model: Segment

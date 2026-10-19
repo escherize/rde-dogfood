@@ -1,0 +1,47 @@
+name: Production deployments
+description: 'Self-consistent only, no external reference; D1 D6 confirmed 2026-10-19. Deployments to the production environment per month, complete months only. Only 17 deployments in the extract; GitHub''s own production flag marks 53 and agrees on 9, so it is not used. Includes rollbacks and migrations. Owner: not yet assigned.'
+entity_id: spLw_yxn4PiU9YLhjpTXU
+created_at: '2026-10-19T17:58:45.218658Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - Z375MKnem8jDRFoUw_HSi
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_deployment
+        - created_at
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_deployment
+          - created_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_deployment
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: spLw_yxn4PiU9YLhjpTXU
+  label: production_deployments
+  model: Card
+type: metric

@@ -1,0 +1,60 @@
+collection_id: y-ZCapaI5nYwfOp3ekIpm
+created_at: '2026-10-19T17:48:30.904597Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+description: 'One row per CI workflow run live in the source (key: workflow_run_id). Sources: raw_github.workflow_run, raw_github.workflow, zz_ignacio.cfg_github. Definition: a run succeeded when conclusion = success whatever its status (D5); failed when conclusion is failure or timed_out; decided when it succeeded or failed (D9). Caveats: Fivetran-deleted runs excluded, 500 of 1000 (D1); cancelled, skipped, neutral, action_required and empty conclusions are undecided, not failures (D9); runs of a workflow deleted in the source are kept and flagged; no duration (started_at precedes created_at on 265 of 500 runs); months after 2024-11 flagged incomplete. Self-consistent only, no external reference; D1 D5 D9 confirmed 2026-10-19.'
+entity_id: m6ZMd0vRk119ka63KSPMY
+indexes: []
+name: mart_github_fct_workflow_run
+owner_user_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: workflow run live in the source (Fivetran-deleted runs excluded)
+        -- Key:         workflow_run_id
+        -- Sources:     raw_github.workflow_run, raw_github.workflow, zz_ignacio.cfg_github
+        -- Definition:  a CI run succeeded when conclusion = 'success' (D5); failed when conclusion is failure or timed_out; decided when it succeeded or failed (D9)
+        -- Caveats:     D1 Fivetran-deleted runs excluded (500 of 1000). D5 success reads conclusion only, whatever the status. D9 cancelled, skipped, neutral, action_required and empty conclusions are undecided, not failures. Runs of a workflow deleted in the source are kept and flagged. started_at precedes created_at on 265 of 500 runs, so no duration is built. Months after cfg_github.last_complete_month are flagged incomplete.
+        SELECT
+          wr.id                                             AS workflow_run_id,
+          wr.workflow_id                                    AS workflow_id,
+          wr.repository_id                                  AS repository_id,
+          wr.actor_id                                       AS actor_user_id,
+          w.name                                            AS workflow_name,
+          COALESCE(w._fivetran_deleted, false)              AS is_workflow_deleted_in_source,
+          wr.event                                          AS trigger_event,
+          wr.status                                         AS source_status,
+          wr.conclusion                                     AS conclusion,
+          wr.run_number                                     AS run_number,
+          wr.run_attempt                                    AS run_attempt,
+          wr.created_at                                     AS created_at,
+          CAST(date_trunc('month', wr.created_at) AS date)  AS created_month,
+          (CAST(date_trunc('month', wr.created_at) AS date) <= c.last_complete_month) AS created_in_complete_month,
+          COALESCE(wr.conclusion = 'success', false)        AS is_success,
+          COALESCE(wr.conclusion IN ('failure', 'timed_out'), false) AS is_failed,
+          COALESCE(wr.conclusion IN ('success', 'failure', 'timed_out'), false) AS is_decided
+        FROM raw_github.workflow_run wr
+        CROSS JOIN zz_ignacio.cfg_github c
+        LEFT JOIN raw_github.workflow w ON w.id = wr.workflow_id
+        WHERE NOT wr._fivetran_deleted
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: hj6Ci7F7vdAWfCVa34O8e
+  position: 0
+  tag_id: OXo5KRqp1bMx5MVXiSIcO
+  serdes/meta:
+  - id: hj6Ci7F7vdAWfCVa34O8e
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_github_fct_workflow_run
+  schema: zz_ignacio
+  type: table
+serdes/meta:
+- id: m6ZMd0vRk119ka63KSPMY
+  label: mart_github_fct_workflow_run
+  model: Transform

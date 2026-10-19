@@ -1,0 +1,21 @@
+created_at: '2026-10-19T17:56:25.790085Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count
+      - name: pull_requests_opened
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Self-consistent only, no external reference; D1 D4 confirmed 2026-10-19. Count of pull requests live in the source, by the month they were opened. Excludes the 148 Fivetran-deleted PRs. Includes PRs in repositories deleted in the source (78 of 152). Owner: not yet assigned.'
+entity_id: BSmdu-tznSbMtA73ZWfsm
+name: Pull requests opened
+serdes/meta:
+- id: BSmdu-tznSbMtA73ZWfsm
+  label: pull_requests_opened
+  model: Measure

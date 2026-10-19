@@ -1,0 +1,47 @@
+name: Pull requests merged
+description: 'Self-consistent only, no external reference; D1 D2 D3 confirmed 2026-10-19. Pull requests merged per month, by merged_at, complete months only. A PR is merged when merged_at is filled; the source merged flag is not used (76 vs 71 PRs, agreeing on only 35). 31 of the 71 have merged_at before created_at and are still counted. Owner: not yet assigned.'
+entity_id: aLD7LiVgUIQ6JIrIdoZXs
+created_at: '2026-10-19T17:58:23.742048Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - d3CPtdS4x4sbO2Wu01oUT
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_pull_request
+        - merged_at
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_pull_request
+          - merged_in_complete_month
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: aLD7LiVgUIQ6JIrIdoZXs
+  label: pull_requests_merged
+  model: Card
+type: metric

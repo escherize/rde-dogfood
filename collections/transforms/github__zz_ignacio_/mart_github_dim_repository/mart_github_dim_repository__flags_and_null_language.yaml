@@ -1,0 +1,122 @@
+created_at: '2026-10-19T17:44:54.327307Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+description: 'Cases: repo 1 live, language set; repo 2 live, null language (shown as Unknown); repo 3 deleted in source (kept, flagged); repo 4 archived private fork.'
+entity_id: 94_R2vbNVX6BBDmHgaUqp
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: repository_id
+  - cast_type: VARCHAR(50)
+    name: primary_language
+  - cast_type: BOOLEAN
+    name: is_deleted_in_source
+  - cast_type: BOOLEAN
+    name: is_archived
+  - cast_type: BOOLEAN
+    name: is_private
+  - cast_type: BOOLEAN
+    name: is_fork
+  format: rows
+  name: deleted repo kept and flagged, null language becomes Unknown
+  rows:
+  - is_archived: false
+    is_deleted_in_source: false
+    is_fork: false
+    is_private: false
+    primary_language: Rust
+    repository_id: 1
+  - is_archived: false
+    is_deleted_in_source: false
+    is_fork: false
+    is_private: false
+    primary_language: Unknown
+    repository_id: 2
+  - is_archived: false
+    is_deleted_in_source: true
+    is_fork: false
+    is_private: false
+    primary_language: Go
+    repository_id: 3
+  - is_archived: true
+    is_deleted_in_source: false
+    is_fork: true
+    is_private: true
+    primary_language: C
+    repository_id: 4
+  type: equals
+- name: one row per repository
+  sql: SELECT m.repository_id FROM zz_ignacio.mart_github_dim_repository m GROUP BY 1 HAVING count(*) > 1
+  type: empty
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: VARCHAR(100)
+    name: name
+  - cast_type: VARCHAR(200)
+    name: full_name
+  - cast_type: VARCHAR(50)
+    name: language
+  - cast_type: BOOLEAN
+    name: private
+  - cast_type: BOOLEAN
+    name: fork
+  - cast_type: BOOLEAN
+    name: archived
+  - cast_type: VARCHAR(50)
+    name: default_branch
+  - cast_type: TIMESTAMP
+    name: created_at
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    archived: false
+    created_at: '2024-01-01T00:00:00'
+    default_branch: main
+    fork: false
+    full_name: org/a
+    id: 1
+    language: Rust
+    name: a
+    private: false
+  - _fivetran_deleted: false
+    archived: false
+    created_at: '2024-01-02T00:00:00'
+    default_branch: main
+    fork: false
+    full_name: org/b
+    id: 2
+    language: null
+    name: b
+    private: false
+  - _fivetran_deleted: true
+    archived: false
+    created_at: '2024-01-03T00:00:00'
+    default_branch: main
+    fork: false
+    full_name: org/c
+    id: 3
+    language: Go
+    name: c
+    private: false
+  - _fivetran_deleted: false
+    archived: true
+    created_at: '2024-01-04T00:00:00'
+    default_branch: dev
+    fork: true
+    full_name: org/d
+    id: 4
+    language: C
+    name: d
+    private: true
+  table:
+    name: repository
+    schema: raw_github
+name: 'mart_github_dim_repository: flags and null language'
+transform_id: N8-R2-liIWxusFkqFDOOQ
+serdes/meta:
+- id: 94_R2vbNVX6BBDmHgaUqp
+  label: mart_github_dim_repository__flags_and_null_language
+  model: TransformTest

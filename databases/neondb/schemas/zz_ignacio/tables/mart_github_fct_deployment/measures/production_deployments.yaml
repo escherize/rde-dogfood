@@ -1,0 +1,30 @@
+created_at: '2026-10-19T17:56:44.992683Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: production_deployments
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - zz_ignacio
+            - mart_github_fct_deployment
+            - is_production
+        - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_deployment
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Self-consistent only, no external reference; D1 D6 confirmed 2026-10-19. Deployments whose environment is production (17 of 103). GitHub''s own production flag marks 53 and agrees on only 9, so it is not used. Includes rollbacks and migrations run in production. Owner: not yet assigned.'
+entity_id: Z375MKnem8jDRFoUw_HSi
+name: Production deployments
+serdes/meta:
+- id: Z375MKnem8jDRFoUw_HSi
+  label: production_deployments
+  model: Measure

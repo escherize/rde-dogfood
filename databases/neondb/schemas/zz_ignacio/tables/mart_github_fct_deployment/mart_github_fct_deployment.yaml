@@ -1,0 +1,223 @@
+caveats: Fivetran-deleted deployments excluded (103 of 200 remain). Source production flag agrees with the environment name on only 9 deployments; the flag is not used.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-19T17:55:34.890289Z'
+description: One row per deployment live in the source. Production means environment = production. Self-consistent only, no external reference; D1 D6 confirmed 2026-10-19.
+description_set: true
+display_name: GitHub deployments
+entity_type: entity/EventTable
+fields:
+- created_at: '2026-10-19T17:54:48.55781Z'
+  description: When the deployment was created
+  description_set: true
+  display_name: Created at
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:51.677937Z'
+  description: False for December 2024
+  description_set: true
+  display_name: Created in complete month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: created_in_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:50.078183Z'
+  description: Month the deployment was created
+  description_set: true
+  display_name: Created month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: created_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:42.069293Z'
+  description: Account that created the deployment
+  description_set: true
+  display_name: Creator
+  fk_target_field_id:
+  - neondb
+  - zz_ignacio
+  - mart_github_dim_user
+  - user_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: creator_user_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:38.861943Z'
+  description: GitHub deployment id
+  description_set: true
+  display_name: Deployment ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: deployment_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:43.763065Z'
+  description: Deployment environment
+  description_set: true
+  display_name: Environment
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: environment
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:53.350823Z'
+  description: True when the environment is production (D6, confirmed)
+  description_set: true
+  display_name: Is production
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: is_production
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:56.657793Z'
+  description: True for rollbacks in production
+  description_set: true
+  display_name: Is production rollback
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: is_production_rollback
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:55.063594Z'
+  description: True when the task is deploy:rollback
+  description_set: true
+  display_name: Is rollback
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: is_rollback
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:40.471984Z'
+  description: Repository deployed
+  description_set: true
+  display_name: Repository
+  fk_target_field_id:
+  - neondb
+  - zz_ignacio
+  - mart_github_dim_repository
+  - repository_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: repository_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:46.954788Z'
+  description: GitHub's own production flag. Matches the environment name on only 9 deployments, so not used for counts (D6, confirmed)
+  description_set: true
+  display_name: Source production flag
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: source_production_flag
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T17:54:45.37513Z'
+  description: deploy, deploy:migrations or deploy:rollback
+  description_set: true
+  display_name: Task
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: zz_ignacio
+    model: Schema
+  - id: mart_github_fct_deployment
+    model: Table
+  - id: task
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: zz_ignacio
+  model: Schema
+- id: mart_github_fct_deployment
+  model: Table
+- id: '1'
+  model: TableUserSettings

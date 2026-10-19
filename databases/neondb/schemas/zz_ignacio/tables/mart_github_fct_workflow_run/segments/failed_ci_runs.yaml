@@ -1,0 +1,28 @@
+created_at: '2026-10-19T17:57:18.184223Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - zz_ignacio
+          - mart_github_fct_workflow_run
+          - is_failed
+      - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: CI runs whose conclusion is failure or timed_out (D9, confirmed). Excludes cancelled, skipped, neutral, action_required and runs with no conclusion.
+entity_id: 9lmM-ift0QkkvLpj-IYso
+name: Failed CI runs
+serdes/meta:
+- id: 9lmM-ift0QkkvLpj-IYso
+  label: failed_ci_runs
+  model: Segment

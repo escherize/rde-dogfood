@@ -1,0 +1,9 @@
+name: GitHub (zz_ignacio)
+entity_id: y-ZCapaI5nYwfOp3ekIpm
+slug: github__zz_ignacio_
+created_at: '2026-10-19T17:43:37.487081Z'
+namespace: transforms
+serdes/meta:
+- id: y-ZCapaI5nYwfOp3ekIpm
+  label: github__zz_ignacio_
+  model: Collection

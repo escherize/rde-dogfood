@@ -1,0 +1,41 @@
+name: How many pull requests are opened each month?
+description: 'Pull requests opened per month, complete months only (through November 2024). Metric: Pull requests opened. Self-consistent only, no external reference; D1 D4 confirmed 2026-10-19.'
+entity_id: 1npgktFB-tWqwc9WxLzMG
+created_at: '2026-10-19T18:02:53.685586Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+display: bar
+collection_id: 6d8oexqXA1CnO6tMW9Ic4
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - FWppefg4wG57iCU3ynhGJ
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - zz_ignacio
+        - mart_github_fct_pull_request
+        - created_at
+    filters:
+    - - segment
+      - {}
+      - lzCALwCxV1VxURV1eOLgo
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: 1npgktFB-tWqwc9WxLzMG
+  label: how_many_pull_requests_are_opened_each_month_
+  model: Card
+type: question

@@ -1,0 +1,30 @@
+created_at: '2026-10-19T17:56:34.07762Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: large_pull_requests
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - zz_ignacio
+            - mart_github_fct_pull_request
+            - is_large_pr
+        - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_pull_request
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Self-consistent only, no external reference; D1 D8 confirmed 2026-10-19. Pull requests over 10000 changed lines. The threshold is a default: at 1000 every PR would be large. Owner: not yet assigned.'
+entity_id: 4SV2Cn7_RXRRm67rcLDcI
+name: Large pull requests
+serdes/meta:
+- id: 4SV2Cn7_RXRRm67rcLDcI
+  label: large_pull_requests
+  model: Measure

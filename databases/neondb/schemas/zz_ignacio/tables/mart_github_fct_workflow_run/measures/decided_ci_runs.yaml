@@ -1,0 +1,30 @@
+created_at: '2026-10-19T17:56:42.279835Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: decided_ci_runs
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - zz_ignacio
+            - mart_github_fct_workflow_run
+            - is_decided
+        - true
+    source-table:
+    - neondb
+    - zz_ignacio
+    - mart_github_fct_workflow_run
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Self-consistent only, no external reference; D1 D9 confirmed 2026-10-19. Runs that succeeded, failed or timed out. Cancelled, skipped, neutral, action_required and empty conclusions (315 of 500) are not decided. Owner: not yet assigned.'
+entity_id: 1nb3CkYWXfsPYrQI9BcaE
+name: Decided CI runs
+serdes/meta:
+- id: 1nb3CkYWXfsPYrQI9BcaE
+  label: decided_ci_runs
+  model: Measure

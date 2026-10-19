@@ -1,0 +1,70 @@
+collection_id: y-ZCapaI5nYwfOp3ekIpm
+created_at: '2026-10-19T17:46:20.078339Z'
+creator_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+description: 'One row per pull request live in the source (key: pull_request_id). Sources: raw_github.pull_request, raw_github.repository, zz_ignacio.cfg_github. Definition: a PR is merged when merged_at is filled (D2); hours_to_merge runs created_at to merged_at. Caveats: Fivetran-deleted PRs excluded, 152 of 300 (D1); the source merged flag is kept as source_merged_flag and agrees with merged_at on only 35 PRs (D2); 31 merged PRs carry a merged_at before created_at, stay merged but have null hours_to_merge and is_merged_before_created = true (D3); PRs in repositories deleted in the source are kept and flagged (D4); large PR = additions + deletions over 10000 (D8; 1000 flags every PR). Months after 2024-11 are flagged incomplete, not dropped; no title, body or branch text carried. Self-consistent only, no external reference; D1 D2 D3 D4 D8 confirmed 2026-10-19.'
+entity_id: ztDQpBEVdNFX4luue8aA8
+indexes: []
+name: mart_github_fct_pull_request
+owner_user_id: api-key-user-29c86976-f682-455d-8bae-e84f0d5695c5@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: pull request that is live in the source (Fivetran-deleted PRs excluded)
+        -- Key:         pull_request_id
+        -- Sources:     raw_github.pull_request, raw_github.repository, zz_ignacio.cfg_github
+        -- Definition:  a PR is merged when merged_at is filled (D2); time to merge runs created_at to merged_at in hours
+        -- Caveats:     D1 Fivetran-deleted PRs excluded (152 of 300). D2 merged = merged_at filled, source_merged_flag kept beside it (they agree on 35 of the 71/76 merged). D3 PRs with merged_at before created_at stay merged but have null hours_to_merge and is_merged_before_created = true. D4 PRs in repositories deleted in the source are kept and flagged is_repository_deleted_in_source. D8 large PR = additions + deletions over cfg_github.large_pr_lines. Months after cfg_github.last_complete_month are flagged incomplete, never dropped. No title, body or branch text carried.
+        SELECT
+          p.id                                                         AS pull_request_id,
+          p.repository_id                                              AS repository_id,
+          p.user_id                                                    AS author_user_id,
+          p.number                                                     AS pr_number,
+          p.state                                                      AS source_state,
+          p.merged                                                     AS source_merged_flag,
+          p.created_at                                                 AS created_at,
+          p.closed_at                                                  AS closed_at,
+          p.merged_at                                                  AS merged_at,
+          (p.merged_at IS NOT NULL)                                    AS is_merged,
+          (p.merged_at IS NOT NULL AND p.merged_at < p.created_at)     AS is_merged_before_created,
+          CAST(date_trunc('month', p.created_at) AS date)              AS created_month,
+          CAST(date_trunc('month', p.merged_at) AS date)               AS merged_month,
+          (CAST(date_trunc('month', p.created_at) AS date) <= c.last_complete_month) AS created_in_complete_month,
+          COALESCE(CAST(date_trunc('month', p.merged_at) AS date) <= c.last_complete_month, false) AS merged_in_complete_month,
+          CASE WHEN p.merged_at >= p.created_at
+               THEN CAST(round(CAST(extract(epoch FROM (p.merged_at - p.created_at)) / 3600.0 AS numeric), 1) AS numeric(12,1))
+          END                                                          AS hours_to_merge,
+          p.additions                                                  AS additions,
+          p.deletions                                                  AS deletions,
+          (p.additions + p.deletions)                                  AS lines_changed,
+          ((p.additions + p.deletions) > c.large_pr_lines)             AS is_large_pr,
+          p.changed_files                                              AS changed_files,
+          p.commits                                                    AS commit_count,
+          p.comments                                                   AS comment_count,
+          p.review_comments                                            AS review_comment_count,
+          COALESCE(r._fivetran_deleted, false)                         AS is_repository_deleted_in_source
+        FROM raw_github.pull_request p
+        CROSS JOIN zz_ignacio.cfg_github c
+        LEFT JOIN raw_github.repository r ON r.id = p.repository_id
+        WHERE NOT p._fivetran_deleted
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: B1UyfYOYvWvyzq1uAnPIm
+  position: 0
+  tag_id: OXo5KRqp1bMx5MVXiSIcO
+  serdes/meta:
+  - id: B1UyfYOYvWvyzq1uAnPIm
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_github_fct_pull_request
+  schema: zz_ignacio
+  type: table
+serdes/meta:
+- id: ztDQpBEVdNFX4luue8aA8
+  label: mart_github_fct_pull_request
+  model: Transform
