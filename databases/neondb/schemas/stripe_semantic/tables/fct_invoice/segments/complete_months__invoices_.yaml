@@ -1,0 +1,28 @@
+created_at: '2026-10-19T21:29:22.858686Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_invoice
+          - is_complete_period
+      - true
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_invoice
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Invoices in months up to the last complete month (December 2024). Excludes any later, partial month.
+entity_id: UagNk85oR8fhGNoKbM9cM
+name: Complete months (invoices)
+serdes/meta:
+- id: UagNk85oR8fhGNoKbM9cM
+  label: complete_months__invoices_
+  model: Segment

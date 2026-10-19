@@ -1,0 +1,28 @@
+created_at: '2026-10-19T21:29:09.589628Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_charge
+          - is_refunded
+      - true
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Charges with any refunded amount (79). Includes 3 over-refunded charges whose revenue refund is capped at the charge amount.
+entity_id: hG8-NOAA0Iafe4JbqNZGe
+name: Refunded charges
+serdes/meta:
+- id: hG8-NOAA0Iafe4JbqNZGe
+  label: refunded_charges
+  model: Segment

@@ -1,0 +1,67 @@
+collection_id: 3800BnIf9G3PoKla9095T
+created_at: '2026-10-19T21:23:37.821991Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+description: 'One row per: Stripe charge (a payment attempt) Key: charge_id Sources: stripe_data.charge, stripe_semantic.cfg_stripe Definition: Every charge attempt with amounts in local currency and USD. Revenue columns count only succeeded charges; refunds come from the charge''s own refunded amount, capped at the charge amount. Caveats: Failed charges carry amount_attempted_usd but zero revenue (D5). Refund = charge.amount_refunded, not the refund table (D3); over-refunded charges are capped and flagged. USD at fixed 2024-average FX (D4). Month = created, UTC. Months after cfg.last_complete_month are flagged is_complete_period = false, not dropped. '
+entity_id: akN3tq1mJw09bqQ_vQwa7
+indexes: []
+name: fct_charge
+owner_user_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: Stripe charge (a payment attempt)
+        -- Key:         charge_id
+        -- Sources:     stripe_data.charge, stripe_semantic.cfg_stripe
+        -- Definition:  Every charge attempt with amounts in local currency and USD. Revenue columns count only succeeded charges; refunds come from the charge's own refunded amount, capped at the charge amount.
+        -- Caveats:     Failed charges carry amount_attempted_usd but zero revenue (D5). Refund = charge.amount_refunded, not the refund table (D3); over-refunded charges are capped and flagged. USD at fixed 2024-average FX (D4). Month = created, UTC. Months after cfg.last_complete_month are flagged is_complete_period = false, not dropped.
+        SELECT
+          ch.id AS charge_id,
+          ch.customer_id AS customer_id,
+          ch.status AS charge_status,
+          (ch.status = 'succeeded') AS is_succeeded,
+          ch.currency AS charge_currency,
+          ch.created AS charge_created_at,
+          date_trunc('month', ch.created)::date AS charge_month,
+          (date_trunc('month', ch.created)::date <= cfg.last_complete_month) AS is_complete_period,
+          (ch.amount_refunded > 0) AS is_refunded,
+          (ch.amount_refunded > ch.amount) AS is_over_refunded,
+          cx.fx_usd_per_unit AS fx_usd_per_unit,
+          round(ch.amount::numeric / cfg.minor_unit_divisor, 2) AS amount_attempted_local,
+          round(ch.amount::numeric / cfg.minor_unit_divisor * cx.fx_usd_per_unit, 2) AS amount_attempted_usd,
+          CASE WHEN ch.status = 'succeeded' THEN round(ch.amount::numeric / cfg.minor_unit_divisor * cx.fx_usd_per_unit, 2) ELSE 0 END AS revenue_gross_usd,
+          CASE WHEN ch.status = 'succeeded' THEN round(LEAST(ch.amount_refunded, ch.amount)::numeric / cfg.minor_unit_divisor * cx.fx_usd_per_unit, 2) ELSE 0 END AS revenue_refunded_usd,
+          CASE WHEN ch.status = 'succeeded' THEN round(ch.amount::numeric / cfg.minor_unit_divisor * cx.fx_usd_per_unit, 2) - round(LEAST(ch.amount_refunded, ch.amount)::numeric / cfg.minor_unit_divisor * cx.fx_usd_per_unit, 2) ELSE 0 END AS revenue_net_usd
+        FROM stripe_data.charge ch
+        CROSS JOIN stripe_semantic.cfg_stripe cfg
+        CROSS JOIN LATERAL (
+          SELECT CASE ch.currency
+            WHEN 'usd' THEN cfg.usd_per_usd
+            WHEN 'eur' THEN cfg.usd_per_eur
+            WHEN 'gbp' THEN cfg.usd_per_gbp
+            WHEN 'cad' THEN cfg.usd_per_cad
+            WHEN 'aud' THEN cfg.usd_per_aud
+          END AS fx_usd_per_unit
+        ) cx
+        WHERE NOT ch._fivetran_deleted
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: k_gq8qlhI4NPthzmUsB0_
+  position: 0
+  tag_id: E4hKazdh7YZC5dSMPgJKk
+  serdes/meta:
+  - id: k_gq8qlhI4NPthzmUsB0_
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: fct_charge
+  schema: stripe_semantic
+  type: table
+serdes/meta:
+- id: akN3tq1mJw09bqQ_vQwa7
+  label: fct_charge
+  model: Transform

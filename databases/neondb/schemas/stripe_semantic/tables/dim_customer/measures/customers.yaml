@@ -1,0 +1,21 @@
+created_at: '2026-10-19T21:28:54.880818Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count
+      - name: customers
+    source-table:
+    - neondb
+    - stripe_semantic
+    - dim_customer
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Number of Stripe customers.
+entity_id: OpIQDKD7TyUVAnLAC08Rh
+name: Customers
+serdes/meta:
+- id: OpIQDKD7TyUVAnLAC08Rh
+  label: customers
+  model: Measure

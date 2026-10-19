@@ -1,0 +1,21 @@
+created_at: '2026-10-19T21:28:48.87122Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count
+      - name: invoices
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_invoice
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Number of invoices, every status.
+entity_id: ZCb6D18_P9OOHyJM1rQ53
+name: Invoices
+serdes/meta:
+- id: ZCb6D18_P9OOHyJM1rQ53
+  label: invoices
+  model: Measure

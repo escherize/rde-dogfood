@@ -1,0 +1,52 @@
+name: Refund rate
+description: 'Self-consistent only, no external reference. Refunds (USD) divided by Gross revenue (USD), by charge month. Both read the same complete months. Refunds are attributed to the charge month, so a recent month can still rise. Owner: not yet assigned.'
+entity_id: APBajmIRJoQ9JcBm438x0
+created_at: '2026-10-19T21:30:44.101228Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - /
+      - name: refund_rate
+      - - metric
+        - {}
+        - MwP213PIeS5vx_c5I9r-P
+      - - metric
+        - {}
+        - HdKNVlaWOLAkkg-YMQ1oU
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_semantic
+        - fct_charge
+        - charge_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_charge
+          - is_complete_period
+      - true
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: APBajmIRJoQ9JcBm438x0
+  label: refund_rate
+  model: Card
+type: metric

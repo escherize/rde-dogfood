@@ -1,0 +1,28 @@
+created_at: '2026-10-19T21:29:14.879402Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_charge
+          - is_complete_period
+      - true
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Charges in months up to the last complete month (December 2024). Excludes any later, partial month.
+entity_id: JqrjYbVLVapVtqyfAlxd_
+name: Complete months (charges)
+serdes/meta:
+- id: JqrjYbVLVapVtqyfAlxd_
+  label: complete_months__charges_
+  model: Segment

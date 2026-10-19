@@ -1,0 +1,27 @@
+created_at: '2026-10-19T21:28:38.154193Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - distinct
+      - name: customers_charged
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_charge
+          - customer_id
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Distinct customers with a charge. Add the succeeded-charges filter for paying customers.
+entity_id: DERFP69Zjguf5OscSJvo4
+name: Customers charged
+serdes/meta:
+- id: DERFP69Zjguf5OscSJvo4
+  label: customers_charged
+  model: Measure

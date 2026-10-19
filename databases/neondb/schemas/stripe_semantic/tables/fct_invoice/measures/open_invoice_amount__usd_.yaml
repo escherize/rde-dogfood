@@ -1,0 +1,27 @@
+created_at: '2026-10-19T21:28:46.253298Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - sum
+      - name: amount_open_usd
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_invoice
+          - amount_open_usd
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_invoice
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Sum of USD still to collect on invoices with status open.
+entity_id: lDDwpXiiwym_5-2n8TOjW
+name: Open invoice amount (USD)
+serdes/meta:
+- id: lDDwpXiiwym_5-2n8TOjW
+  label: open_invoice_amount__usd_
+  model: Measure

@@ -1,0 +1,208 @@
+created_at: '2026-10-19T21:24:15.628984Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+description: 'Cases: ch1 usd plain; ch2 eur partial refund; ch3 gbp over-refunded (capped, flagged); ch4 cad failed (no revenue); ch5 aud in Jan 2025 (incomplete month); ch6 soft-deleted (excluded); ch7 last second of Dec 2024 (stays Dec, complete).'
+entity_id: N-un8oBVY4aTZaykYJ8Yv
+expectations:
+- columns:
+  - cast_type: VARCHAR(64)
+    name: charge_id
+  - cast_type: DATE
+    name: charge_month
+  - cast_type: BOOLEAN
+    name: is_complete_period
+  - cast_type: BOOLEAN
+    name: is_succeeded
+  - cast_type: BOOLEAN
+    name: is_refunded
+  - cast_type: BOOLEAN
+    name: is_over_refunded
+  - cast_type: NUMERIC(14,2)
+    name: amount_attempted_usd
+  - cast_type: NUMERIC(14,2)
+    name: revenue_gross_usd
+  - cast_type: NUMERIC(14,2)
+    name: revenue_refunded_usd
+  - cast_type: NUMERIC(14,2)
+    name: revenue_net_usd
+  format: rows
+  name: one row per live charge with revenue split by status, refund cap and FX
+  rows:
+  - amount_attempted_usd: 100
+    charge_id: ch1
+    charge_month: '2024-11-01'
+    is_complete_period: true
+    is_over_refunded: false
+    is_refunded: false
+    is_succeeded: true
+    revenue_gross_usd: 100
+    revenue_net_usd: 100
+    revenue_refunded_usd: 0
+  - amount_attempted_usd: 108.2
+    charge_id: ch2
+    charge_month: '2024-12-01'
+    is_complete_period: true
+    is_over_refunded: false
+    is_refunded: true
+    is_succeeded: true
+    revenue_gross_usd: 108.2
+    revenue_net_usd: 81.15
+    revenue_refunded_usd: 27.05
+  - amount_attempted_usd: 63.9
+    charge_id: ch3
+    charge_month: '2024-12-01'
+    is_complete_period: true
+    is_over_refunded: true
+    is_refunded: true
+    is_succeeded: true
+    revenue_gross_usd: 63.9
+    revenue_net_usd: 0
+    revenue_refunded_usd: 63.9
+  - amount_attempted_usd: 146
+    charge_id: ch4
+    charge_month: '2024-12-01'
+    is_complete_period: true
+    is_over_refunded: false
+    is_refunded: false
+    is_succeeded: false
+    revenue_gross_usd: 0
+    revenue_net_usd: 0
+    revenue_refunded_usd: 0
+  - amount_attempted_usd: 66
+    charge_id: ch5
+    charge_month: '2025-01-01'
+    is_complete_period: false
+    is_over_refunded: false
+    is_refunded: false
+    is_succeeded: true
+    revenue_gross_usd: 66
+    revenue_net_usd: 66
+    revenue_refunded_usd: 0
+  - amount_attempted_usd: 10
+    charge_id: ch7
+    charge_month: '2024-12-01'
+    is_complete_period: true
+    is_over_refunded: false
+    is_refunded: false
+    is_succeeded: true
+    revenue_gross_usd: 10
+    revenue_net_usd: 10
+    revenue_refunded_usd: 0
+  type: equals
+- name: charge_id is unique
+  sql: SELECT c.charge_id FROM stripe_semantic.fct_charge c GROUP BY c.charge_id HAVING count(*) > 1
+  type: empty
+- name: no revenue on a failed charge and net is never negative
+  sql: SELECT c.charge_id FROM stripe_semantic.fct_charge c WHERE (NOT c.is_succeeded AND (c.revenue_gross_usd <> 0 OR c.revenue_net_usd <> 0)) OR c.revenue_net_usd < 0 OR c.revenue_net_usd <> c.revenue_gross_usd - c.revenue_refunded_usd
+  type: empty
+inputs:
+- columns:
+  - cast_type: INTEGER
+    name: minor_unit_divisor
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_usd
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_eur
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_gbp
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_cad
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_aud
+  - cast_type: DATE
+    name: last_complete_month
+  format: rows
+  rows:
+  - last_complete_month: '2024-12-01'
+    minor_unit_divisor: 100
+    usd_per_aud: 0.66
+    usd_per_cad: 0.73
+    usd_per_eur: 1.082
+    usd_per_gbp: 1.278
+    usd_per_usd: 1
+  table:
+    name: cfg_stripe
+    schema: stripe_semantic
+- columns:
+  - cast_type: VARCHAR(64)
+    name: id
+  - cast_type: VARCHAR(64)
+    name: customer_id
+  - cast_type: VARCHAR(32)
+    name: status
+  - cast_type: VARCHAR(8)
+    name: currency
+  - cast_type: TIMESTAMP
+    name: created
+  - cast_type: INTEGER
+    name: amount
+  - cast_type: INTEGER
+    name: amount_refunded
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    amount: 10000
+    amount_refunded: 0
+    created: '2024-11-15 10:00:00'
+    currency: usd
+    customer_id: c1
+    id: ch1
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 10000
+    amount_refunded: 2500
+    created: '2024-12-10 10:00:00'
+    currency: eur
+    customer_id: c1
+    id: ch2
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 5000
+    amount_refunded: 7000
+    created: '2024-12-11 10:00:00'
+    currency: gbp
+    customer_id: c2
+    id: ch3
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 20000
+    amount_refunded: 0
+    created: '2024-12-12 10:00:00'
+    currency: cad
+    customer_id: c2
+    id: ch4
+    status: failed
+  - _fivetran_deleted: false
+    amount: 10000
+    amount_refunded: 0
+    created: '2025-01-05 10:00:00'
+    currency: aud
+    customer_id: c3
+    id: ch5
+    status: succeeded
+  - _fivetran_deleted: true
+    amount: 99900
+    amount_refunded: 0
+    created: '2024-12-01 10:00:00'
+    currency: usd
+    customer_id: c3
+    id: ch6
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 1000
+    amount_refunded: 0
+    created: '2024-12-31 23:59:59'
+    currency: usd
+    customer_id: c3
+    id: ch7
+    status: succeeded
+  table:
+    name: charge
+    schema: stripe_data
+name: 'fct_charge: revenue, refunds, FX, incomplete period'
+transform_id: akN3tq1mJw09bqQ_vQwa7
+serdes/meta:
+- id: N-un8oBVY4aTZaykYJ8Yv
+  label: fct_charge__revenue__refunds__fx__incomplete_period
+  model: TransformTest

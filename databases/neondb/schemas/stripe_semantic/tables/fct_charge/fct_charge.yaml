@@ -1,0 +1,287 @@
+caveats: Refunds come from the charge refunded amount, capped at the charge amount (3 charges over-refunded, flagged). Not the refund table (20 rows). USD uses fixed FX, not the rate on the day. Data ends 2024-12-31.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-19T21:26:12.952493Z'
+description: 'One row per Stripe charge (payment attempt), 426 charges, Jul-Dec 2024. Revenue columns count only succeeded charges; failed charges are kept with revenue 0. USD at fixed 2024-average FX. Source: stripe_data.charge. Owner: not yet assigned.'
+description_set: true
+entity_type: entity/TransactionTable
+fields:
+- created_at: '2026-10-19T21:26:45.569709Z'
+  description: Charge amount in the charge currency, failed charges included.
+  description_set: true
+  display_name: Amount attempted (local)
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: amount_attempted_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:47.184169Z'
+  description: Charge amount in USD, failed charges included. Not revenue.
+  description_set: true
+  display_name: Amount attempted (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: amount_attempted_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:35.340607Z'
+  description: When the charge was made (UTC). Basis for the revenue month.
+  description_set: true
+  display_name: Charge created at
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: charge_created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:33.490684Z'
+  description: 'Currency the customer was charged in: usd, eur, gbp, cad, aud. Amounts in USD columns are converted.'
+  description_set: true
+  display_name: Charge currency
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: charge_currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:26.584916Z'
+  description: Stripe charge id (ch_...).
+  description_set: true
+  display_name: Charge ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: charge_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:37.127451Z'
+  description: Month of the charge (UTC). Default time dimension for revenue.
+  description_set: true
+  display_name: Charge month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: charge_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:30.079104Z'
+  description: succeeded or failed. Only succeeded charges count as revenue.
+  description_set: true
+  display_name: Charge status
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: charge_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:28.366665Z'
+  description: Customer who was charged. Links to Stripe customers.
+  description_set: true
+  display_name: Customer ID
+  fk_target_field_id:
+  - neondb
+  - stripe_semantic
+  - dim_customer
+  - customer_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: customer_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:43.791029Z'
+  description: Fixed 2024-average USD per unit of the charge currency (D4).
+  description_set: true
+  display_name: FX USD per unit
+  visibility_type: details-only
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: fx_usd_per_unit
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:38.773289Z'
+  description: False for months after the last complete month (December 2024). None today.
+  description_set: true
+  display_name: Is complete period
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: is_complete_period
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:42.176155Z'
+  description: True when Stripe shows more refunded than charged (3 charges). Revenue refunded is capped at the charge amount.
+  description_set: true
+  display_name: Is over-refunded
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: is_over_refunded
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:40.459169Z'
+  description: True when any part of the charge was refunded.
+  description_set: true
+  display_name: Is refunded
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: is_refunded
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:31.692062Z'
+  description: True when the charge succeeded.
+  description_set: true
+  display_name: Is succeeded
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: is_succeeded
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:48.974997Z'
+  description: Succeeded charge amount in USD, before refunds. 0 for failed charges.
+  description_set: true
+  display_name: Revenue gross (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: revenue_gross_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:52.364717Z'
+  description: Gross minus refunded, USD. 0 for failed charges.
+  description_set: true
+  display_name: Revenue net (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: revenue_net_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:50.669015Z'
+  description: Refunded amount in USD on succeeded charges, capped at the charge amount. 0 for failed charges.
+  description_set: true
+  display_name: Revenue refunded (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_charge
+    model: Table
+  - id: revenue_refunded_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: stripe_semantic
+  model: Schema
+- id: fct_charge
+  model: Table
+- id: '1'
+  model: TableUserSettings

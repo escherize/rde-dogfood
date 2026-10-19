@@ -1,0 +1,193 @@
+created_at: '2026-10-19T21:24:43.569283Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+description: 'Cases: in1 usd paid; in2 eur open; in3 gbp void (due but never paid or open); in4 cad uncollectible; in5 aud paid in Jan 2025 (incomplete month); in6 soft-deleted (excluded).'
+entity_id: KpQcjKuiOr7hTz6ENF1m4
+expectations:
+- columns:
+  - cast_type: VARCHAR(64)
+    name: invoice_id
+  - cast_type: DATE
+    name: invoice_month
+  - cast_type: BOOLEAN
+    name: is_complete_period
+  - cast_type: BOOLEAN
+    name: is_paid_invoice
+  - cast_type: NUMERIC(14,2)
+    name: amount_due_usd
+  - cast_type: NUMERIC(14,2)
+    name: amount_paid_usd
+  - cast_type: NUMERIC(14,2)
+    name: amount_open_usd
+  format: rows
+  name: paid and open amounts by status, FX and month completeness
+  rows:
+  - amount_due_usd: 100
+    amount_open_usd: 0
+    amount_paid_usd: 100
+    invoice_id: in1
+    invoice_month: '2024-11-01'
+    is_complete_period: true
+    is_paid_invoice: true
+  - amount_due_usd: 54.1
+    amount_open_usd: 54.1
+    amount_paid_usd: 0
+    invoice_id: in2
+    invoice_month: '2024-12-01'
+    is_complete_period: true
+    is_paid_invoice: false
+  - amount_due_usd: 63.9
+    amount_open_usd: 0
+    amount_paid_usd: 0
+    invoice_id: in3
+    invoice_month: '2024-12-01'
+    is_complete_period: true
+    is_paid_invoice: false
+  - amount_due_usd: 146
+    amount_open_usd: 0
+    amount_paid_usd: 0
+    invoice_id: in4
+    invoice_month: '2024-12-01'
+    is_complete_period: true
+    is_paid_invoice: false
+  - amount_due_usd: 66
+    amount_open_usd: 0
+    amount_paid_usd: 66
+    invoice_id: in5
+    invoice_month: '2025-01-01'
+    is_complete_period: false
+    is_paid_invoice: true
+  type: equals
+- name: invoice_id is unique
+  sql: SELECT i.invoice_id FROM stripe_semantic.fct_invoice i GROUP BY i.invoice_id HAVING count(*) > 1
+  type: empty
+- name: amounts are never negative
+  sql: SELECT i.invoice_id FROM stripe_semantic.fct_invoice i WHERE i.amount_due_usd < 0 OR i.amount_paid_usd < 0 OR i.amount_open_usd < 0
+  type: empty
+inputs:
+- columns:
+  - cast_type: INTEGER
+    name: minor_unit_divisor
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_usd
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_eur
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_gbp
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_cad
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_aud
+  - cast_type: DATE
+    name: last_complete_month
+  format: rows
+  rows:
+  - last_complete_month: '2024-12-01'
+    minor_unit_divisor: 100
+    usd_per_aud: 0.66
+    usd_per_cad: 0.73
+    usd_per_eur: 1.082
+    usd_per_gbp: 1.278
+    usd_per_usd: 1
+  table:
+    name: cfg_stripe
+    schema: stripe_semantic
+- columns:
+  - cast_type: VARCHAR(64)
+    name: id
+  - cast_type: VARCHAR(64)
+    name: customer_id
+  - cast_type: VARCHAR(64)
+    name: subscription_id
+  - cast_type: VARCHAR(32)
+    name: status
+  - cast_type: VARCHAR(8)
+    name: currency
+  - cast_type: TIMESTAMP
+    name: created
+  - cast_type: TIMESTAMP
+    name: due_date
+  - cast_type: INTEGER
+    name: amount_due
+  - cast_type: INTEGER
+    name: amount_paid
+  - cast_type: INTEGER
+    name: amount_remaining
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    amount_due: 10000
+    amount_paid: 10000
+    amount_remaining: 0
+    created: '2024-11-15 10:00:00'
+    currency: usd
+    customer_id: c1
+    due_date: '2024-11-22 10:00:00'
+    id: in1
+    status: paid
+    subscription_id: s1
+  - _fivetran_deleted: false
+    amount_due: 5000
+    amount_paid: 0
+    amount_remaining: 5000
+    created: '2024-12-10 10:00:00'
+    currency: eur
+    customer_id: c1
+    due_date: '2024-12-17 10:00:00'
+    id: in2
+    status: open
+    subscription_id: s1
+  - _fivetran_deleted: false
+    amount_due: 5000
+    amount_paid: 0
+    amount_remaining: 5000
+    created: '2024-12-11 10:00:00'
+    currency: gbp
+    customer_id: c2
+    due_date: '2024-12-18 10:00:00'
+    id: in3
+    status: void
+    subscription_id: s2
+  - _fivetran_deleted: false
+    amount_due: 20000
+    amount_paid: 0
+    amount_remaining: 20000
+    created: '2024-12-12 10:00:00'
+    currency: cad
+    customer_id: c2
+    due_date: '2024-12-19 10:00:00'
+    id: in4
+    status: uncollectible
+    subscription_id: s2
+  - _fivetran_deleted: false
+    amount_due: 10000
+    amount_paid: 10000
+    amount_remaining: 0
+    created: '2025-01-05 10:00:00'
+    currency: aud
+    customer_id: c3
+    due_date: '2025-01-12 10:00:00'
+    id: in5
+    status: paid
+    subscription_id: s3
+  - _fivetran_deleted: true
+    amount_due: 99900
+    amount_paid: 99900
+    amount_remaining: 0
+    created: '2024-12-01 10:00:00'
+    currency: usd
+    customer_id: c3
+    due_date: '2024-12-08 10:00:00'
+    id: in6
+    status: paid
+    subscription_id: s3
+  table:
+    name: invoice
+    schema: stripe_data
+name: 'fct_invoice: paid vs open vs void, FX, incomplete period'
+transform_id: X933BkMlGulZ11ujaniDs
+serdes/meta:
+- id: KpQcjKuiOr7hTz6ENF1m4
+  label: fct_invoice__paid_vs_open_vs_void__fx__incomplete_period
+  model: TransformTest

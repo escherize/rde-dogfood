@@ -1,0 +1,30 @@
+created_at: '2026-10-19T21:28:52.258924Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - name: paid_invoices
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - stripe_semantic
+            - fct_invoice
+            - is_paid_invoice
+        - true
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_invoice
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Number of invoices with status paid.
+entity_id: z8buRtrCLHHJJeG09uSZQ
+name: Paid invoices
+serdes/meta:
+- id: z8buRtrCLHHJJeG09uSZQ
+  label: paid_invoices
+  model: Measure

@@ -1,0 +1,235 @@
+collection_id: DJ9bci0TidSniBuwSmidn
+content_type: application/json+vnd.prose-mirror
+created_at: '2026-10-19T21:38:03.47822Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+document:
+  content:
+  - attrs:
+      _id: 6d5e0b2e-14ce-4b9f-9cce-da3d1fed50ce
+      level: 1
+    content:
+    - text: How to use Stripe numbers
+      type: text
+    type: heading
+  - attrs:
+      _id: dce9f6a9-05a4-4f07-8141-d35bb8ff11b5
+    content:
+    - text: 'This is the Stripe semantic layer: revenue, refunds, payment success and invoices, in USD, by month. Data comes from the stripe_data tables, a fixed extract that ends on 2024-12-31 (subscriptions end 2024-11-30). The latest complete month is December 2024.'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: 003b25c8-ca3c-46ff-9e0a-7bbd2d60b743
+      level: 2
+    content:
+    - text: Metrics (Library > Metrics)
+      type: text
+    type: heading
+  - attrs:
+      _id: 5cd7b5af-856b-40d1-bb70-55305a8ae9ad
+    content:
+    - content:
+      - attrs:
+          _id: 5fa6e5bc-ad87-4c06-ab9e-ffa9a6fe6098
+        content:
+        - text: 'Net revenue (USD): money collected from succeeded charges minus refunds. Reconciled to analytics.mart_stripe_fct_charge on 2026-10-19, to the dollar each month Jul-Dec 2024. Not confirmed by finance. December 2024: $30,375.77.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 7f4ebc02-883e-4de7-ad0e-ad8e7ac0b10d
+        content:
+        - text: 'Gross revenue (USD): succeeded charges before refunds. Self-consistent only.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 7347efb9-caf6-4192-9aae-9d11869bdf97
+        content:
+        - text: 'Refunds (USD): refunded amount on succeeded charges, capped at the charge amount, shown in the month of the original charge. Self-consistent only.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 6f6733b7-dac3-40a5-97d9-342a6ff0dee0
+        content:
+        - text: 'Refund rate: Refunds divided by Gross revenue. Self-consistent only.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 03c74092-5535-451f-87cc-4a2597b358d8
+        content:
+        - text: 'Paying customers: distinct customers with a succeeded charge in the month. Months do not add up. Self-consistent only.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 7b9c3dd0-8f93-4740-805b-9d3bf68c0a5d
+        content:
+        - text: 'Payment success rate: share of charge attempts that succeeded. Self-consistent only.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: f5ceac23-f13f-4472-86eb-f65cb1e22a2e
+        content:
+        - text: 'Paid invoice amount (USD): USD paid on paid invoices, by invoice creation month. Does not tie to Net revenue: charges carry no invoice link (Dec 2024: $9.9k vs $30.4k). Self-consistent only.'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 93b0cfd7-538d-45f1-b20a-474dce46b7a3
+        content:
+        - text: 'Open invoice amount (USD): USD still to collect on open invoices, a snapshot as of the extract. Self-consistent only.'
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: 77f4a2e3-9c47-4d92-8b06-470626d58ef8
+      level: 2
+    content:
+    - text: Segments
+      type: text
+    type: heading
+  - attrs:
+      _id: ac610a59-d533-4989-a9ca-655a1b2f3c40
+    content:
+    - content:
+      - attrs:
+          _id: 9210c55d-9772-4d21-8adc-c0cf13a8bb88
+        content:
+        - text: 'Charges: Succeeded charges, Failed charges, Refunded charges, Over-refunded charges (3, worth checking in Stripe), Complete months (charges).'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 91dc9831-d699-4f66-b19e-ab4aeea03af3
+        content:
+        - text: 'Invoices: Paid invoices, Open invoices, Complete months (invoices).'
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: eef82e53-605d-433b-a432-3873a53bda6c
+        content:
+        - text: 'Customers: Delinquent customers.'
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: 21131d3e-bf62-448f-aa24-a20b84bb4392
+      level: 2
+    content:
+    - text: Rules decided for this layer
+      type: text
+    type: heading
+  - attrs:
+      _id: 5f149a8f-07d8-4684-ac21-84993f94925b
+    content:
+    - content:
+      - attrs:
+          _id: 1f938da5-fd41-4f14-a333-0ae1477a0f2f
+        content:
+        - text: Source is stripe_data, not raw_stripe (raw_stripe has 320 of 600 charges soft-deleted and broken links).
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 10507ec8-d37a-4a81-a348-94302a0c5ebe
+        content:
+        - text: Revenue is money collected (succeeded charges). Invoiced and paid is a separate metric.
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 2882d4e8-2689-4e1b-bfd5-f8713ca0b2d4
+        content:
+        - text: Refunds come from each charge's refunded amount, capped at the charge amount, not from the refund table (20 rows). Using the refund table would add 0.7% to December 2024 net revenue.
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 3011a1a7-fbf5-4914-9207-3e09e409e8ee
+        content:
+        - text: Amounts are minor units divided by 100. Five currencies convert to USD at fixed 2024-average rates (EUR 1.082, GBP 1.278, CAD 0.73, AUD 0.66), because there is no FX table. These are not the rates on the day of each charge.
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: fee87cab-f347-46fe-a67f-3279a7117e2d
+        content:
+        - text: Month is the charge or invoice creation time in UTC.
+          type: text
+        type: paragraph
+      type: listItem
+    - content:
+      - attrs:
+          _id: 01b91c66-953a-474a-9c76-d79bfec9f7c4
+        content:
+        - text: Customer names and emails are left out until the audience is confirmed.
+          type: text
+        type: paragraph
+      type: listItem
+    type: bulletList
+  - attrs:
+      _id: fd66acef-eb79-4f9e-b987-1e5287a26c10
+      level: 2
+    content:
+    - text: Who owns definitions and how to ask a new question
+      type: text
+    type: heading
+  - attrs:
+      _id: 78718dda-f78c-4ef3-be16-02341771c0f4
+    content:
+    - text: 'Definitions owner: not yet assigned. Until one is named, the person who commissioned this layer decides changes. To ask a new question, start from the published tables Stripe charges, Stripe invoices or Stripe customers and pick a metric or measure; break out by customer fields through the customer link. If a question needs something the layer cannot do, tell the owner so it is logged as a gap instead of a one-off SQL question.'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: ff85195c-0ff9-4814-b308-7f73aec4fb4d
+      level: 2
+    content:
+    - text: When a number looks wrong
+      type: text
+    type: heading
+  - attrs:
+      _id: 4b66f434-5136-4500-81fa-4d10eef134d9
+    content:
+    - text: Check the metric's description for its exclusions and trust label first. Then compare it with the table it sits on. If they still disagree, tell the owner with the month and the two figures. A shipped number that was wrong is fixed in place with a dated change line in its description and a note on the chart, never silently.
+      type: text
+    type: paragraph
+  - attrs:
+      _id: bf2b38cb-25d0-4726-a4d0-e2bb112f961d
+      level: 2
+    content:
+    - text: Coming next
+      type: text
+    type: heading
+  - attrs:
+      _id: 5768d61d-99b2-4a0f-bdc1-d2df03d815fe
+    content:
+    - text: Subscriptions, MRR and churn. Plans bill by day, week, month and year, so how they are normalised to a month is an open decision and these numbers are not in the layer yet.
+      type: text
+    type: paragraph
+  type: doc
+entity_id: fszIZ62ETafXYi1vbOCB8
+name: How to use Stripe numbers
+updated_at: '2026-10-19T21:38:03.47822Z'
+serdes/meta:
+- id: fszIZ62ETafXYi1vbOCB8
+  label: how_to_use_stripe_numbers
+  model: Document

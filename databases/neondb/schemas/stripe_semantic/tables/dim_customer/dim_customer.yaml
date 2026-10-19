@@ -1,0 +1,112 @@
+caveats: No personal data by design. Subscription count is lifetime, not currently active.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-19T21:26:11.264454Z'
+description: 'One row per Stripe customer. Home currency, delinquency flag, number of subscriptions ever created. No names or emails (not cleared for this audience). Source: stripe_data.customer. Owner: not yet assigned.'
+description_set: true
+entity_type: entity/UserTable
+fields:
+- created_at: '2026-10-19T21:26:18.100836Z'
+  description: When the customer was created in Stripe (UTC).
+  description_set: true
+  display_name: Customer created at
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: dim_customer
+    model: Table
+  - id: customer_created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:19.867466Z'
+  description: Month the customer was created.
+  description_set: true
+  display_name: Customer created month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: dim_customer
+    model: Table
+  - id: customer_created_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:16.400845Z'
+  description: Stripe customer id (cus_...).
+  description_set: true
+  display_name: Customer ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: dim_customer
+    model: Table
+  - id: customer_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:21.470498Z'
+  description: Currency set on the customer in Stripe. Charges and invoices carry their own currency.
+  description_set: true
+  display_name: Home currency
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: dim_customer
+    model: Table
+  - id: home_currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:23.164639Z'
+  description: 'Stripe delinquent flag: the customer has an unpaid invoice past due.'
+  description_set: true
+  display_name: Is delinquent
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: dim_customer
+    model: Table
+  - id: is_delinquent
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:26:24.956673Z'
+  description: Subscriptions ever created for this customer (any status).
+  description_set: true
+  display_name: Subscription count
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: dim_customer
+    model: Table
+  - id: subscription_count
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: stripe_semantic
+  model: Schema
+- id: dim_customer
+  model: Table
+- id: '1'
+  model: TableUserSettings

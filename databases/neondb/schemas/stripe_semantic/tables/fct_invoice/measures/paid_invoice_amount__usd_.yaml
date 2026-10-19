@@ -1,0 +1,27 @@
+created_at: '2026-10-19T21:28:43.560752Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - sum
+      - name: amount_paid_usd
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_invoice
+          - amount_paid_usd
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_invoice
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Sum of USD paid on invoices with status paid.
+entity_id: EedQa1e7bqP_q6yh5e7HN
+name: Paid invoice amount (USD)
+serdes/meta:
+- id: EedQa1e7bqP_q6yh5e7HN
+  label: paid_invoice_amount__usd_
+  model: Measure

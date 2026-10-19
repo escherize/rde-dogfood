@@ -1,0 +1,264 @@
+caveats: 'Does not reconcile to charges: charges carry no invoice link. Paid amount counts status paid only; open amount counts status open only. USD uses fixed 2024-average FX. Data ends 2024-12-31.'
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-19T21:26:14.660364Z'
+description: 'One row per Stripe invoice, 848 invoices, Jan-Dec 2024. Amount due, paid and open in USD. Source: stripe_data.invoice. Owner: not yet assigned.'
+description_set: true
+entity_type: entity/TransactionTable
+fields:
+- created_at: '2026-10-19T21:27:34.673419Z'
+  description: Invoice amount due in the invoice currency, every status.
+  description_set: true
+  display_name: Amount due (local)
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: amount_due_local
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:36.379371Z'
+  description: Invoice amount due in USD, every status including void and uncollectible. Not revenue.
+  description_set: true
+  display_name: Amount due (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: amount_due_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:39.474713Z'
+  description: USD still to collect on invoices with status open. 0 for other statuses.
+  description_set: true
+  display_name: Amount open (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: amount_open_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:37.891718Z'
+  description: USD paid on invoices with status paid. 0 for other statuses.
+  description_set: true
+  display_name: Amount paid (USD)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: amount_paid_usd
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:18.979226Z'
+  description: Customer who was invoiced. Links to Stripe customers.
+  description_set: true
+  display_name: Customer ID
+  fk_target_field_id:
+  - neondb
+  - stripe_semantic
+  - dim_customer
+  - customer_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: customer_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:33.166813Z'
+  description: Fixed 2024-average USD per unit of the invoice currency (D4).
+  description_set: true
+  display_name: FX USD per unit
+  visibility_type: details-only
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: fx_usd_per_unit
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:26.977938Z'
+  description: When the invoice was created (UTC). Basis for the invoice month.
+  description_set: true
+  display_name: Invoice created at
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: invoice_created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:25.374612Z'
+  description: 'Currency of the invoice: usd, eur, gbp, cad, aud. Amounts in USD columns are converted.'
+  description_set: true
+  display_name: Invoice currency
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: invoice_currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:31.654633Z'
+  description: Due date set on the invoice (UTC).
+  description_set: true
+  display_name: Invoice due at
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: invoice_due_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:17.462781Z'
+  description: Stripe invoice id (in_...).
+  description_set: true
+  display_name: Invoice ID
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: invoice_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:28.464221Z'
+  description: Month the invoice was created (UTC). Default time dimension for invoices.
+  description_set: true
+  display_name: Invoice month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: invoice_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:22.090764Z'
+  description: paid, open, void, or uncollectible.
+  description_set: true
+  display_name: Invoice status
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: invoice_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:29.887763Z'
+  description: False for months after the last complete month (December 2024). None today.
+  description_set: true
+  display_name: Is complete period
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: is_complete_period
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:23.675001Z'
+  description: True when status is paid.
+  description_set: true
+  display_name: Is paid invoice
+  has_field_values: list
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: is_paid_invoice
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-19T21:27:20.482779Z'
+  description: Stripe subscription the invoice belongs to (sub_...). Plain id for now; the subscription table comes in the next slice.
+  description_set: true
+  display_name: Subscription ID
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_semantic
+    model: Schema
+  - id: fct_invoice
+    model: Table
+  - id: subscription_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: stripe_semantic
+  model: Schema
+- id: fct_invoice
+  model: Table
+- id: '1'
+  model: TableUserSettings

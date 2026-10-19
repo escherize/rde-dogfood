@@ -1,0 +1,28 @@
+created_at: '2026-10-19T21:29:17.561985Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_invoice
+          - invoice_status
+      - open
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_invoice
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Invoices with status open: issued and not yet paid (131 of 848). Excludes void and uncollectible.'
+entity_id: TLewguMs6dOwFWenFN2pX
+name: Open invoices
+serdes/meta:
+- id: TLewguMs6dOwFWenFN2pX
+  label: open_invoices
+  model: Segment

@@ -1,0 +1,47 @@
+name: Payment success rate
+description: 'Self-consistent only, no external reference. Share of charge attempts that succeeded, by charge month. Counts every attempt, including repeated attempts for the same payment. Complete months only. Owner: not yet assigned.'
+entity_id: f1aeYs-kMNM5hnSoqVXpP
+created_at: '2026-10-19T21:30:24.10568Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - iY1Kxg97lVQRJKCQHrytu
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_semantic
+        - fct_charge
+        - charge_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_charge
+          - is_complete_period
+      - true
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: f1aeYs-kMNM5hnSoqVXpP
+  label: payment_success_rate
+  model: Card
+type: metric

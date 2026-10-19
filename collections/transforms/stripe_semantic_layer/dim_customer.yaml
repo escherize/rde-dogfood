@@ -1,0 +1,53 @@
+collection_id: 3800BnIf9G3PoKla9095T
+created_at: '2026-10-19T21:23:34.83345Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+description: 'One row per: Stripe customer Key: customer_id Sources: stripe_data.customer, stripe_data.subscription Definition: A Stripe customer with its home currency, delinquency flag and number of subscriptions ever created. No names or emails (D6). Caveats: Soft-deleted customers (_fivetran_deleted) are excluded (none today). Names and emails are deliberately left out until the audience is confirmed. '
+entity_id: O2q__TQN8Ex_RRKId2WPS
+indexes: []
+name: dim_customer
+owner_user_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: Stripe customer
+        -- Key:         customer_id
+        -- Sources:     stripe_data.customer, stripe_data.subscription
+        -- Definition:  A Stripe customer with its home currency, delinquency flag and number of subscriptions ever created. No names or emails (D6).
+        -- Caveats:     Soft-deleted customers (_fivetran_deleted) are excluded (none today). Names and emails are deliberately left out until the audience is confirmed.
+        SELECT
+          cu.id AS customer_id,
+          cu.created AS customer_created_at,
+          date_trunc('month', cu.created)::date AS customer_created_month,
+          cu.currency AS home_currency,
+          COALESCE(cu.delinquent, false) AS is_delinquent,
+          COALESCE(sb.subscription_count, 0) AS subscription_count
+        FROM stripe_data.customer cu
+        LEFT JOIN (
+          SELECT s.customer_id, count(*) AS subscription_count
+          FROM stripe_data.subscription s
+          WHERE NOT s._fivetran_deleted
+          GROUP BY s.customer_id
+        ) sb ON sb.customer_id = cu.id
+        WHERE NOT cu._fivetran_deleted
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: Ob5GEVR5XlTN3hXBMdvaj
+  position: 0
+  tag_id: E4hKazdh7YZC5dSMPgJKk
+  serdes/meta:
+  - id: Ob5GEVR5XlTN3hXBMdvaj
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: dim_customer
+  schema: stripe_semantic
+  type: table
+serdes/meta:
+- id: O2q__TQN8Ex_RRKId2WPS
+  label: dim_customer
+  model: Transform

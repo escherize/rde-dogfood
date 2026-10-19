@@ -1,0 +1,47 @@
+name: Net revenue (USD)
+description: 'Reconciled to analytics.mart_stripe_fct_charge on 2026-10-19, to the dollar for each month Jul-Dec 2024 (the older table uses the same fixed FX, so this is a build check, not a finance sign-off). Money collected from succeeded charges minus refunds, in USD at fixed 2024-average FX, by charge month (UTC). Excludes failed charges (109 of 426) and invoices: paid invoices are a separate metric and do not tie to charges (Dec 2024: $30.4k here vs $9.9k paid invoices). Refunds use each charge''s refunded amount, capped at the charge amount, not the refund table (the refund-table reading would add 0.7% to Dec 2024). Complete months only; data ends 2024-12-31. Not comparable to accounting revenue or to MRR. Owner: not yet assigned.'
+entity_id: LBcOLH2AY6gfMnzv8ATOd
+created_at: '2026-10-19T21:29:55.405649Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - bSs1VtJyp4uBeg-4Avyu9
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_semantic
+        - fct_charge
+        - charge_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_charge
+          - is_complete_period
+      - true
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: LBcOLH2AY6gfMnzv8ATOd
+  label: net_revenue__usd_
+  model: Card
+type: metric

@@ -1,0 +1,50 @@
+collection_id: 3800BnIf9G3PoKla9095T
+created_at: '2026-10-19T21:23:18.291944Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+description: 'One row per: constant set (single row) Key: cfg_key Sources: none (literals) Definition: Constants for the Stripe semantic layer: minor-unit divisor, fixed FX to USD, last complete month. Caveats: FX is a fixed 2024-average, no FX table in the warehouse (D4). last_complete_month pinned to the extract: max(created) on stripe_data.charge and invoice is 2024-12-31 (not current_date). '
+entity_id: hYdaFB8tAX7KuK919Px4Q
+indexes: []
+name: cfg_stripe
+owner_user_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: constant set (single row)
+        -- Key:         cfg_key
+        -- Sources:     none (literals)
+        -- Definition:  Constants for the Stripe semantic layer: minor-unit divisor, fixed FX to USD, last complete month.
+        -- Caveats:     FX is a fixed 2024-average, no FX table in the warehouse (D4). last_complete_month pinned to the extract: max(created) on stripe_data.charge and invoice is 2024-12-31 (not current_date).
+        SELECT
+          'stripe' AS cfg_key,
+          100 AS minor_unit_divisor,
+          'D4: Stripe amounts are minor units (cents); all five currencies have 2 decimals' AS minor_unit_divisor_note,
+          1.000::numeric(10,4) AS usd_per_usd,
+          1.082::numeric(10,4) AS usd_per_eur,
+          1.278::numeric(10,4) AS usd_per_gbp,
+          0.730::numeric(10,4) AS usd_per_cad,
+          0.660::numeric(10,4) AS usd_per_aud,
+          'D4: fixed 2024-average FX, same rates as analytics.cfg_stripe; no FX table in warehouse' AS fx_note,
+          DATE '2024-12-01' AS last_complete_month,
+          'Pinned to extract: max(created) of stripe_data.charge and stripe_data.invoice = 2024-12-31' AS last_complete_month_note
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: BSElzRgIvReOIFQcGIhaC
+  position: 0
+  tag_id: E4hKazdh7YZC5dSMPgJKk
+  serdes/meta:
+  - id: BSElzRgIvReOIFQcGIhaC
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: cfg_stripe
+  schema: stripe_semantic
+  type: table
+serdes/meta:
+- id: hYdaFB8tAX7KuK919Px4Q
+  label: cfg_stripe
+  model: Transform

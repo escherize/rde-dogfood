@@ -1,0 +1,47 @@
+name: Open invoice amount (USD)
+description: 'Self-consistent only, no external reference. USD still to collect on invoices with status open, by invoice creation month. A snapshot as of the extract, not a history of what was open at the time. Excludes void and uncollectible invoices. Owner: not yet assigned.'
+entity_id: t1402le2xv0C0gsDZYuDZ
+created_at: '2026-10-19T21:30:34.427301Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - lDDwpXiiwym_5-2n8TOjW
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_semantic
+        - fct_invoice
+        - invoice_month
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_invoice
+          - is_complete_period
+      - true
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_invoice
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: t1402le2xv0C0gsDZYuDZ
+  label: open_invoice_amount__usd_
+  model: Card
+type: metric

@@ -1,0 +1,27 @@
+created_at: '2026-10-19T21:28:22.089182Z'
+creator_id: api-key-user-0f189fb9-89ed-40a4-b27c-e500d157020d@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - sum
+      - name: revenue_refunded_usd
+      - - field
+        - {}
+        - - neondb
+          - stripe_semantic
+          - fct_charge
+          - revenue_refunded_usd
+    source-table:
+    - neondb
+    - stripe_semantic
+    - fct_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Sum of USD refunded on succeeded charges, capped at each charge amount. From the charge refunded amount, not the refund table.
+entity_id: lIjzOwBOVUJJ_bH09vOzP
+name: Refunds (USD)
+serdes/meta:
+- id: lIjzOwBOVUJJ_bH09vOzP
+  label: refunds__usd_
+  model: Measure
