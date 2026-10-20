@@ -1,0 +1,45 @@
+collection_id: 4IH_yYO0q03lGkCQEEzCe
+created_at: '2026-10-20T15:59:54.76363Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+description: 'One row (configuration). Key: none. Sources: none (literals). Definition: named constants for the stripe_core layer: which charge and refund status counts as money collected or returned, and the last complete month. Caveats: revenue_charge_status = succeeded (D3), revenue_refund_status = succeeded (D4), last_complete_month = 2024-11-01 (D6, pinned to the extract: raw_stripe ends 2024-12-01, December holds 2 charges). Change a constant with a transform update, run the tests, then run the job.'
+entity_id: C1bZvRsdBfnH8ADI2Mi29
+indexes: []
+name: cfg_stripe_core
+owner_user_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: configuration (single row)
+        -- Key:         none (one row)
+        -- Sources:     none (literals)
+        -- Definition:  named constants for the stripe_core layer; every model that needs one cross-joins this table
+        -- Caveats:     revenue_charge_status = succeeded (D3); revenue_refund_status = succeeded (D4); last_complete_month = 2024-11-01 (D6, pinned to the extract: raw_stripe ends 2024-12-01)
+        SELECT
+          'succeeded'::varchar(32) AS revenue_charge_status,
+          'D3'::varchar(8)         AS revenue_charge_status_note,
+          'succeeded'::varchar(32) AS revenue_refund_status,
+          'D4'::varchar(8)         AS revenue_refund_status_note,
+          DATE '2024-11-01'        AS last_complete_month,
+          'D6'::varchar(8)         AS last_complete_month_note
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: s24_cVYBStOgnp0C0s9fY
+  position: 0
+  tag_id: llixl3lD5NdODdR49lNKv
+  serdes/meta:
+  - id: s24_cVYBStOgnp0C0s9fY
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: cfg_stripe_core
+  schema: stripe_core
+  type: table
+serdes/meta:
+- id: C1bZvRsdBfnH8ADI2Mi29
+  label: cfg_stripe_core
+  model: Transform

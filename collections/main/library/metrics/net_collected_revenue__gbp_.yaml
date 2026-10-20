@@ -1,0 +1,50 @@
+name: Net collected revenue (GBP)
+description: 'Self-consistent only, no external reference. Money collected from live, succeeded charges minus live, succeeded refunds, per month, in GBP only (Stripe has no exchange rates here, so currencies are separate metrics and never added together). Complete months only (through 2024-11; December is partial). Excludes test-mode and loader-deleted records. Revenue is by charge status, not the paid flag. Refunds come from the refund table in their own currency and month, even where the charge is deleted (D7, about 5% of net). Not comparable to accounting revenue. Owner: to be assigned.'
+entity_id: Fc3iq-M2uUnDtR1C-E7HC
+created_at: '2026-10-20T17:31:41.295225Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - uMcnn3E9XmkgDK_26X69_
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_core
+        - fct_stripe_revenue_month
+        - revenue_month
+    filters:
+    - - segment
+      - {}
+      - ZBcH4BW3AMU2Pv3VE7JN7
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_core
+          - fct_stripe_revenue_month
+          - currency
+      - gbp
+    source-table:
+    - neondb
+    - stripe_core
+    - fct_stripe_revenue_month
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: Fc3iq-M2uUnDtR1C-E7HC
+  label: net_collected_revenue__gbp_
+  model: Card
+type: metric

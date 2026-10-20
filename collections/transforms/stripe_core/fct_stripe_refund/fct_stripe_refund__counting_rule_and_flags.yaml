@@ -1,0 +1,222 @@
+created_at: '2026-10-20T16:02:41.715926Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+description: 'Cases: 1 live succeeded refund (counted); 2 loader-deleted (dropped, D1); 3 test-mode (kept, not counted, D2); 4 pending (not counted, D4); 5 currency differs from its charge (flagged, D7); 6 charge missing (counted, flagged unknown_or_deleted, D7); 7 refund 150 on a 100 charge (flagged exceeds); 8 refund in the partial month (D6).'
+entity_id: fsFYHD4WxiWQlyi44ViWl
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: refund_id
+  - cast_type: NUMERIC(14,2)
+    name: amount_refunded
+  - cast_type: BOOLEAN
+    name: is_revenue_refund
+  - cast_type: VARCHAR(32)
+    name: charge_link
+  - cast_type: BOOLEAN
+    name: currency_matches_charge
+  - cast_type: BOOLEAN
+    name: exceeds_charge_amount
+  - cast_type: BOOLEAN
+    name: is_complete_month
+  format: rows
+  name: one row per kept refund with counting rule and flags
+  rows:
+  - amount_refunded: 40
+    charge_link: known
+    currency_matches_charge: true
+    exceeds_charge_amount: false
+    is_complete_month: true
+    is_revenue_refund: true
+    refund_id: 1
+  - amount_refunded: 15
+    charge_link: known
+    currency_matches_charge: true
+    exceeds_charge_amount: false
+    is_complete_month: true
+    is_revenue_refund: false
+    refund_id: 3
+  - amount_refunded: 5
+    charge_link: known
+    currency_matches_charge: true
+    exceeds_charge_amount: false
+    is_complete_month: true
+    is_revenue_refund: false
+    refund_id: 4
+  - amount_refunded: 20
+    charge_link: known
+    currency_matches_charge: false
+    exceeds_charge_amount: false
+    is_complete_month: true
+    is_revenue_refund: true
+    refund_id: 5
+  - amount_refunded: 30
+    charge_link: unknown_or_deleted
+    currency_matches_charge: false
+    exceeds_charge_amount: false
+    is_complete_month: true
+    is_revenue_refund: true
+    refund_id: 6
+  - amount_refunded: 150
+    charge_link: known
+    currency_matches_charge: true
+    exceeds_charge_amount: true
+    is_complete_month: true
+    is_revenue_refund: true
+    refund_id: 7
+  - amount_refunded: 1
+    charge_link: known
+    currency_matches_charge: true
+    exceeds_charge_amount: false
+    is_complete_month: false
+    is_revenue_refund: true
+    refund_id: 8
+  type: equals
+- name: one row per refund
+  sql: SELECT f.refund_id FROM stripe_core.fct_stripe_refund f GROUP BY 1 HAVING count(*) > 1
+  type: empty
+- name: test-mode and non-succeeded refunds are never counted
+  sql: SELECT f.refund_id FROM stripe_core.fct_stripe_refund f WHERE f.is_revenue_refund AND (NOT f.is_livemode OR f.refund_status <> 'succeeded')
+  type: empty
+inputs:
+- columns:
+  - cast_type: VARCHAR(32)
+    name: revenue_refund_status
+  - cast_type: DATE
+    name: last_complete_month
+  format: rows
+  rows:
+  - last_complete_month: '2024-11-01'
+    revenue_refund_status: succeeded
+  table:
+    name: cfg_stripe_core
+    schema: stripe_core
+- columns:
+  - cast_type: BIGINT
+    name: charge_id
+  - cast_type: VARCHAR(8)
+    name: currency
+  - cast_type: NUMERIC(14,2)
+    name: amount_charged
+  format: rows
+  rows:
+  - amount_charged: 100
+    charge_id: 100
+    currency: usd
+  - amount_charged: 50
+    charge_id: 101
+    currency: gbp
+  table:
+    name: fct_stripe_charge
+    schema: stripe_core
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  - cast_type: BIGINT
+    name: charge_id
+  - cast_type: BIGINT
+    name: payment_intent_id
+  - cast_type: VARCHAR(8)
+    name: currency
+  - cast_type: BIGINT
+    name: amount
+  - cast_type: VARCHAR(32)
+    name: status
+  - cast_type: VARCHAR(64)
+    name: reason
+  - cast_type: BOOLEAN
+    name: livemode
+  - cast_type: TIMESTAMP
+    name: created
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    amount: 4000
+    charge_id: 100
+    created: '2024-05-20 10:00:00'
+    currency: usd
+    id: 1
+    livemode: true
+    payment_intent_id: null
+    reason: null
+    status: succeeded
+  - _fivetran_deleted: true
+    amount: 1000
+    charge_id: 100
+    created: '2024-05-21 10:00:00'
+    currency: usd
+    id: 2
+    livemode: true
+    payment_intent_id: null
+    reason: null
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 1500
+    charge_id: 100
+    created: '2024-05-22 10:00:00'
+    currency: usd
+    id: 3
+    livemode: false
+    payment_intent_id: null
+    reason: null
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 500
+    charge_id: 100
+    created: '2024-05-23 10:00:00'
+    currency: usd
+    id: 4
+    livemode: true
+    payment_intent_id: null
+    reason: null
+    status: pending
+  - _fivetran_deleted: false
+    amount: 2000
+    charge_id: 101
+    created: '2024-06-02 10:00:00'
+    currency: usd
+    id: 5
+    livemode: true
+    payment_intent_id: null
+    reason: null
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 3000
+    charge_id: 999
+    created: '2024-07-02 10:00:00'
+    currency: gbp
+    id: 6
+    livemode: true
+    payment_intent_id: null
+    reason: null
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 15000
+    charge_id: 100
+    created: '2024-08-02 10:00:00'
+    currency: usd
+    id: 7
+    livemode: true
+    payment_intent_id: null
+    reason: null
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 100
+    charge_id: 100
+    created: '2024-12-02 09:00:00'
+    currency: usd
+    id: 8
+    livemode: true
+    payment_intent_id: null
+    reason: null
+    status: succeeded
+  table:
+    name: refund
+    schema: raw_stripe
+name: 'fct_stripe_refund: counting rule and flags'
+transform_id: 15jdGBbch_Hp6YTxEPO4O
+serdes/meta:
+- id: fsFYHD4WxiWQlyi44ViWl
+  label: fct_stripe_refund__counting_rule_and_flags
+  model: TransformTest

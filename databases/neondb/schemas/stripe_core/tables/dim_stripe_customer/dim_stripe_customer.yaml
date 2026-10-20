@@ -1,0 +1,181 @@
+caveats: Drops the 104 of 200 raw customers the loader marked deleted, so many charges point at a customer that is not here (see fct_stripe_charge.customer_link). Balance is in the customer own currency.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-20T16:04:31.563413Z'
+description: 'One row per live Stripe customer (key: customer_id). Personal fields are not carried: only email domain and whether an email exists. Loader-deleted customers are dropped; test-mode customers are kept and flagged is_livemode.'
+description_set: true
+display_name: Stripe customers
+entity_type: entity/UserTable
+fields:
+- created_at: '2026-10-20T16:05:14.755692Z'
+  display_name: Created at
+  semantic_type: type/CreationTimestamp
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:16.273837Z'
+  description: First day of the month the customer was created.
+  description_set: true
+  display_name: Created month
+  semantic_type: type/CreationDate
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: created_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:07.083833Z'
+  description: The customer own currency, lower case ISO code.
+  description_set: true
+  display_name: Currency
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:08.576088Z'
+  description: Stripe customer balance in the customer own currency, major units (raw is minor units / 100). Negative means credit.
+  description_set: true
+  display_name: Customer balance
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: customer_balance
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:04:38.164369Z'
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: customer_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:03.971658Z'
+  description: Domain part of the customer email. The email itself is deliberately not carried.
+  description_set: true
+  display_name: Email domain
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: email_domain
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:05.4564Z'
+  description: True when Stripe holds a non-blank email for the customer.
+  description_set: true
+  display_name: Has email
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: has_email
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:10.077359Z'
+  description: Stripe delinquent flag.
+  description_set: true
+  display_name: Is delinquent
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: is_delinquent
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:13.160266Z'
+  description: False for test-mode customers. Kept in the table, not in revenue.
+  description_set: true
+  display_name: Is live mode
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: is_livemode
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:11.59196Z'
+  description: none, exempt or reverse, as Stripe reports it.
+  description_set: true
+  display_name: Tax exempt status
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: dim_stripe_customer
+    model: Table
+  - id: tax_exempt_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: stripe_core
+  model: Schema
+- id: dim_stripe_customer
+  model: Table
+- id: '1'
+  model: TableUserSettings

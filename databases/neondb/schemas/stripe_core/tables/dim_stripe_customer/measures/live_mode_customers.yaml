@@ -1,0 +1,31 @@
+created_at: '2026-10-20T17:30:19.284213Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - display-name: Live-mode customers
+        name: live_customer_count
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - stripe_core
+            - dim_stripe_customer
+            - is_livemode
+        - true
+    source-table:
+    - neondb
+    - stripe_core
+    - dim_stripe_customer
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Number of live-mode customers. Excludes loader-deleted customers (D1) and test-mode customers.
+entity_id: EZQ9yTlR00OobfgyKKXKF
+name: Live-mode customers
+serdes/meta:
+- id: EZQ9yTlR00OobfgyKKXKF
+  label: live_mode_customers
+  model: Measure

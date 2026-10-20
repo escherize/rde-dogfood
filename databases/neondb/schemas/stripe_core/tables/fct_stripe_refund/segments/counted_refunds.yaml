@@ -1,0 +1,28 @@
+created_at: '2026-10-20T17:30:03.078281Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_core
+          - fct_stripe_refund
+          - is_revenue_refund
+      - true
+    source-table:
+    - neondb
+    - stripe_core
+    - fct_stripe_refund
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Self-consistent only, no external reference. Refunds that count as money returned: live mode and status succeeded. Excludes test-mode, pending, failed, canceled and requires_action refunds.'
+entity_id: R2P_Td_I9EibqWXDw9srn
+name: Counted refunds
+serdes/meta:
+- id: R2P_Td_I9EibqWXDw9srn
+  label: counted_refunds
+  model: Segment

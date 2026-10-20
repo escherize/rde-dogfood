@@ -1,0 +1,162 @@
+caveats: 'Never sum across currencies: no exchange rates exist. The newest month is flagged is_complete_month = false and is left out of trends and totals. Net can be negative in a month.'
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-20T16:04:36.548622Z'
+description: 'Draft. One row per currency and month (key: currency_month_key), dense. Net collected = gross collected (live succeeded charges) minus refunds (live succeeded refunds), in the currency own units.'
+description_set: true
+display_name: Stripe revenue by month
+entity_type: entity/GenericTable
+fields:
+- created_at: '2026-10-20T16:06:00.273658Z'
+  description: Revenue charges in the month.
+  description_set: true
+  display_name: Charge count
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_revenue_month
+    model: Table
+  - id: charge_count
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:58.76232Z'
+  description: One currency per row. Never add across currencies.
+  description_set: true
+  display_name: Currency
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_revenue_month
+    model: Table
+  - id: currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:04:45.96171Z'
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_revenue_month
+    model: Table
+  - id: currency_month_key
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:06:01.788586Z'
+  description: Live, succeeded charges by charge month, own currency.
+  description_set: true
+  display_name: Gross collected
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_revenue_month
+    model: Table
+  - id: gross_collected_amount
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:06:08.070817Z'
+  description: False for months after the last complete month (2024-11).
+  description_set: true
+  display_name: Is complete month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_revenue_month
+    model: Table
+  - id: is_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:06:06.44883Z'
+  description: Gross collected minus refunded. Can be negative.
+  description_set: true
+  display_name: Net collected
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_revenue_month
+    model: Table
+  - id: net_collected_amount
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:06:03.358097Z'
+  description: Counted refunds in the month.
+  description_set: true
+  display_name: Refund count
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_revenue_month
+    model: Table
+  - id: refund_count
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:06:04.967779Z'
+  description: Live, succeeded refunds by refund month, own currency.
+  description_set: true
+  display_name: Refunded
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_revenue_month
+    model: Table
+  - id: refunded_amount
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:06:15.993175Z'
+  description: First day of the month.
+  description_set: true
+  display_name: Revenue month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_revenue_month
+    model: Table
+  - id: revenue_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: stripe_core
+  model: Schema
+- id: fct_stripe_revenue_month
+  model: Table
+- id: '1'
+  model: TableUserSettings

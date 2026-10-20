@@ -1,0 +1,85 @@
+collection_id: 4IH_yYO0q03lGkCQEEzCe
+created_at: '2026-10-20T16:03:13.707864Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+description: 'Draft. One row per currency and month (key: currency_month_key, dense from the first to the last month with activity). Sources: fct_stripe_charge, fct_stripe_refund, cfg_stripe_core. Definition: net_collected_amount = gross_collected_amount (live succeeded charges, by charge month) minus refunded_amount (live succeeded refunds, by refund month), in the currency''s own units. Caveats: never summed or converted across currencies (D5); test-mode and loader-deleted rows excluded (D1, D2); revenue by status not the paid flag (D3); refunds from the refund table, counted even when their charge is deleted (D4, D7); the month after the last complete month (2024-12) is flagged is_complete_month = false (D6); net can be negative.'
+entity_id: eKpjtBLYtoqU1tu3T4k9E
+indexes: []
+name: fct_stripe_revenue_month
+owner_user_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: currency and month (dense: every currency in every month from the first to the last month with a charge or refund)
+        -- Key:         currency_month_key (currency || '|' || YYYY-MM)
+        -- Sources:     fct_stripe_charge, fct_stripe_refund, cfg_stripe_core
+        -- Definition:  net_collected_amount = gross_collected_amount (revenue charges, by charge month) - refunded_amount (counted refunds, by refund month), in the currency's own units
+        -- Caveats:     Draft until reconciled; one currency per row, never converted or summed across currencies (D5); revenue charge = live and succeeded (D2, D3); counted refund = live and succeeded, in the refund's own currency and month, whether or not its charge survives (D4, D7); months after cfg last_complete_month carry is_complete_month = false and are left out of rollups (D6); net can be negative in a month
+        WITH months AS (
+          SELECT generate_series(
+                   LEAST(
+                     (SELECT min(c.created_month) FROM stripe_core.fct_stripe_charge c),
+                     (SELECT min(r.created_month) FROM stripe_core.fct_stripe_refund r)
+                   ),
+                   GREATEST(
+                     (SELECT max(c.created_month) FROM stripe_core.fct_stripe_charge c),
+                     (SELECT max(r.created_month) FROM stripe_core.fct_stripe_refund r)
+                   ),
+                   interval '1 month'
+                 )::date AS revenue_month
+        ),
+        currencies AS (
+          SELECT c.currency FROM stripe_core.fct_stripe_charge c
+          UNION
+          SELECT r.currency FROM stripe_core.fct_stripe_refund r
+        ),
+        charges AS (
+          SELECT c.created_month AS revenue_month, c.currency,
+                 count(*) AS charge_count, sum(c.amount_charged) AS gross_collected_amount
+          FROM stripe_core.fct_stripe_charge c
+          WHERE c.is_revenue_charge
+          GROUP BY 1, 2
+        ),
+        refunds AS (
+          SELECT r.created_month AS revenue_month, r.currency,
+                 count(*) AS refund_count, sum(r.amount_refunded) AS refunded_amount
+          FROM stripe_core.fct_stripe_refund r
+          WHERE r.is_revenue_refund
+          GROUP BY 1, 2
+        )
+        SELECT
+          cu.currency || '|' || to_char(m.revenue_month, 'YYYY-MM')          AS currency_month_key,
+          m.revenue_month,
+          cu.currency,
+          COALESCE(ch.charge_count, 0)                                       AS charge_count,
+          COALESCE(ch.gross_collected_amount, 0)                             AS gross_collected_amount,
+          COALESCE(rf.refund_count, 0)                                       AS refund_count,
+          COALESCE(rf.refunded_amount, 0)                                    AS refunded_amount,
+          COALESCE(ch.gross_collected_amount, 0) - COALESCE(rf.refunded_amount, 0) AS net_collected_amount,
+          (m.revenue_month <= cfg.last_complete_month)                       AS is_complete_month
+        FROM months m
+        CROSS JOIN currencies cu
+        CROSS JOIN stripe_core.cfg_stripe_core cfg
+        LEFT JOIN charges ch ON ch.revenue_month = m.revenue_month AND ch.currency = cu.currency
+        LEFT JOIN refunds rf ON rf.revenue_month = m.revenue_month AND rf.currency = cu.currency
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: uVKObJNirWBvX_6fdpa_L
+  position: 0
+  tag_id: llixl3lD5NdODdR49lNKv
+  serdes/meta:
+  - id: uVKObJNirWBvX_6fdpa_L
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: fct_stripe_revenue_month
+  schema: stripe_core
+  type: table
+serdes/meta:
+- id: eKpjtBLYtoqU1tu3T4k9E
+  label: fct_stripe_revenue_month
+  model: Transform

@@ -1,0 +1,87 @@
+collection_id: 4IH_yYO0q03lGkCQEEzCe
+created_at: '2026-10-20T16:01:31.312015Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+description: 'One row per Stripe charge attempt (key: charge_id). Sources: raw_stripe.charge, dim_stripe_customer, cfg_stripe_core. Definition: a charge in its own currency, major units; is_revenue_charge marks money collected (live mode and status = succeeded). Caveats: loader-deleted rows dropped (D1); test-mode rows kept and flagged, never revenue (D2); revenue by status, not the paid flag (D3); no cross-currency conversion (D5); amount_refunded_reported is the raw charge column and is unreliable, refunds come from fct_stripe_refund (D4); customer_link none/known/unknown_or_deleted (63 raw charges have no customer id); last month flagged is_complete_month = false (D6). Constants from cfg_stripe_core.'
+entity_id: 9FigudEKnSnmegjJoP9G8
+indexes: []
+name: fct_stripe_charge
+owner_user_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: Stripe charge attempt (not deleted by the loader)
+        -- Key:         charge_id
+        -- Sources:     raw_stripe.charge, dim_stripe_customer, cfg_stripe_core
+        -- Definition:  a charge with its own currency and money in major units; is_revenue_charge marks the money collected (live mode and status = cfg revenue_charge_status)
+        -- Caveats:     _fivetran_deleted rows dropped (D1); test-mode rows kept, flagged is_livemode, never revenue (D2); revenue is status-based, not the paid flag (D3: 210 raw charges say paid but did not succeed); amounts never converted across currencies (D5); amount_refunded_reported is the raw charge column, unreliable (281 raw charges refunded more than charged), use fct_stripe_refund (D4); customer_link: none = no customer id, known = in dim_stripe_customer, unknown_or_deleted = id with no live customer row; is_complete_month false after cfg last_complete_month (D6)
+        WITH stg_charge AS (
+          SELECT
+            c.id                           AS charge_id,
+            c.customer_id,
+            c.invoice_id,
+            c.payment_intent_id,
+            c.payment_method_id,
+            lower(trim(c.currency))        AS currency,
+            c.amount / 100.0               AS amount_charged,
+            c.amount_captured / 100.0      AS amount_captured,
+            c.amount_refunded / 100.0      AS amount_refunded_reported,
+            lower(trim(c.status))          AS charge_status,
+            COALESCE(c.paid, false)        AS is_paid_flag,
+            COALESCE(c.captured, false)    AS is_captured,
+            COALESCE(c.refunded, false)    AS is_refunded_flag,
+            c.failure_code,
+            COALESCE(c.livemode, false)    AS is_livemode,
+            c.created                      AS created_at
+          FROM raw_stripe.charge c
+          WHERE NOT COALESCE(c._fivetran_deleted, false)
+        )
+        SELECT
+          s.charge_id,
+          s.customer_id,
+          s.invoice_id,
+          s.payment_intent_id,
+          s.payment_method_id,
+          s.currency,
+          s.amount_charged,
+          s.amount_captured,
+          s.amount_refunded_reported,
+          s.charge_status,
+          s.is_paid_flag,
+          s.is_captured,
+          s.is_refunded_flag,
+          s.failure_code,
+          s.is_livemode,
+          s.created_at,
+          date_trunc('month', s.created_at)::date AS created_month,
+          (date_trunc('month', s.created_at)::date <= cfg.last_complete_month) AS is_complete_month,
+          (s.is_livemode AND s.charge_status = cfg.revenue_charge_status)      AS is_revenue_charge,
+          CASE
+            WHEN s.customer_id IS NULL THEN 'none'
+            WHEN d.customer_id IS NULL THEN 'unknown_or_deleted'
+            ELSE 'known'
+          END AS customer_link
+        FROM stg_charge s
+        CROSS JOIN stripe_core.cfg_stripe_core cfg
+        LEFT JOIN stripe_core.dim_stripe_customer d ON d.customer_id = s.customer_id
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: nN1q4k_O9s9HVCXWRMVwf
+  position: 0
+  tag_id: llixl3lD5NdODdR49lNKv
+  serdes/meta:
+  - id: nN1q4k_O9s9HVCXWRMVwf
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: fct_stripe_charge
+  schema: stripe_core
+  type: table
+serdes/meta:
+- id: 9FigudEKnSnmegjJoP9G8
+  label: fct_stripe_charge
+  model: Transform

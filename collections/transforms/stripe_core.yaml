@@ -1,0 +1,9 @@
+name: stripe_core
+entity_id: 4IH_yYO0q03lGkCQEEzCe
+slug: stripe_core
+created_at: '2026-10-20T15:59:27.781373Z'
+namespace: transforms
+serdes/meta:
+- id: 4IH_yYO0q03lGkCQEEzCe
+  label: stripe_core
+  model: Collection

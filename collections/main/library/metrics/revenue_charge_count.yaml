@@ -1,0 +1,37 @@
+name: Revenue charge count
+description: 'Self-consistent only, no external reference. Number of charges that count as money collected (live mode, status succeeded), per charge month, all currencies (a count, so currencies do not matter). Includes the partial month 2024-12 (2 charges, to 1 Dec). Owner: to be assigned.'
+entity_id: JhJkJ7mrG_tCNEI_gikle
+created_at: '2026-10-20T17:32:03.898681Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: neondb
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - vgwEUfBebUVU0hfMrNbOF
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - neondb
+        - stripe_core
+        - fct_stripe_charge
+        - created_month
+    source-table:
+    - neondb
+    - stripe_core
+    - fct_stripe_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: JhJkJ7mrG_tCNEI_gikle
+  label: revenue_charge_count
+  model: Card
+type: metric

@@ -1,0 +1,264 @@
+caveats: 'Loader-deleted charges are dropped. Test-mode rows are kept and flagged, never revenue. Revenue is by status, not the paid flag. Never add amounts across currencies. amount_refunded_reported is the raw charge column and is unreliable: use Stripe refunds. The newest month is flagged is_complete_month = false.'
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-20T16:04:33.175761Z'
+description: 'One row per Stripe charge attempt (key: charge_id), in its own currency and major units. is_revenue_charge marks money collected: live mode and status succeeded.'
+description_set: true
+display_name: Stripe charges
+entity_type: entity/TransactionTable
+fields:
+- created_at: '2026-10-20T16:05:20.959244Z'
+  description: Captured amount in the charge currency, major units.
+  description_set: true
+  display_name: Amount captured
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: amount_captured
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:19.355134Z'
+  description: Charge amount in its own currency, major units.
+  description_set: true
+  display_name: Amount charged
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: amount_charged
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:22.482672Z'
+  description: 'Raw refunded amount on the charge row. Unreliable: exceeds the charge itself on about half of rows. Use Stripe refunds instead.'
+  description_set: true
+  display_name: Amount refunded (reported, unreliable)
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: amount_refunded_reported
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:04:39.755264Z'
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: charge_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:24.059704Z'
+  description: succeeded, pending or failed.
+  description_set: true
+  display_name: Charge status
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: charge_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:30.575852Z'
+  display_name: Created at
+  semantic_type: type/CreationTimestamp
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:32.170663Z'
+  display_name: Created month
+  semantic_type: type/CreationDate
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: created_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:17.841326Z'
+  description: Currency of the charge, lower case ISO code. Never add amounts across currencies.
+  description_set: true
+  display_name: Currency
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:04:41.281184Z'
+  fk_target_field_id:
+  - neondb
+  - stripe_core
+  - dim_stripe_customer
+  - customer_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: customer_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:37.150856Z'
+  description: none = charge has no customer id; known = customer is in Stripe customers; unknown_or_deleted = customer id has no live customer row.
+  description_set: true
+  display_name: Customer link
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: customer_link
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:27.332775Z'
+  display_name: Failure code
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: failure_code
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:33.803532Z'
+  description: False for months after the last complete month (December 2024, partial).
+  description_set: true
+  display_name: Is complete month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: is_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:28.994289Z'
+  description: False for test-mode charges. Kept, never revenue.
+  description_set: true
+  display_name: Is live mode
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: is_livemode
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:25.597729Z'
+  description: Raw paid flag. True on many failed and pending charges, so not used for revenue.
+  description_set: true
+  display_name: Is paid flag
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: is_paid_flag
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:35.327382Z'
+  description: True when live mode and status succeeded. This is what counts as money collected.
+  description_set: true
+  display_name: Is revenue charge
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_charge
+    model: Table
+  - id: is_revenue_charge
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: stripe_core
+  model: Schema
+- id: fct_stripe_charge
+  model: Table
+- id: '1'
+  model: TableUserSettings

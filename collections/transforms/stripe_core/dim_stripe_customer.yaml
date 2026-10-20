@@ -1,0 +1,64 @@
+collection_id: 4IH_yYO0q03lGkCQEEzCe
+created_at: '2026-10-20T16:00:45.076266Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+description: 'One row per Stripe customer (key: customer_id). Sources: raw_stripe.customer. Definition: a live (not loader-deleted) customer with personal fields reduced to email_domain and has_email. Caveats: _fivetran_deleted rows dropped (D1); name, email, phone not carried (D8, masked by default, to confirm); test-mode customers kept and flagged is_livemode; customer_balance in the customer''s own currency, major units (raw is integer minor units / 100).'
+entity_id: vgtI6oTphHq2qCyjQt0u0
+indexes: []
+name: dim_stripe_customer
+owner_user_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: Stripe customer (live record, not deleted by the loader)
+        -- Key:         customer_id
+        -- Sources:     raw_stripe.customer
+        -- Definition:  a customer as Stripe knows them, personal fields reduced (no name, email, phone, address)
+        -- Caveats:     rows with _fivetran_deleted = true are dropped (D1); email reduced to email_domain and has_email (D8, masked by default); test-mode customers kept, flagged is_livemode; balance in the customer's own currency, major units
+        WITH stg_customer AS (
+          SELECT
+            c.id                                            AS customer_id,
+            NULLIF(lower(trim(split_part(c.email, '@', 2))), '') AS email_domain,
+            (c.email IS NOT NULL AND trim(c.email) <> '')   AS has_email,
+            lower(trim(c.currency))                         AS currency,
+            c.balance / 100.0                               AS customer_balance,
+            COALESCE(c.delinquent, false)                   AS is_delinquent,
+            lower(trim(c.tax_exempt))                       AS tax_exempt_status,
+            COALESCE(c.livemode, false)                     AS is_livemode,
+            c.created                                       AS created_at
+          FROM raw_stripe.customer c
+          WHERE NOT COALESCE(c._fivetran_deleted, false)
+        )
+        SELECT
+          s.customer_id,
+          s.email_domain,
+          s.has_email,
+          s.currency,
+          s.customer_balance,
+          s.is_delinquent,
+          s.tax_exempt_status,
+          s.is_livemode,
+          s.created_at,
+          date_trunc('month', s.created_at)::date AS created_month
+        FROM stg_customer s
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: rau40wuWKKgJV6izYH4NY
+  position: 0
+  tag_id: llixl3lD5NdODdR49lNKv
+  serdes/meta:
+  - id: rau40wuWKKgJV6izYH4NY
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: dim_stripe_customer
+  schema: stripe_core
+  type: table
+serdes/meta:
+- id: vgtI6oTphHq2qCyjQt0u0
+  label: dim_stripe_customer
+  model: Transform

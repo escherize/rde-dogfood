@@ -1,0 +1,147 @@
+created_at: '2026-10-20T16:00:47.703712Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+description: 'Cases: 1 plain live customer with email; 2 loader-deleted (dropped, D1); 3 no email; 4 blank email; 5 mixed-case email with padding, negative balance in minor units; 6 test-mode customer (kept, flagged).'
+entity_id: f-sWzjq-08E2BB_rkFNhB
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: customer_id
+  - cast_type: VARCHAR(255)
+    name: email_domain
+  - cast_type: BOOLEAN
+    name: has_email
+  - cast_type: VARCHAR(8)
+    name: currency
+  - cast_type: NUMERIC(14,2)
+    name: customer_balance
+  - cast_type: BOOLEAN
+    name: is_livemode
+  - cast_type: DATE
+    name: created_month
+  format: rows
+  name: deleted customer dropped, email reduced to domain, balance in major units
+  rows:
+  - created_month: '2024-03-01'
+    currency: usd
+    customer_balance: 123.45
+    customer_id: 1
+    email_domain: example.com
+    has_email: true
+    is_livemode: true
+  - created_month: '2024-04-01'
+    currency: eur
+    customer_balance: 0
+    customer_id: 3
+    email_domain: null
+    has_email: false
+    is_livemode: true
+  - created_month: '2024-04-01'
+    currency: gbp
+    customer_balance: 0
+    customer_id: 4
+    email_domain: null
+    has_email: false
+    is_livemode: true
+  - created_month: '2024-05-01'
+    currency: usd
+    customer_balance: -95
+    customer_id: 5
+    email_domain: example.org
+    has_email: true
+    is_livemode: true
+  - created_month: '2024-06-01'
+    currency: usd
+    customer_balance: 1
+    customer_id: 6
+    email_domain: test.io
+    has_email: true
+    is_livemode: false
+  type: equals
+- name: one row per customer
+  sql: SELECT d.customer_id FROM stripe_core.dim_stripe_customer d GROUP BY 1 HAVING count(*) > 1
+  type: empty
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  - cast_type: VARCHAR(255)
+    name: email
+  - cast_type: VARCHAR(8)
+    name: currency
+  - cast_type: BIGINT
+    name: balance
+  - cast_type: BOOLEAN
+    name: delinquent
+  - cast_type: VARCHAR(16)
+    name: tax_exempt
+  - cast_type: BOOLEAN
+    name: livemode
+  - cast_type: TIMESTAMP
+    name: created
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    balance: 12345
+    created: '2024-03-15 10:00:00'
+    currency: usd
+    delinquent: false
+    email: ann@example.com
+    id: 1
+    livemode: true
+    tax_exempt: none
+  - _fivetran_deleted: true
+    balance: 0
+    created: '2024-03-16 10:00:00'
+    currency: usd
+    delinquent: false
+    email: gone@example.com
+    id: 2
+    livemode: true
+    tax_exempt: none
+  - _fivetran_deleted: false
+    balance: 0
+    created: '2024-04-01 00:00:00'
+    currency: eur
+    delinquent: true
+    email: null
+    id: 3
+    livemode: true
+    tax_exempt: reverse
+  - _fivetran_deleted: false
+    balance: 0
+    created: '2024-04-02 00:00:00'
+    currency: gbp
+    delinquent: false
+    email: '  '
+    id: 4
+    livemode: true
+    tax_exempt: exempt
+  - _fivetran_deleted: false
+    balance: -9500
+    created: '2024-05-31 23:59:59'
+    currency: USD
+    delinquent: false
+    email: '  Bob@Example.ORG '
+    id: 5
+    livemode: true
+    tax_exempt: none
+  - _fivetran_deleted: false
+    balance: 100
+    created: '2024-06-01 00:00:00'
+    currency: usd
+    delinquent: false
+    email: t@test.io
+    id: 6
+    livemode: false
+    tax_exempt: none
+  table:
+    name: customer
+    schema: raw_stripe
+name: 'dim_stripe_customer: drops deleted, masks personal data'
+transform_id: vgtI6oTphHq2qCyjQt0u0
+serdes/meta:
+- id: f-sWzjq-08E2BB_rkFNhB
+  label: dim_stripe_customer__drops_deleted__masks_personal_data
+  model: TransformTest

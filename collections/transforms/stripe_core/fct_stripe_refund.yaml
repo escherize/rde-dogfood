@@ -1,0 +1,71 @@
+collection_id: 4IH_yYO0q03lGkCQEEzCe
+created_at: '2026-10-20T16:02:23.786007Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+description: 'One row per Stripe refund (key: refund_id). Sources: raw_stripe.refund, fct_stripe_charge, cfg_stripe_core. Definition: a refund in its own currency, major units; is_revenue_refund marks money returned (live mode and status = succeeded). Caveats: loader-deleted rows dropped (D1); test-mode kept and flagged, never counted (D2); only succeeded refunds count (D4); the refund''s own currency and month are used even when the charge differs, flagged currency_matches_charge (D7); a refund whose charge is deleted or missing is still counted, flagged charge_link = unknown_or_deleted (D7); exceeds_charge_amount flags refunds larger than their charge, not corrected; last month flagged is_complete_month = false (D6).'
+entity_id: 15jdGBbch_Hp6YTxEPO4O
+indexes: []
+name: fct_stripe_refund
+owner_user_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: Stripe refund (not deleted by the loader)
+        -- Key:         refund_id
+        -- Sources:     raw_stripe.refund, fct_stripe_charge, cfg_stripe_core
+        -- Definition:  a refund in its own currency, major units; is_revenue_refund marks money returned (live mode and status = cfg revenue_refund_status)
+        -- Caveats:     _fivetran_deleted rows dropped (D1); test-mode kept, flagged, never counted (D2); only succeeded refunds count (D4); the refund's own currency and own month are used, even when its charge differs (55 of 80 raw refunds carry another currency than their charge; flagged currency_matches_charge) (D7); a refund whose charge is deleted or missing is still counted and flagged charge_link = unknown_or_deleted (D7); exceeds_charge_amount flags refunds larger than the charge (43 raw) without correcting them; is_complete_month false after cfg last_complete_month (D6)
+        WITH stg_refund AS (
+          SELECT
+            r.id                          AS refund_id,
+            r.charge_id,
+            r.payment_intent_id,
+            lower(trim(r.currency))       AS currency,
+            r.amount / 100.0              AS amount_refunded,
+            lower(trim(r.status))         AS refund_status,
+            lower(trim(r.reason))         AS refund_reason,
+            COALESCE(r.livemode, false)   AS is_livemode,
+            r.created                     AS created_at
+          FROM raw_stripe.refund r
+          WHERE NOT COALESCE(r._fivetran_deleted, false)
+        )
+        SELECT
+          s.refund_id,
+          s.charge_id,
+          s.payment_intent_id,
+          s.currency,
+          s.amount_refunded,
+          s.refund_status,
+          s.refund_reason,
+          s.is_livemode,
+          s.created_at,
+          date_trunc('month', s.created_at)::date AS created_month,
+          (date_trunc('month', s.created_at)::date <= cfg.last_complete_month) AS is_complete_month,
+          (s.is_livemode AND s.refund_status = cfg.revenue_refund_status)       AS is_revenue_refund,
+          CASE WHEN ch.charge_id IS NULL THEN 'unknown_or_deleted' ELSE 'known' END AS charge_link,
+          (ch.charge_id IS NOT NULL AND ch.currency = s.currency)               AS currency_matches_charge,
+          (ch.charge_id IS NOT NULL AND s.amount_refunded > ch.amount_charged)  AS exceeds_charge_amount
+        FROM stg_refund s
+        CROSS JOIN stripe_core.cfg_stripe_core cfg
+        LEFT JOIN stripe_core.fct_stripe_charge ch ON ch.charge_id = s.charge_id
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: 2dgJAKt0oiIfF4BUThjYp
+  position: 0
+  tag_id: llixl3lD5NdODdR49lNKv
+  serdes/meta:
+  - id: 2dgJAKt0oiIfF4BUThjYp
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: fct_stripe_refund
+  schema: stripe_core
+  type: table
+serdes/meta:
+- id: 15jdGBbch_Hp6YTxEPO4O
+  label: fct_stripe_refund
+  model: Transform

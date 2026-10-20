@@ -1,0 +1,28 @@
+created_at: '2026-10-20T17:30:00.3606Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - neondb
+          - stripe_core
+          - fct_stripe_charge
+          - is_revenue_charge
+      - true
+    source-table:
+    - neondb
+    - stripe_core
+    - fct_stripe_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Self-consistent only, no external reference. Charges that count as money collected: live mode and status succeeded. Excludes test-mode rows, failed and pending charges (and the 210 raw charges whose paid flag is true despite not succeeding).'
+entity_id: fpOHbR8AlLVfoj5Ega54O
+name: Revenue charges
+serdes/meta:
+- id: fpOHbR8AlLVfoj5Ega54O
+  label: revenue_charges
+  model: Segment

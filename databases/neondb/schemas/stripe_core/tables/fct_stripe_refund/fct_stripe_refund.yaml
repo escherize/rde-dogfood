@@ -1,0 +1,241 @@
+caveats: Loader-deleted refunds are dropped. The refund own currency and month are used even when its charge has a different currency (currency_matches_charge) or is gone (charge_link). exceeds_charge_amount flags refunds larger than the charge; they are flagged, not corrected.
+caveats_set: true
+collection_id: librarylibrarydatadat
+created_at: '2026-10-20T16:04:34.765409Z'
+description: 'One row per Stripe refund (key: refund_id), in its own currency and major units. is_revenue_refund marks money returned: live mode and status succeeded.'
+description_set: true
+display_name: Stripe refunds
+entity_type: entity/TransactionTable
+fields:
+- created_at: '2026-10-20T16:05:40.362262Z'
+  description: Refund amount in the refund own currency, major units.
+  description_set: true
+  display_name: Amount refunded
+  semantic_type: type/Currency
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: amount_refunded
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:04:44.381071Z'
+  fk_target_field_id:
+  - neondb
+  - stripe_core
+  - fct_stripe_charge
+  - charge_id
+  fk_target_field_id_set: true
+  semantic_type: type/FK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: charge_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:53.252239Z'
+  description: known = the charge is in Stripe charges; unknown_or_deleted = the charge is deleted or missing. Such refunds are still counted.
+  description_set: true
+  display_name: Charge link
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: charge_link
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:46.865804Z'
+  display_name: Created at
+  semantic_type: type/CreationTimestamp
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: created_at
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:48.448673Z'
+  display_name: Created month
+  semantic_type: type/CreationDate
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: created_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:38.751332Z'
+  description: Currency of the refund itself. May differ from its charge, see Currency matches charge.
+  description_set: true
+  display_name: Currency
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: currency
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:54.76344Z'
+  description: False when the refund currency differs from its charge, or the charge is missing.
+  description_set: true
+  display_name: Currency matches charge
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: currency_matches_charge
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:56.262958Z'
+  description: True when the refund is larger than its charge. Flagged, not corrected.
+  description_set: true
+  display_name: Exceeds charge amount
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: exceeds_charge_amount
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:50.068039Z'
+  display_name: Is complete month
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: is_complete_month
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:45.164155Z'
+  description: False for test-mode refunds. Kept, never counted.
+  description_set: true
+  display_name: Is live mode
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: is_livemode
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:51.661301Z'
+  description: True when live mode and status succeeded. This is what counts as money returned.
+  description_set: true
+  display_name: Is revenue refund
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: is_revenue_refund
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:04:42.896293Z'
+  semantic_type: type/PK
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: refund_id
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:43.556935Z'
+  display_name: Refund reason
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: refund_reason
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+- created_at: '2026-10-20T16:05:41.954274Z'
+  display_name: Refund status
+  has_field_values: list
+  semantic_type: type/Category
+  semantic_type_set: true
+  serdes/meta:
+  - id: neondb
+    model: Database
+  - id: stripe_core
+    model: Schema
+  - id: fct_stripe_refund
+    model: Table
+  - id: refund_status
+    model: Field
+  - id: '1'
+    model: FieldUserSettings
+is_published: true
+serdes/meta:
+- id: neondb
+  model: Database
+- id: stripe_core
+  model: Schema
+- id: fct_stripe_refund
+  model: Table
+- id: '1'
+  model: TableUserSettings

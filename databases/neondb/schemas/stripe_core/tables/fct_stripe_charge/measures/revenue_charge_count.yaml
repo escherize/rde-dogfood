@@ -1,0 +1,31 @@
+created_at: '2026-10-20T17:30:16.566229Z'
+creator_id: api-key-user-1ccbe63c-a2bc-45e0-87c8-095c41bb962c@api-key.invalid
+definition:
+  database: neondb
+  stages:
+  - aggregation:
+    - - count-where
+      - display-name: Revenue charges
+        name: revenue_charge_count
+      - - =
+        - {}
+        - - field
+          - {}
+          - - neondb
+            - stripe_core
+            - fct_stripe_charge
+            - is_revenue_charge
+        - true
+    source-table:
+    - neondb
+    - stripe_core
+    - fct_stripe_charge
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Self-consistent only, no external reference. Number of charges that count as money collected (live, succeeded).
+entity_id: vgwEUfBebUVU0hfMrNbOF
+name: Revenue charge count
+serdes/meta:
+- id: vgwEUfBebUVU0hfMrNbOF
+  label: revenue_charge_count
+  model: Measure
