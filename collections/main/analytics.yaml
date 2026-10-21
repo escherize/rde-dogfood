@@ -1,0 +1,10 @@
+name: Analytics
+description: Dashboards, questions, models, and documents that reach git on export.
+entity_id: T0GYATY2j9DxwRrDi8zXW
+slug: analytics
+created_at: '2026-10-21T14:49:39.157167Z'
+serdes/meta:
+- id: T0GYATY2j9DxwRrDi8zXW
+  label: analytics
+  model: Collection
+is_remote_synced: true
