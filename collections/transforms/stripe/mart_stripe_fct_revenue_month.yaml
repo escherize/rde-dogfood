@@ -1,0 +1,94 @@
+collection_id: 3O_eZi7v6KNzSmR-96bus
+created_at: '2026-10-21T15:11:52.758548Z'
+creator_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+description: |
+  Draft, provisional decisions: D3, D4, D5, D6, D7. One row per calendar month and currency (key: revenue_month_currency_key, 'YYYY-MM:<currency>'). Sources: mart_stripe_fct_invoice, mart_stripe_fct_charge, cfg_stripe. Definition: two separate measure sets: invoice revenue (amount_paid on status = paid invoices; D4) and cash collected (succeeded, paid, captured charges: gross, refund applied, net). Caveats: a column is null, not 0, when that month and currency has no rows of that kind (charges only start 2024-07); invoices and charges are each placed by their own created date and are not reconciled to each other; USD at fixed cfg_stripe rates (D5); refunds follow fct_charge (D6, D7); months after cfg_stripe.last_complete_month are flagged is_complete_period = false and stay out of rates and trends.
+entity_id: KBFQWayZ2ePXHiVp7lFAB
+indexes: []
+name: mart_stripe_fct_revenue_month
+owner_user_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: calendar month and currency
+        -- Key:         revenue_month_currency_key ('YYYY-MM:<currency>')
+        -- Sources:     stripe_transforms.mart_stripe_fct_invoice, stripe_transforms.mart_stripe_fct_charge, stripe_transforms.cfg_stripe
+        -- Definition:  two measure sets per month and currency, kept separate:
+        --              invoice revenue = amount_paid on invoices with status 'paid' (D4 PROVISIONAL);
+        --              cash collected = succeeded, paid, captured charges, gross, refund applied, and net.
+        -- Caveats:     a column is NULL, not 0, when the month and currency has no rows of that kind (charges only start 2024-07 in this extract);
+        --              invoice and charge months are each by their own created date, so the two measure sets are not reconciled to each other;
+        --              USD at fixed cfg_stripe rates (D5 PROVISIONAL); refunds follow fct_charge (charge.amount_refunded, capped; D6, D7 PROVISIONAL);
+        --              months after cfg_stripe.last_complete_month are flagged is_complete_period = false and must be left out of rates and trends.
+        WITH inv AS (
+          SELECT
+            i.invoice_month                                              AS revenue_month,
+            i.invoice_currency                                           AS currency_code,
+            COUNT(*)                                                     AS invoice_count,
+            COUNT(*) FILTER (WHERE i.is_revenue_invoice)                 AS paid_invoice_count,
+            SUM(i.amount_paid_local) FILTER (WHERE i.is_revenue_invoice) AS invoice_revenue_local,
+            SUM(i.amount_paid_usd)   FILTER (WHERE i.is_revenue_invoice) AS invoice_revenue_usd
+          FROM stripe_transforms.mart_stripe_fct_invoice i
+          GROUP BY i.invoice_month, i.invoice_currency
+        ),
+        chg AS (
+          SELECT
+            ch.charge_month                                                              AS revenue_month,
+            ch.charge_currency                                                           AS currency_code,
+            COUNT(*)                                                                     AS charge_count,
+            COUNT(*) FILTER (WHERE ch.is_cash_collected)                                 AS cash_charge_count,
+            COUNT(*) FILTER (WHERE ch.charge_status = 'failed')                          AS failed_charge_count,
+            COUNT(*) FILTER (WHERE ch.is_cash_collected AND ch.amount_refund_applied_local > 0) AS refunded_charge_count,
+            SUM(ch.amount_gross_local)          FILTER (WHERE ch.is_cash_collected)      AS cash_gross_local,
+            SUM(ch.amount_refund_applied_local) FILTER (WHERE ch.is_cash_collected)      AS cash_refunded_local,
+            SUM(ch.amount_net_local)            FILTER (WHERE ch.is_cash_collected)      AS cash_net_local,
+            SUM(ch.amount_gross_usd)            FILTER (WHERE ch.is_cash_collected)      AS cash_gross_usd,
+            SUM(ch.amount_refund_applied_usd)   FILTER (WHERE ch.is_cash_collected)      AS cash_refunded_usd,
+            SUM(ch.amount_net_usd)              FILTER (WHERE ch.is_cash_collected)      AS cash_net_usd
+          FROM stripe_transforms.mart_stripe_fct_charge ch
+          GROUP BY ch.charge_month, ch.charge_currency
+        )
+        SELECT
+          to_char(COALESCE(inv.revenue_month, chg.revenue_month), 'YYYY-MM') || ':' || COALESCE(inv.currency_code, chg.currency_code) AS revenue_month_currency_key,
+          COALESCE(inv.revenue_month, chg.revenue_month)               AS revenue_month,
+          COALESCE(inv.currency_code, chg.currency_code)               AS currency_code,
+          COALESCE(inv.revenue_month, chg.revenue_month) <= c.last_complete_month AS is_complete_period,
+          inv.invoice_count,
+          inv.paid_invoice_count,
+          inv.invoice_revenue_local,
+          inv.invoice_revenue_usd,
+          chg.charge_count,
+          chg.cash_charge_count,
+          chg.failed_charge_count,
+          chg.refunded_charge_count,
+          chg.cash_gross_local,
+          chg.cash_refunded_local,
+          chg.cash_net_local,
+          chg.cash_gross_usd,
+          chg.cash_refunded_usd,
+          chg.cash_net_usd
+        FROM inv
+        FULL OUTER JOIN chg ON chg.revenue_month = inv.revenue_month AND chg.currency_code = inv.currency_code
+        CROSS JOIN stripe_transforms.cfg_stripe c
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: ZWwcr7Y5T57YkugyNsHtH
+  position: 0
+  tag_id: xafwjCLa462tr7dz0VQQF
+  serdes/meta:
+  - id: ZWwcr7Y5T57YkugyNsHtH
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_stripe_fct_revenue_month
+  schema: stripe_transforms
+  type: table
+serdes/meta:
+- id: KBFQWayZ2ePXHiVp7lFAB
+  label: mart_stripe_fct_revenue_month
+  model: Transform

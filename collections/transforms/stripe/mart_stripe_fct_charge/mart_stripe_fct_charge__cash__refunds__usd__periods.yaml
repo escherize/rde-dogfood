@@ -1,0 +1,311 @@
+created_at: '2026-10-21T15:10:08.360283Z'
+creator_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+description: 'Cases: ch_1 plain usd success; ch_2 partial refund in cad (100.00 charged, 25.00 refunded, USD at 0.73); ch_3 over-refund in eur (68.58 charged, 85.89 refunded: applied capped at 68.58, net 0, flagged); ch_4 failed gbp not cash; ch_5 succeeded paid but not captured not cash; ch_6 created 2025-01-02 is in the incomplete month; ch_7 soft-deleted dropped; ch_8 unlisted currency jpy has null USD.'
+entity_id: GVPLUQ29ZXW3x8xlGzxRG
+expectations:
+- columns:
+  - cast_type: VARCHAR(64)
+    name: charge_id
+  - cast_type: BOOLEAN
+    name: is_cash_collected
+  - cast_type: BOOLEAN
+    name: is_over_refunded
+  - cast_type: NUMERIC(12,2)
+    name: amount_gross_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_refunded_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_refund_applied_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_net_local
+  format: rows
+  name: cash flag, refund applied and net per case; deleted charge dropped
+  rows:
+  - amount_gross_local: 100
+    amount_net_local: 100
+    amount_refund_applied_local: 0
+    amount_refunded_local: 0
+    charge_id: ch_1
+    is_cash_collected: true
+    is_over_refunded: false
+  - amount_gross_local: 100
+    amount_net_local: 75
+    amount_refund_applied_local: 25
+    amount_refunded_local: 25
+    charge_id: ch_2
+    is_cash_collected: true
+    is_over_refunded: false
+  - amount_gross_local: 68.58
+    amount_net_local: 0
+    amount_refund_applied_local: 68.58
+    amount_refunded_local: 85.89
+    charge_id: ch_3
+    is_cash_collected: true
+    is_over_refunded: true
+  - amount_gross_local: 50
+    amount_net_local: 50
+    amount_refund_applied_local: 0
+    amount_refunded_local: 0
+    charge_id: ch_4
+    is_cash_collected: false
+    is_over_refunded: false
+  - amount_gross_local: 30
+    amount_net_local: 30
+    amount_refund_applied_local: 0
+    amount_refunded_local: 0
+    charge_id: ch_5
+    is_cash_collected: false
+    is_over_refunded: false
+  - amount_gross_local: 10
+    amount_net_local: 10
+    amount_refund_applied_local: 0
+    amount_refunded_local: 0
+    charge_id: ch_6
+    is_cash_collected: true
+    is_over_refunded: false
+  - amount_gross_local: 50
+    amount_net_local: 50
+    amount_refund_applied_local: 0
+    amount_refunded_local: 0
+    charge_id: ch_8
+    is_cash_collected: true
+    is_over_refunded: false
+  type: equals
+- columns:
+  - cast_type: VARCHAR(64)
+    name: charge_id
+  - cast_type: NUMERIC(10,4)
+    name: fx_usd_per_unit
+  - cast_type: NUMERIC(12,2)
+    name: amount_gross_usd
+  - cast_type: NUMERIC(12,2)
+    name: amount_refunded_usd
+  - cast_type: NUMERIC(12,2)
+    name: amount_net_usd
+  format: rows
+  name: USD conversion at cfg rates; unlisted currency stays null
+  rows:
+  - amount_gross_usd: 100
+    amount_net_usd: 100
+    amount_refunded_usd: 0
+    charge_id: ch_1
+    fx_usd_per_unit: 1
+  - amount_gross_usd: 73
+    amount_net_usd: 54.75
+    amount_refunded_usd: 18.25
+    charge_id: ch_2
+    fx_usd_per_unit: 0.73
+  - amount_gross_usd: 74.2
+    amount_net_usd: 0
+    amount_refunded_usd: 92.93
+    charge_id: ch_3
+    fx_usd_per_unit: 1.082
+  - amount_gross_usd: null
+    amount_net_usd: null
+    amount_refunded_usd: null
+    charge_id: ch_8
+    fx_usd_per_unit: null
+  - amount_gross_usd: 63.9
+    amount_net_usd: 63.9
+    amount_refunded_usd: 0
+    charge_id: ch_4
+    fx_usd_per_unit: 1.278
+  - amount_gross_usd: 19.8
+    amount_net_usd: 19.8
+    amount_refunded_usd: 0
+    charge_id: ch_5
+    fx_usd_per_unit: 0.66
+  - amount_gross_usd: 10
+    amount_net_usd: 10
+    amount_refunded_usd: 0
+    charge_id: ch_6
+    fx_usd_per_unit: 1
+  type: equals
+- columns:
+  - cast_type: VARCHAR(64)
+    name: charge_id
+  - cast_type: DATE
+    name: charge_month
+  - cast_type: BOOLEAN
+    name: is_complete_period
+  format: rows
+  name: 'month and complete-period flag: January 2025 is incomplete'
+  rows:
+  - charge_id: ch_1
+    charge_month: '2024-12-01'
+    is_complete_period: true
+  - charge_id: ch_2
+    charge_month: '2024-11-01'
+    is_complete_period: true
+  - charge_id: ch_3
+    charge_month: '2024-10-01'
+    is_complete_period: true
+  - charge_id: ch_4
+    charge_month: '2024-09-01'
+    is_complete_period: true
+  - charge_id: ch_5
+    charge_month: '2024-08-01'
+    is_complete_period: true
+  - charge_id: ch_6
+    charge_month: '2025-01-01'
+    is_complete_period: false
+  - charge_id: ch_8
+    charge_month: '2024-07-01'
+    is_complete_period: true
+  type: equals
+- name: charge_id is unique
+  sql: SELECT m.charge_id FROM stripe_transforms.mart_stripe_fct_charge m GROUP BY m.charge_id HAVING COUNT(*) > 1
+  type: empty
+- name: refund applied never exceeds the charged amount
+  sql: SELECT m.charge_id FROM stripe_transforms.mart_stripe_fct_charge m WHERE m.amount_refund_applied_local > m.amount_gross_local
+  type: empty
+inputs:
+- columns:
+  - cast_type: INTEGER
+    name: minor_unit_divisor
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_usd
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_eur
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_gbp
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_cad
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_aud
+  - cast_type: DATE
+    name: last_complete_month
+  format: rows
+  rows:
+  - last_complete_month: '2024-12-01'
+    minor_unit_divisor: 100
+    usd_per_aud: 0.66
+    usd_per_cad: 0.73
+    usd_per_eur: 1.082
+    usd_per_gbp: 1.278
+    usd_per_usd: 1
+  table:
+    name: cfg_stripe
+    schema: stripe_transforms
+- columns:
+  - cast_type: VARCHAR(64)
+    name: id
+  - cast_type: VARCHAR(64)
+    name: customer_id
+  - cast_type: VARCHAR(32)
+    name: status
+  - cast_type: VARCHAR(8)
+    name: currency
+  - cast_type: TIMESTAMP
+    name: created
+  - cast_type: BOOLEAN
+    name: paid
+  - cast_type: BOOLEAN
+    name: refunded
+  - cast_type: BOOLEAN
+    name: captured
+  - cast_type: INTEGER
+    name: amount
+  - cast_type: INTEGER
+    name: amount_refunded
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    amount: 10000
+    amount_refunded: 0
+    captured: true
+    created: '2024-12-15 10:00:00'
+    currency: usd
+    customer_id: cus_1
+    id: ch_1
+    paid: true
+    refunded: false
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 10000
+    amount_refunded: 2500
+    captured: true
+    created: '2024-11-05 10:00:00'
+    currency: cad
+    customer_id: cus_2
+    id: ch_2
+    paid: true
+    refunded: true
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 6858
+    amount_refunded: 8589
+    captured: true
+    created: '2024-10-08 10:00:00'
+    currency: eur
+    customer_id: cus_3
+    id: ch_3
+    paid: true
+    refunded: true
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 5000
+    amount_refunded: 0
+    captured: false
+    created: '2024-09-08 10:00:00'
+    currency: gbp
+    customer_id: cus_4
+    id: ch_4
+    paid: false
+    refunded: false
+    status: failed
+  - _fivetran_deleted: false
+    amount: 3000
+    amount_refunded: 0
+    captured: false
+    created: '2024-08-08 10:00:00'
+    currency: aud
+    customer_id: cus_5
+    id: ch_5
+    paid: true
+    refunded: false
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 1000
+    amount_refunded: 0
+    captured: true
+    created: '2025-01-02 10:00:00'
+    currency: usd
+    customer_id: cus_6
+    id: ch_6
+    paid: true
+    refunded: false
+    status: succeeded
+  - _fivetran_deleted: true
+    amount: 9999
+    amount_refunded: 0
+    captured: true
+    created: '2024-07-08 10:00:00'
+    currency: usd
+    customer_id: cus_7
+    id: ch_7
+    paid: true
+    refunded: false
+    status: succeeded
+  - _fivetran_deleted: false
+    amount: 5000
+    amount_refunded: 0
+    captured: true
+    created: '2024-07-09 10:00:00'
+    currency: jpy
+    customer_id: cus_8
+    id: ch_8
+    paid: true
+    refunded: false
+    status: succeeded
+  table:
+    name: charge
+    schema: stripe_data
+name: 'mart_stripe_fct_charge: cash, refunds, USD, periods'
+transform_id: L-2DZ30gSc9QF5qHv-gdH
+serdes/meta:
+- id: GVPLUQ29ZXW3x8xlGzxRG
+  label: mart_stripe_fct_charge__cash__refunds__usd__periods
+  model: TransformTest

@@ -1,0 +1,221 @@
+created_at: '2026-10-21T15:11:53.931364Z'
+creator_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+description: 'Cases: 2024-11 usd has 2 paid invoices (50, 70) and a void one (80 due, 0 paid) and no charges (charge columns null, invoice revenue 120); 2024-12 eur has one paid invoice (100.00, USD 108.20) and 3 charges: cash 200.00 with 50.00 refunded, cash 100.00 with none, and a failed 30.00 that is in the charge count but in none of the cash sums; 2025-01 usd has one charge and no invoice (invoice columns null) in the incomplete month.'
+entity_id: UE13mzqMCubkKETKfDqLl
+expectations:
+- columns:
+  - cast_type: VARCHAR(32)
+    name: revenue_month_currency_key
+  - cast_type: BOOLEAN
+    name: is_complete_period
+  - cast_type: BIGINT
+    name: invoice_count
+  - cast_type: BIGINT
+    name: paid_invoice_count
+  - cast_type: NUMERIC(12,2)
+    name: invoice_revenue_local
+  - cast_type: NUMERIC(12,2)
+    name: invoice_revenue_usd
+  format: rows
+  name: invoice measures per month and currency; null where there are no invoices
+  rows:
+  - invoice_count: 3
+    invoice_revenue_local: 120
+    invoice_revenue_usd: 120
+    is_complete_period: true
+    paid_invoice_count: 2
+    revenue_month_currency_key: 2024-11:usd
+  - invoice_count: 1
+    invoice_revenue_local: 100
+    invoice_revenue_usd: 108.2
+    is_complete_period: true
+    paid_invoice_count: 1
+    revenue_month_currency_key: 2024-12:eur
+  - invoice_count: null
+    invoice_revenue_local: null
+    invoice_revenue_usd: null
+    is_complete_period: false
+    paid_invoice_count: null
+    revenue_month_currency_key: 2025-01:usd
+  type: equals
+- columns:
+  - cast_type: VARCHAR(32)
+    name: revenue_month_currency_key
+  - cast_type: BIGINT
+    name: charge_count
+  - cast_type: BIGINT
+    name: cash_charge_count
+  - cast_type: BIGINT
+    name: failed_charge_count
+  - cast_type: BIGINT
+    name: refunded_charge_count
+  - cast_type: NUMERIC(12,2)
+    name: cash_gross_local
+  - cast_type: NUMERIC(12,2)
+    name: cash_refunded_local
+  - cast_type: NUMERIC(12,2)
+    name: cash_net_local
+  - cast_type: NUMERIC(12,2)
+    name: cash_gross_usd
+  - cast_type: NUMERIC(12,2)
+    name: cash_refunded_usd
+  - cast_type: NUMERIC(12,2)
+    name: cash_net_usd
+  format: rows
+  name: cash measures count only cash-collected charges; null where there are no charges
+  rows:
+  - cash_charge_count: null
+    cash_gross_local: null
+    cash_gross_usd: null
+    cash_net_local: null
+    cash_net_usd: null
+    cash_refunded_local: null
+    cash_refunded_usd: null
+    charge_count: null
+    failed_charge_count: null
+    refunded_charge_count: null
+    revenue_month_currency_key: 2024-11:usd
+  - cash_charge_count: 2
+    cash_gross_local: 300
+    cash_gross_usd: 324.6
+    cash_net_local: 250
+    cash_net_usd: 270.5
+    cash_refunded_local: 50
+    cash_refunded_usd: 54.1
+    charge_count: 3
+    failed_charge_count: 1
+    refunded_charge_count: 1
+    revenue_month_currency_key: 2024-12:eur
+  - cash_charge_count: 1
+    cash_gross_local: 10
+    cash_gross_usd: 10
+    cash_net_local: 10
+    cash_net_usd: 10
+    cash_refunded_local: 0
+    cash_refunded_usd: 0
+    charge_count: 1
+    failed_charge_count: 0
+    refunded_charge_count: 0
+    revenue_month_currency_key: 2025-01:usd
+  type: equals
+- name: key is unique
+  sql: SELECT m.revenue_month_currency_key FROM stripe_transforms.mart_stripe_fct_revenue_month m GROUP BY m.revenue_month_currency_key HAVING COUNT(*) > 1
+  type: empty
+inputs:
+- columns:
+  - cast_type: DATE
+    name: last_complete_month
+  format: rows
+  rows:
+  - last_complete_month: '2024-12-01'
+  table:
+    name: cfg_stripe
+    schema: stripe_transforms
+- columns:
+  - cast_type: DATE
+    name: invoice_month
+  - cast_type: VARCHAR(8)
+    name: invoice_currency
+  - cast_type: BOOLEAN
+    name: is_revenue_invoice
+  - cast_type: NUMERIC(12,2)
+    name: amount_paid_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_paid_usd
+  format: rows
+  rows:
+  - amount_paid_local: 50
+    amount_paid_usd: 50
+    invoice_currency: usd
+    invoice_month: '2024-11-01'
+    is_revenue_invoice: true
+  - amount_paid_local: 70
+    amount_paid_usd: 70
+    invoice_currency: usd
+    invoice_month: '2024-11-01'
+    is_revenue_invoice: true
+  - amount_paid_local: 0
+    amount_paid_usd: 0
+    invoice_currency: usd
+    invoice_month: '2024-11-01'
+    is_revenue_invoice: false
+  - amount_paid_local: 100
+    amount_paid_usd: 108.2
+    invoice_currency: eur
+    invoice_month: '2024-12-01'
+    is_revenue_invoice: true
+  table:
+    name: mart_stripe_fct_invoice
+    schema: stripe_transforms
+- columns:
+  - cast_type: DATE
+    name: charge_month
+  - cast_type: VARCHAR(8)
+    name: charge_currency
+  - cast_type: VARCHAR(32)
+    name: charge_status
+  - cast_type: BOOLEAN
+    name: is_cash_collected
+  - cast_type: NUMERIC(12,2)
+    name: amount_gross_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_refund_applied_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_net_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_gross_usd
+  - cast_type: NUMERIC(12,2)
+    name: amount_refund_applied_usd
+  - cast_type: NUMERIC(12,2)
+    name: amount_net_usd
+  format: rows
+  rows:
+  - amount_gross_local: 200
+    amount_gross_usd: 216.4
+    amount_net_local: 150
+    amount_net_usd: 162.3
+    amount_refund_applied_local: 50
+    amount_refund_applied_usd: 54.1
+    charge_currency: eur
+    charge_month: '2024-12-01'
+    charge_status: succeeded
+    is_cash_collected: true
+  - amount_gross_local: 100
+    amount_gross_usd: 108.2
+    amount_net_local: 100
+    amount_net_usd: 108.2
+    amount_refund_applied_local: 0
+    amount_refund_applied_usd: 0
+    charge_currency: eur
+    charge_month: '2024-12-01'
+    charge_status: succeeded
+    is_cash_collected: true
+  - amount_gross_local: 30
+    amount_gross_usd: 32.46
+    amount_net_local: 30
+    amount_net_usd: 32.46
+    amount_refund_applied_local: 0
+    amount_refund_applied_usd: 0
+    charge_currency: eur
+    charge_month: '2024-12-01'
+    charge_status: failed
+    is_cash_collected: false
+  - amount_gross_local: 10
+    amount_gross_usd: 10
+    amount_net_local: 10
+    amount_net_usd: 10
+    amount_refund_applied_local: 0
+    amount_refund_applied_usd: 0
+    charge_currency: usd
+    charge_month: '2025-01-01'
+    charge_status: succeeded
+    is_cash_collected: true
+  table:
+    name: mart_stripe_fct_charge
+    schema: stripe_transforms
+name: 'mart_stripe_fct_revenue_month: invoice revenue and cash collected stay separate'
+transform_id: KBFQWayZ2ePXHiVp7lFAB
+serdes/meta:
+- id: UE13mzqMCubkKETKfDqLl
+  label: mart_stripe_fct_revenue_month__invoice_revenue_and_cash_collected_stay_separate
+  model: TransformTest

@@ -1,0 +1,69 @@
+collection_id: 3O_eZi7v6KNzSmR-96bus
+created_at: '2026-10-21T15:08:24.32087Z'
+creator_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+description: |
+  Draft. One row per Stripe subscription (key: subscription_id). Sources: stripe_data.subscription, subscription_item, plan, product, cfg_stripe. Definition: subscription status and lifecycle timestamps with its plan (interval, list amount, list currency), quantity and product. Caveats: assumes one subscription item per subscription (true today: 120 for 120; the uniqueness check fails if a second appears); plan_currency differs from invoice currency on 671 of 848 invoices, so invoice amounts use the invoice's own currency; soft-deleted rows dropped (0 today); UTC. No MRR here (D8 PROVISIONAL). Constants: cfg_stripe.minor_unit_divisor.
+entity_id: donjC8BRd3HyjDkrOipzx
+indexes: []
+name: mart_stripe_dim_subscription
+owner_user_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: Stripe subscription
+        -- Key:         subscription_id
+        -- Sources:     stripe_data.subscription, stripe_data.subscription_item, stripe_data.plan, stripe_data.product, stripe_transforms.cfg_stripe
+        -- Definition:  subscription lifecycle fields with its plan, quantity and product
+        -- Caveats:     assumes one subscription_item per subscription (120 items for 120 subscriptions today; the grain check fails if a second item appears);
+        --              plan_currency is the plan's list currency and differs from the invoice currency on most invoices, so invoice amounts always use the invoice's own currency;
+        --              soft-deleted source rows dropped (0 today); timestamps UTC as delivered. No MRR in this model (out of scope, D8 PROVISIONAL).
+        SELECT
+          s.id                                                  AS subscription_id,
+          s.customer_id                                         AS customer_id,
+          s.status                                              AS subscription_status,
+          s.created                                             AS subscription_created_at,
+          s.current_period_start                                AS current_period_start_at,
+          s.current_period_end                                  AS current_period_end_at,
+          s.billing_cycle_anchor                                AS billing_cycle_anchor_at,
+          s.trial_start                                         AS trial_start_at,
+          s.trial_end                                           AS trial_end_at,
+          s.cancel_at_period_end                                AS is_cancel_at_period_end,
+          s.canceled_at                                         AS canceled_at,
+          s.ended_at                                            AS ended_at,
+          si.plan_id                                            AS plan_id,
+          p.nickname                                            AS plan_nickname,
+          p.interval                                            AS plan_interval,
+          p.interval_count                                      AS plan_interval_count,
+          p.currency                                            AS plan_currency,
+          p.amount / c.minor_unit_divisor::numeric              AS plan_amount_local,
+          si.quantity                                           AS plan_quantity,
+          p.product_id                                          AS product_id,
+          pr.name                                               AS product_name
+        FROM stripe_data.subscription s
+        CROSS JOIN stripe_transforms.cfg_stripe c
+        LEFT JOIN stripe_data.subscription_item si ON si.subscription_id = s.id AND NOT si._fivetran_deleted
+        LEFT JOIN stripe_data.plan p               ON p.id = si.plan_id AND NOT p._fivetran_deleted
+        LEFT JOIN stripe_data.product pr           ON pr.id = p.product_id AND NOT pr._fivetran_deleted
+        WHERE NOT s._fivetran_deleted
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: qeylPxP8aLgkjJWlFetHC
+  position: 0
+  tag_id: xafwjCLa462tr7dz0VQQF
+  serdes/meta:
+  - id: qeylPxP8aLgkjJWlFetHC
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_stripe_dim_subscription
+  schema: stripe_transforms
+  type: table
+serdes/meta:
+- id: donjC8BRd3HyjDkrOipzx
+  label: mart_stripe_dim_subscription
+  model: Transform

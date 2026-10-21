@@ -1,0 +1,95 @@
+collection_id: 3O_eZi7v6KNzSmR-96bus
+created_at: '2026-10-21T15:10:06.01108Z'
+creator_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+description: |
+  Draft, provisional decisions: D3, D5, D6, D7. One row per Stripe charge (key: charge_id). Sources: stripe_data.charge, cfg_stripe. Definition: each charge in local currency and USD with refund, net and cash-collected flag. Cash collected = status succeeded AND paid AND captured; net = charged amount minus refund applied. Caveats: refund = charge.amount_refunded, not the refund table (they disagree on all 20 charges that have refund rows; D6); refund applied is capped at the charged amount and over-refunded charges are flagged (3 today; D7); USD uses fixed cfg_stripe rates, null for an unlisted currency (D5); failed and uncaptured charges stay with is_cash_collected = false, so sum cash only where true; soft-deleted rows dropped (0 today); UTC; newest month flagged by is_complete_period. Constants: cfg_stripe.minor_unit_divisor, usd_per_*, last_complete_month.
+entity_id: L-2DZ30gSc9QF5qHv-gdH
+indexes: []
+name: mart_stripe_fct_charge
+owner_user_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: Stripe charge
+        -- Key:         charge_id
+        -- Sources:     stripe_data.charge, stripe_transforms.cfg_stripe
+        -- Definition:  each charge in local currency and USD with its refund, net amount and cash-collected flag.
+        --              Cash collected = status 'succeeded' AND paid AND captured. Net = charged amount minus refund applied.
+        -- Caveats:     refunds come from charge.amount_refunded, not the refund table (D6 PROVISIONAL: the two disagree on all 20 charges that have refund rows);
+        --              refund applied is capped at the charged amount and over-refunded charges are flagged, not dropped (D7 PROVISIONAL, 3 today);
+        --              USD uses fixed rates from cfg_stripe (D5 PROVISIONAL), NULL for a currency cfg_stripe does not list;
+        --              failed and uncaptured charges stay in the table with is_cash_collected = false, so sum cash only where it is true;
+        --              soft-deleted rows dropped (0 today); timestamps UTC as delivered; newest month flagged by is_complete_period (cfg_stripe.last_complete_month).
+        WITH base AS (
+          SELECT
+            ch.id                                                          AS charge_id,
+            ch.customer_id                                                 AS customer_id,
+            ch.status                                                      AS charge_status,
+            ch.currency                                                    AS charge_currency,
+            ch.created                                                     AS charge_created_at,
+            date_trunc('month', ch.created)::date                          AS charge_month,
+            ch.paid                                                        AS is_paid,
+            ch.refunded                                                    AS is_refunded,
+            ch.captured                                                    AS is_captured,
+            ch.amount / c.minor_unit_divisor::numeric                      AS amount_gross_local,
+            ch.amount_refunded / c.minor_unit_divisor::numeric             AS amount_refunded_local,
+            LEAST(ch.amount_refunded, ch.amount) / c.minor_unit_divisor::numeric AS amount_refund_applied_local,
+            ch.amount_refunded > ch.amount                                 AS is_over_refunded,
+            CASE ch.currency
+              WHEN 'usd' THEN c.usd_per_usd
+              WHEN 'eur' THEN c.usd_per_eur
+              WHEN 'gbp' THEN c.usd_per_gbp
+              WHEN 'cad' THEN c.usd_per_cad
+              WHEN 'aud' THEN c.usd_per_aud
+            END                                                            AS fx_usd_per_unit,
+            c.last_complete_month                                          AS last_complete_month,
+            (ch.status = 'succeeded' AND ch.paid AND ch.captured)          AS is_cash_collected
+          FROM stripe_data.charge ch
+          CROSS JOIN stripe_transforms.cfg_stripe c
+          WHERE NOT ch._fivetran_deleted
+        )
+        SELECT
+          b.charge_id,
+          b.customer_id,
+          b.charge_status,
+          b.charge_currency,
+          b.charge_created_at,
+          b.charge_month,
+          b.charge_month <= b.last_complete_month                          AS is_complete_period,
+          b.is_paid,
+          b.is_refunded,
+          b.is_captured,
+          b.is_cash_collected,
+          b.is_over_refunded,
+          b.amount_gross_local,
+          b.amount_refunded_local,
+          b.amount_refund_applied_local,
+          b.amount_gross_local - b.amount_refund_applied_local             AS amount_net_local,
+          b.fx_usd_per_unit,
+          round(b.amount_gross_local * b.fx_usd_per_unit, 2)               AS amount_gross_usd,
+          round(b.amount_refunded_local * b.fx_usd_per_unit, 2)            AS amount_refunded_usd,
+          round(b.amount_refund_applied_local * b.fx_usd_per_unit, 2)      AS amount_refund_applied_usd,
+          round((b.amount_gross_local - b.amount_refund_applied_local) * b.fx_usd_per_unit, 2) AS amount_net_usd
+        FROM base b
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: -Jl0XV8uKQKVH3Lc2Ag10
+  position: 0
+  tag_id: xafwjCLa462tr7dz0VQQF
+  serdes/meta:
+  - id: -Jl0XV8uKQKVH3Lc2Ag10
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_stripe_fct_charge
+  schema: stripe_transforms
+  type: table
+serdes/meta:
+- id: L-2DZ30gSc9QF5qHv-gdH
+  label: mart_stripe_fct_charge
+  model: Transform

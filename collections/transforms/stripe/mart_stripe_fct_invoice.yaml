@@ -1,0 +1,103 @@
+collection_id: 3O_eZi7v6KNzSmR-96bus
+created_at: '2026-10-21T15:10:07.487619Z'
+creator_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+description: |
+  Draft, provisional decisions: D3, D4, D5. One row per Stripe invoice (key: invoice_id). Sources: stripe_data.invoice, mart_stripe_dim_subscription, cfg_stripe. Definition: each invoice in local currency and USD with its subscription's plan and product. Revenue invoice = status paid; revenue = amount_paid (D4). Caveats: amounts use the invoice's own currency, not the plan's (they differ on 671 of 848 invoices); USD uses fixed cfg_stripe rates, null for an unlisted currency (D5); is_dated_before_subscription flags invoices created before their subscription (403 of 848 today), flagged, not fixed; soft-deleted rows dropped (0 today); UTC; newest month flagged by is_complete_period. Constants: cfg_stripe.minor_unit_divisor, usd_per_*, last_complete_month.
+entity_id: jSzTy0GFI7ucbGrhh91XD
+indexes: []
+name: mart_stripe_fct_invoice
+owner_user_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: Stripe invoice
+        -- Key:         invoice_id
+        -- Sources:     stripe_data.invoice, stripe_transforms.mart_stripe_dim_subscription, stripe_transforms.cfg_stripe
+        -- Definition:  each invoice in local currency and USD with its subscription's plan and product.
+        --              Revenue invoice = status 'paid'; revenue is amount_paid (D4 PROVISIONAL).
+        -- Caveats:     amounts use the invoice's own currency, not the plan's (they differ on 671 of 848 invoices);
+        --              USD uses fixed rates from cfg_stripe (D5 PROVISIONAL), NULL for a currency cfg_stripe does not list;
+        --              is_dated_before_subscription flags invoices created before their subscription (403 of 848 today), a source data quirk that is flagged, not fixed;
+        --              soft-deleted rows dropped (0 today); timestamps UTC as delivered; newest month flagged by is_complete_period.
+        WITH base AS (
+          SELECT
+            i.id                                                         AS invoice_id,
+            i.customer_id                                                AS customer_id,
+            i.subscription_id                                            AS subscription_id,
+            s.plan_id                                                    AS plan_id,
+            s.product_id                                                 AS product_id,
+            s.plan_interval                                              AS plan_interval,
+            s.subscription_status                                        AS subscription_status,
+            i.status                                                     AS invoice_status,
+            i.currency                                                   AS invoice_currency,
+            i.created                                                    AS invoice_created_at,
+            i.due_date                                                   AS invoice_due_at,
+            date_trunc('month', i.created)::date                         AS invoice_month,
+            i.paid                                                       AS is_paid,
+            i.attempted                                                  AS is_attempted,
+            (i.status = 'paid')                                          AS is_revenue_invoice,
+            COALESCE(i.created < s.subscription_created_at, FALSE)       AS is_dated_before_subscription,
+            i.amount_due / c.minor_unit_divisor::numeric                 AS amount_due_local,
+            i.amount_paid / c.minor_unit_divisor::numeric                AS amount_paid_local,
+            i.amount_remaining / c.minor_unit_divisor::numeric           AS amount_remaining_local,
+            CASE i.currency
+              WHEN 'usd' THEN c.usd_per_usd
+              WHEN 'eur' THEN c.usd_per_eur
+              WHEN 'gbp' THEN c.usd_per_gbp
+              WHEN 'cad' THEN c.usd_per_cad
+              WHEN 'aud' THEN c.usd_per_aud
+            END                                                          AS fx_usd_per_unit,
+            c.last_complete_month                                        AS last_complete_month
+          FROM stripe_data.invoice i
+          CROSS JOIN stripe_transforms.cfg_stripe c
+          LEFT JOIN stripe_transforms.mart_stripe_dim_subscription s ON s.subscription_id = i.subscription_id
+          WHERE NOT i._fivetran_deleted
+        )
+        SELECT
+          b.invoice_id,
+          b.customer_id,
+          b.subscription_id,
+          b.plan_id,
+          b.product_id,
+          b.plan_interval,
+          b.subscription_status,
+          b.invoice_status,
+          b.invoice_currency,
+          b.invoice_created_at,
+          b.invoice_due_at,
+          b.invoice_month,
+          b.invoice_month <= b.last_complete_month                       AS is_complete_period,
+          b.is_paid,
+          b.is_attempted,
+          b.is_revenue_invoice,
+          b.is_dated_before_subscription,
+          b.amount_due_local,
+          b.amount_paid_local,
+          b.amount_remaining_local,
+          b.fx_usd_per_unit,
+          round(b.amount_due_local * b.fx_usd_per_unit, 2)               AS amount_due_usd,
+          round(b.amount_paid_local * b.fx_usd_per_unit, 2)              AS amount_paid_usd,
+          round(b.amount_remaining_local * b.fx_usd_per_unit, 2)         AS amount_remaining_usd
+        FROM base b
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: 7Z-6rycx1-KyK1Oy5CTfx
+  position: 0
+  tag_id: xafwjCLa462tr7dz0VQQF
+  serdes/meta:
+  - id: 7Z-6rycx1-KyK1Oy5CTfx
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_stripe_fct_invoice
+  schema: stripe_transforms
+  type: table
+serdes/meta:
+- id: jSzTy0GFI7ucbGrhh91XD
+  label: mart_stripe_fct_invoice
+  model: Transform

@@ -1,0 +1,338 @@
+created_at: '2026-10-21T15:10:46.376777Z'
+creator_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+description: 'Cases: in_1 paid eur 100.00 on sub_1 (USD 108.20); in_2 void usd due 46.84 paid 0, not revenue; in_3 open gbp due 50.00 remaining 50.00; in_4 paid invoice created 2024-01-05 before its subscription (created 2024-03-01) is flagged; in_5 has no subscription (plan null, flag false); in_6 soft-deleted dropped; in_7 created 2025-01-15 is in the incomplete month; in_8 unlisted currency jpy has null USD.'
+entity_id: 3oOPoI_D9JTR7nRARKyU6
+expectations:
+- columns:
+  - cast_type: VARCHAR(64)
+    name: invoice_id
+  - cast_type: BOOLEAN
+    name: is_revenue_invoice
+  - cast_type: VARCHAR(64)
+    name: plan_id
+  - cast_type: BOOLEAN
+    name: is_dated_before_subscription
+  - cast_type: DATE
+    name: invoice_month
+  - cast_type: BOOLEAN
+    name: is_complete_period
+  format: rows
+  name: revenue flag, plan attach and before-subscription flag per case; deleted invoice dropped
+  rows:
+  - invoice_id: in_1
+    invoice_month: '2024-02-01'
+    is_complete_period: true
+    is_dated_before_subscription: false
+    is_revenue_invoice: true
+    plan_id: plan_a
+  - invoice_id: in_2
+    invoice_month: '2024-03-01'
+    is_complete_period: true
+    is_dated_before_subscription: false
+    is_revenue_invoice: false
+    plan_id: plan_a
+  - invoice_id: in_3
+    invoice_month: '2024-04-01'
+    is_complete_period: true
+    is_dated_before_subscription: false
+    is_revenue_invoice: false
+    plan_id: plan_a
+  - invoice_id: in_4
+    invoice_month: '2024-01-01'
+    is_complete_period: true
+    is_dated_before_subscription: true
+    is_revenue_invoice: true
+    plan_id: plan_b
+  - invoice_id: in_5
+    invoice_month: '2024-05-01'
+    is_complete_period: true
+    is_dated_before_subscription: false
+    is_revenue_invoice: true
+    plan_id: null
+  - invoice_id: in_7
+    invoice_month: '2025-01-01'
+    is_complete_period: false
+    is_dated_before_subscription: false
+    is_revenue_invoice: true
+    plan_id: plan_a
+  - invoice_id: in_8
+    invoice_month: '2024-07-01'
+    is_complete_period: true
+    is_dated_before_subscription: false
+    is_revenue_invoice: true
+    plan_id: plan_a
+  type: equals
+- columns:
+  - cast_type: VARCHAR(64)
+    name: invoice_id
+  - cast_type: NUMERIC(12,2)
+    name: amount_due_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_paid_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_remaining_local
+  - cast_type: NUMERIC(12,2)
+    name: amount_due_usd
+  - cast_type: NUMERIC(12,2)
+    name: amount_paid_usd
+  - cast_type: NUMERIC(12,2)
+    name: amount_remaining_usd
+  format: rows
+  name: amounts in major units and USD at cfg rates; unlisted currency stays null; void invoice keeps amount due but earns 0
+  rows:
+  - amount_due_local: 100
+    amount_due_usd: 108.2
+    amount_paid_local: 100
+    amount_paid_usd: 108.2
+    amount_remaining_local: 0
+    amount_remaining_usd: 0
+    invoice_id: in_1
+  - amount_due_local: 46.84
+    amount_due_usd: 46.84
+    amount_paid_local: 0
+    amount_paid_usd: 0
+    amount_remaining_local: 46.84
+    amount_remaining_usd: 46.84
+    invoice_id: in_2
+  - amount_due_local: 50
+    amount_due_usd: 63.9
+    amount_paid_local: 0
+    amount_paid_usd: 0
+    amount_remaining_local: 50
+    amount_remaining_usd: 63.9
+    invoice_id: in_3
+  - amount_due_local: 20
+    amount_due_usd: 20
+    amount_paid_local: 20
+    amount_paid_usd: 20
+    amount_remaining_local: 0
+    amount_remaining_usd: 0
+    invoice_id: in_4
+  - amount_due_local: 10
+    amount_due_usd: 7.3
+    amount_paid_local: 10
+    amount_paid_usd: 7.3
+    amount_remaining_local: 0
+    amount_remaining_usd: 0
+    invoice_id: in_5
+  - amount_due_local: 30
+    amount_due_usd: 19.8
+    amount_paid_local: 30
+    amount_paid_usd: 19.8
+    amount_remaining_local: 0
+    amount_remaining_usd: 0
+    invoice_id: in_7
+  - amount_due_local: 50
+    amount_due_usd: null
+    amount_paid_local: 50
+    amount_paid_usd: null
+    amount_remaining_local: 0
+    amount_remaining_usd: null
+    invoice_id: in_8
+  type: equals
+- name: invoice_id is unique
+  sql: SELECT m.invoice_id FROM stripe_transforms.mart_stripe_fct_invoice m GROUP BY m.invoice_id HAVING COUNT(*) > 1
+  type: empty
+- name: only paid invoices earn revenue
+  sql: SELECT m.invoice_id FROM stripe_transforms.mart_stripe_fct_invoice m WHERE NOT m.is_revenue_invoice AND m.amount_paid_local > 0
+  type: empty
+inputs:
+- columns:
+  - cast_type: INTEGER
+    name: minor_unit_divisor
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_usd
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_eur
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_gbp
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_cad
+  - cast_type: NUMERIC(10,4)
+    name: usd_per_aud
+  - cast_type: DATE
+    name: last_complete_month
+  format: rows
+  rows:
+  - last_complete_month: '2024-12-01'
+    minor_unit_divisor: 100
+    usd_per_aud: 0.66
+    usd_per_cad: 0.73
+    usd_per_eur: 1.082
+    usd_per_gbp: 1.278
+    usd_per_usd: 1
+  table:
+    name: cfg_stripe
+    schema: stripe_transforms
+- columns:
+  - cast_type: VARCHAR(64)
+    name: subscription_id
+  - cast_type: VARCHAR(64)
+    name: plan_id
+  - cast_type: VARCHAR(64)
+    name: product_id
+  - cast_type: VARCHAR(16)
+    name: plan_interval
+  - cast_type: VARCHAR(32)
+    name: subscription_status
+  - cast_type: TIMESTAMP
+    name: subscription_created_at
+  format: rows
+  rows:
+  - plan_id: plan_a
+    plan_interval: month
+    product_id: prod_a
+    subscription_created_at: '2024-01-01 00:00:00'
+    subscription_id: sub_1
+    subscription_status: active
+  - plan_id: plan_b
+    plan_interval: year
+    product_id: prod_b
+    subscription_created_at: '2024-03-01 00:00:00'
+    subscription_id: sub_2
+    subscription_status: canceled
+  table:
+    name: mart_stripe_dim_subscription
+    schema: stripe_transforms
+- columns:
+  - cast_type: VARCHAR(64)
+    name: id
+  - cast_type: VARCHAR(64)
+    name: customer_id
+  - cast_type: VARCHAR(64)
+    name: subscription_id
+  - cast_type: VARCHAR(32)
+    name: status
+  - cast_type: VARCHAR(8)
+    name: currency
+  - cast_type: TIMESTAMP
+    name: created
+  - cast_type: TIMESTAMP
+    name: due_date
+  - cast_type: BOOLEAN
+    name: paid
+  - cast_type: BOOLEAN
+    name: attempted
+  - cast_type: INTEGER
+    name: amount_due
+  - cast_type: INTEGER
+    name: amount_paid
+  - cast_type: INTEGER
+    name: amount_remaining
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    amount_due: 10000
+    amount_paid: 10000
+    amount_remaining: 0
+    attempted: true
+    created: '2024-02-10 10:00:00'
+    currency: eur
+    customer_id: cus_1
+    due_date: null
+    id: in_1
+    paid: true
+    status: paid
+    subscription_id: sub_1
+  - _fivetran_deleted: false
+    amount_due: 4684
+    amount_paid: 0
+    amount_remaining: 4684
+    attempted: true
+    created: '2024-03-10 10:00:00'
+    currency: usd
+    customer_id: cus_2
+    due_date: null
+    id: in_2
+    paid: false
+    status: void
+    subscription_id: sub_1
+  - _fivetran_deleted: false
+    amount_due: 5000
+    amount_paid: 0
+    amount_remaining: 5000
+    attempted: false
+    created: '2024-04-10 10:00:00'
+    currency: gbp
+    customer_id: cus_3
+    due_date: '2024-05-10 10:00:00'
+    id: in_3
+    paid: false
+    status: open
+    subscription_id: sub_1
+  - _fivetran_deleted: false
+    amount_due: 2000
+    amount_paid: 2000
+    amount_remaining: 0
+    attempted: true
+    created: '2024-01-05 10:00:00'
+    currency: usd
+    customer_id: cus_4
+    due_date: null
+    id: in_4
+    paid: true
+    status: paid
+    subscription_id: sub_2
+  - _fivetran_deleted: false
+    amount_due: 1000
+    amount_paid: 1000
+    amount_remaining: 0
+    attempted: true
+    created: '2024-05-05 10:00:00'
+    currency: cad
+    customer_id: cus_5
+    due_date: null
+    id: in_5
+    paid: true
+    status: paid
+    subscription_id: null
+  - _fivetran_deleted: true
+    amount_due: 9999
+    amount_paid: 9999
+    amount_remaining: 0
+    attempted: true
+    created: '2024-06-05 10:00:00'
+    currency: usd
+    customer_id: cus_6
+    due_date: null
+    id: in_6
+    paid: true
+    status: paid
+    subscription_id: sub_1
+  - _fivetran_deleted: false
+    amount_due: 3000
+    amount_paid: 3000
+    amount_remaining: 0
+    attempted: true
+    created: '2025-01-15 10:00:00'
+    currency: aud
+    customer_id: cus_7
+    due_date: null
+    id: in_7
+    paid: true
+    status: paid
+    subscription_id: sub_1
+  - _fivetran_deleted: false
+    amount_due: 5000
+    amount_paid: 5000
+    amount_remaining: 0
+    attempted: true
+    created: '2024-07-05 10:00:00'
+    currency: jpy
+    customer_id: cus_8
+    due_date: null
+    id: in_8
+    paid: true
+    status: paid
+    subscription_id: sub_1
+  table:
+    name: invoice
+    schema: stripe_data
+name: 'mart_stripe_fct_invoice: revenue invoices, USD, flags, periods'
+transform_id: jSzTy0GFI7ucbGrhh91XD
+serdes/meta:
+- id: 3oOPoI_D9JTR7nRARKyU6
+  label: mart_stripe_fct_invoice__revenue_invoices__usd__flags__periods
+  model: TransformTest

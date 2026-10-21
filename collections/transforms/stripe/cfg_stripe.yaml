@@ -1,0 +1,52 @@
+collection_id: 3O_eZi7v6KNzSmR-96bus
+created_at: '2026-10-21T15:07:47.275332Z'
+creator_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+description: |
+  Draft. One row (key: cfg_key = 'stripe'). Sources: none. Definition: constants every stripe_transforms model reads: minor_unit_divisor = 100 (Stripe amounts are cents), fixed USD rates (EUR 1.082, GBP 1.278, CAD 0.73, AUD 0.66; copied from analytics.cfg_stripe_v2, D5 PROVISIONAL), last_complete_month = 2024-12-01 (pinned to the extract's newest invoice and charge, 2024-12-31, not to the current date; D3 PROVISIONAL). Change a constant here with `mb transform update`, then re-run the stripe job.
+entity_id: -wZL-dhx2v0UhaJqDa5Gu
+indexes: []
+name: cfg_stripe
+owner_user_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: configuration set (a single row, cfg_key = 'stripe')
+        -- Key:         cfg_key
+        -- Sources:     none (constants)
+        -- Definition:  constants read by every stripe_transforms model: minor-unit divisor, fixed FX to USD, last complete month
+        -- Caveats:     FX is a fixed 2024-average rate set copied from analytics.cfg_stripe_v2 (D5, PROVISIONAL); no FX table exists in the warehouse.
+        --              last_complete_month is pinned to the extract, not to current_date (D3, PROVISIONAL).
+        SELECT
+          'stripe'::text                                  AS cfg_key,
+          100                                             AS minor_unit_divisor,
+          'Stripe amounts are minor units (cents); all five currencies in stripe_data have 2 decimals'::text AS minor_unit_divisor_note,
+          1.0::numeric(10, 4)                             AS usd_per_usd,
+          1.082::numeric(10, 4)                           AS usd_per_eur,
+          1.278::numeric(10, 4)                           AS usd_per_gbp,
+          0.73::numeric(10, 4)                            AS usd_per_cad,
+          0.66::numeric(10, 4)                            AS usd_per_aud,
+          'D5 PROVISIONAL: fixed 2024-average FX, same rates as analytics.cfg_stripe_v2; no FX table in warehouse'::text AS fx_note,
+          DATE '2024-12-01'                               AS last_complete_month,
+          'D3 PROVISIONAL: pinned to extract; max(created) of stripe_data.charge = 2024-12-31 16:42 and stripe_data.invoice = 2024-12-31 20:12'::text AS last_complete_month_note
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: bkYM_HgQDp04RErOVWvcy
+  position: 0
+  tag_id: xafwjCLa462tr7dz0VQQF
+  serdes/meta:
+  - id: bkYM_HgQDp04RErOVWvcy
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: cfg_stripe
+  schema: stripe_transforms
+  type: table
+serdes/meta:
+- id: -wZL-dhx2v0UhaJqDa5Gu
+  label: cfg_stripe
+  model: Transform

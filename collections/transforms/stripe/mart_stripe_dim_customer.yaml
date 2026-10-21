@@ -1,0 +1,64 @@
+collection_id: 3O_eZi7v6KNzSmR-96bus
+created_at: '2026-10-21T15:08:22.674542Z'
+creator_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+description: |
+  Draft. One row per Stripe customer (key: customer_id). Sources: stripe_data.customer, stripe_data.subscription, cfg_stripe. Definition: customer attributes (created, currency, balance in major units, delinquent flag) and subscription counts (total, not canceled = active/trialing/past_due, canceled). Caveats: no personal data, name/email/description are left out (D7 PROVISIONAL); soft-deleted rows dropped (0 today); timestamps UTC as delivered. Constants: cfg_stripe.minor_unit_divisor.
+entity_id: HhDE4MZnFZ2TZPOF-Xma-
+indexes: []
+name: mart_stripe_dim_customer
+owner_user_id: api-key-user-4503979d-2fa7-4294-b7e6-8a74951ccfe1@api-key.invalid
+source:
+  query:
+    database: neondb
+    stages:
+    - native: |
+        -- One row per: Stripe customer
+        -- Key:         customer_id
+        -- Sources:     stripe_data.customer, stripe_data.subscription, stripe_transforms.cfg_stripe
+        -- Definition:  customer attributes plus subscription counts; no personal data (D7, PROVISIONAL: name, email, description left out)
+        -- Caveats:     soft-deleted source rows (_fivetran_deleted) are dropped (0 today); timestamps are UTC as delivered;
+        --              subscriptions_not_canceled counts every status except 'canceled' (active, trialing, past_due).
+        WITH subs AS (
+          SELECT
+            s.customer_id,
+            COUNT(*)                                           AS subscriptions_total,
+            COUNT(*) FILTER (WHERE s.status <> 'canceled')     AS subscriptions_not_canceled,
+            COUNT(*) FILTER (WHERE s.status = 'canceled')      AS subscriptions_canceled
+          FROM stripe_data.subscription s
+          WHERE NOT s._fivetran_deleted
+          GROUP BY s.customer_id
+        )
+        SELECT
+          cu.id                                                AS customer_id,
+          cu.created                                           AS customer_created_at,
+          cu.currency                                          AS customer_currency,
+          cu.balance / c.minor_unit_divisor::numeric           AS account_balance_local,
+          cu.delinquent                                        AS is_delinquent,
+          COALESCE(sb.subscriptions_total, 0)                  AS subscriptions_total,
+          COALESCE(sb.subscriptions_not_canceled, 0)           AS subscriptions_not_canceled,
+          COALESCE(sb.subscriptions_canceled, 0)               AS subscriptions_canceled,
+          COALESCE(sb.subscriptions_total, 0) > 0              AS has_subscription
+        FROM stripe_data.customer cu
+        CROSS JOIN stripe_transforms.cfg_stripe c
+        LEFT JOIN subs sb ON sb.customer_id = cu.id
+        WHERE NOT cu._fivetran_deleted
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: neondb
+tags:
+- entity_id: fizLi2GgsCSkNaKwOlKKp
+  position: 0
+  tag_id: xafwjCLa462tr7dz0VQQF
+  serdes/meta:
+  - id: fizLi2GgsCSkNaKwOlKKp
+    model: TransformTransformTag
+target:
+  database: neondb
+  name: mart_stripe_dim_customer
+  schema: stripe_transforms
+  type: table
+serdes/meta:
+- id: HhDE4MZnFZ2TZPOF-Xma-
+  label: mart_stripe_dim_customer
+  model: Transform

@@ -1,0 +1,9 @@
+name: stripe
+entity_id: 3O_eZi7v6KNzSmR-96bus
+slug: stripe
+created_at: '2026-10-21T15:06:21.411361Z'
+namespace: transforms
+serdes/meta:
+- id: 3O_eZi7v6KNzSmR-96bus
+  label: stripe
+  model: Collection

@@ -1,0 +1,7 @@
+created_at: '2026-10-21T15:06:22.024704Z'
+entity_id: xafwjCLa462tr7dz0VQQF
+name: rde_stripe
+serdes/meta:
+- id: xafwjCLa462tr7dz0VQQF
+  label: rde_stripe
+  model: TransformTag
