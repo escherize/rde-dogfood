@@ -1,0 +1,78 @@
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+description: One row per catalog product (archived, draft and deleted products included so history still resolves), with lifetime sales and refunds from valid orders. Unsold products have zero sales.
+entity_id: 69FlzIFsLff2k3MFk8nu6
+indexes: []
+name: revenue_products
+owner_user_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+source:
+  query:
+    database: Shop warehouse
+    stages:
+    - native: |
+        -- One row per catalog product (including archived, draft and deleted products, so history still resolves).
+        WITH variants AS (
+          SELECT
+            product_id,
+            count(*)   AS variant_count,
+            min(price) AS min_price,
+            max(price) AS max_price
+          FROM raw_shopify.product_variants
+          GROUP BY product_id
+        ),
+
+        sales AS (
+          -- Sales and refunds on valid orders only.
+          SELECT
+            product_id,
+            count(DISTINCT order_id)                       AS order_count,
+            sum(quantity)                                  AS units_sold,
+            sum(gross_amount)                              AS gross_sales,
+            sum(discount_amount)                           AS discounts,
+            sum(net_amount)                                AS net_sales,
+            sum(refunded_quantity)                         AS units_refunded,
+            sum(refunded_amount)                           AS refunded_amount,
+            min(order_date)                                AS first_sold_date,
+            max(order_date)                                AS last_sold_date
+          FROM semantic.revenue_order_lines
+          WHERE is_valid_order
+            AND product_id IS NOT NULL
+          GROUP BY product_id
+        )
+
+        SELECT
+          p.id                                  AS product_id,
+          p.title,
+          p.handle,
+          p.vendor,
+          p.product_type                        AS category,
+          p.status,
+          p._fivetran_deleted                   AS is_deleted,
+          p.created_at,
+          p.published_at,
+          COALESCE(v.variant_count, 0)          AS variant_count,
+          v.min_price,
+          v.max_price,
+          COALESCE(s.order_count, 0)            AS order_count,
+          COALESCE(s.units_sold, 0)             AS units_sold,
+          COALESCE(s.gross_sales, 0)            AS gross_sales,
+          COALESCE(s.discounts, 0)              AS discounts,
+          COALESCE(s.net_sales, 0)              AS net_sales,
+          COALESCE(s.units_refunded, 0)         AS units_refunded,
+          COALESCE(s.refunded_amount, 0)        AS refunded_amount,
+          s.first_sold_date,
+          s.last_sold_date
+        FROM raw_shopify.products p
+        LEFT JOIN variants v ON v.product_id = p.id
+        LEFT JOIN sales s ON s.product_id = p.id
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: Shop warehouse
+tags: []
+target:
+  database: Shop warehouse
+  name: revenue_products
+  schema: semantic
+  type: table
+serdes/meta:
+- model: Transform
