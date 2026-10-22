@@ -1,0 +1,5 @@
+# Demo kit: generated data and secrets
+demo/.secrets/
+demo/warehouse/data/
+demo/warehouse/*.dump
+demo/warehouse/*.dump.tmp

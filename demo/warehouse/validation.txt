@@ -1,0 +1,210 @@
+== Row counts
+                 table                  | row_count 
+----------------------------------------+-----------
+ analytics.category_revenue             |        10
+ analytics.customer_ltv                 |     19205
+ analytics.daily_revenue                |      3527
+ analytics.marketing_roas               |      6570
+ analytics.orders_enriched              |    119226
+ analytics.product_sales                |       500
+ raw_marketing.ad_spend                 |      7485
+ raw_marketing.web_sessions             |    841786
+ raw_shopify.customers                  |     20972
+ raw_shopify.discounts                  |        30
+ raw_shopify.order_lines                |    292094
+ raw_shopify.orders                     |    140795
+ raw_shopify.product_variants           |      3439
+ raw_shopify.products                   |       500
+ raw_shopify.refunds                    |      6788
+ raw_shopify.transactions               |    217898
+ raw_stripe.charges                     |     94614
+ raw_stripe.payouts                     |       523
+ raw_stripe.refunds                     |      4714
+ shop_analytics.customer_ltv            |     19205
+ shop_analytics.daily_sales             |       730
+ shop_analytics.monthly_category_sales  |       218
+ shop_analytics.stg_shopify_customers   |     19205
+ shop_analytics.stg_shopify_order_lines |    291083
+ shop_analytics.stg_shopify_orders      |    119226
+ shop_analytics.stg_shopify_products    |       500
+
+== Reconciliation and oracle checks
+CREATE TABLE
+INSERT 0 2
+INSERT 0 8
+INSERT 0 14
+INSERT 0 3
+INSERT 0 10
+UPDATE 37
+                                       check_name                                        |  expected   |   actual    | ok 
+-----------------------------------------------------------------------------------------+-------------+-------------+----
+ stg_shopify_orders rows = latest raw orders minus test/deleted                          | 119226      | 119226      | t
+ stg net revenue = raw (total_price - total_tax) of non-cancelled/voided/refunded orders | 31244097.07 | 31244097.07 | t
+ stg orders = oracle                                                                     | 119226      | 119226      | t
+ valid orders = oracle                                                                   | 114304      | 114304      | t
+ valid net revenue = oracle                                                              | 31244097.07 | 31244097.07 | t
+ invalid orders carry zero net revenue                                                   | 0.00        | 0.00        | t
+ stg order lines = oracle                                                                | 291083      | 291083      | t
+ units sold (valid) = oracle                                                             | 348363      | 348363      | t
+ stg customers (deduplicated people) = oracle                                            | 19205       | 19205       | t
+ Black Friday 2025 valid orders = oracle                                                 | 891         | 891         | t
+ sum(daily_sales.net_revenue) = valid net revenue                                        | 31244097.07 | 31244097.07 | t
+ sum(daily_sales.orders) = valid orders                                                  | 114304      | 114304      | t
+ sum(daily_sales.units_sold) = valid units                                               | 348363      | 348363      | t
+ sum(monthly_category_sales.units_sold) = valid units                                    | 348363      | 348363      | t
+ sum(monthly_category_sales.net_sales) = valid subtotal (line items - discounts)         | 30933840.12 | 30933840.12 | t
+ sum(customer_ltv.lifetime_net_revenue) = valid net revenue of identified customers      | 30653655.66 | 30653655.66 | t
+ customer_ltv rows = stg customers                                                       | 19205       | 19205       | t
+ sum(analytics.daily_revenue.net_revenue) = valid net revenue                            | 31244097.07 | 31244097.07 | t
+ analytics.orders_enriched rows = stg orders                                             | 119226      | 119226      | t
+ sum(analytics.customer_ltv) = shop_analytics.customer_ltv                               | 30653655.66 | 30653655.66 | t
+ sum(category_revenue.net_sales) = sum(monthly_category_sales.net_sales)                 | 30933840.12 | 30933840.12 | t
+ sum(product_sales.units_sold) = valid units on catalogued products                      | 345611      | 345611      | t
+ marketing_roas spend = deduplicated raw ad spend                                        | 2337870.12  | 2337870.12  | t
+ marketing_roas attributed orders = valid orders with a tracked session                  | 87986       | 87986       | t
+ Stripe captured charges (Shopify-linked) = Shopify Payments captures/sales              | 2625443512  | 2625443512  | t
+ Stripe refunds = Shopify Payments refund transactions                                   | 81212236    | 81212236    | t
+ Stripe payouts = captured charges - fees - refunds                                      | 2527614793  | 2527614793  | t
+ orphan stg order lines -> stg orders                                                    | 0           | 0           | t
+ orphan stg order lines -> stg products                                                  | 0           | 0           | t
+ orphan stg orders -> stg customers                                                      | 0           | 0           | t
+ orphan raw order lines -> raw orders                                                    | 0           | 0           | t
+ orphan raw variants -> raw products                                                     | 0           | 0           | t
+ orphan raw transactions -> raw orders                                                   | 0           | 0           | t
+ orphan raw refunds -> raw orders                                                        | 0           | 0           | t
+ orphan stripe refunds -> charges                                                        | 0           | 0           | t
+ orphan stripe charges -> payouts                                                        | 0           | 0           | t
+ orphan converted sessions -> raw orders                                                 | 0           | 0           | t
+
+      result       
+-------------------
+ ALL CHECKS PASSED
+
+== Intended raw messiness (expected non-zero)
+                             item                             |   n   
+--------------------------------------------------------------+-------
+ raw order rows that are stale versions                       | 21132
+ raw customer rows that are stale versions                    |  1151
+ test orders                                                  |   216
+ soft-deleted orders                                          |   221
+ soft-deleted customers                                       |   268
+ soft-deleted products                                        |    13
+ customer accounts sharing an email modulo case/whitespace    |   690
+ accounts with email stored in upper/mixed case or padded     |   348
+ redacted (GDPR) customers                                    |    59
+ guest-checkout orders (no customer_id)                       |  4710
+ non-USD presentment orders                                   | 32286
+ order lines pointing at products never landed                |   473
+ custom order lines (no product)                              |  2328
+ order rows synced > 2 days after last update (late arriving) |   707
+ restated ad_spend rows                                       |   272
+ Stripe charges with no Shopify order (wholesale)             |   240
+ distinct utm_source spellings                                |    33
+
+== Sanity: growth, fiscal years Oct-Sep
+         period          | orders | net_revenue |  aov   
+-------------------------+--------+-------------+--------
+ FY25 (2024-10..2025-09) |  43952 | 11890023.17 | 270.52
+ FY26 (2025-10..2026-09) |  70352 | 19354073.90 | 275.10
+
+== Sanity: top 8 days by valid orders (BFCM should dominate)
+ order_date | dow | orders | net_revenue 
+------------+-----+--------+-------------
+ 2025-12-01 | Mon |    895 |   276835.27
+ 2025-11-28 | Fri |    891 |   272226.50
+ 2025-11-30 | Sun |    650 |   207298.84
+ 2025-11-29 | Sat |    628 |   199447.29
+ 2024-11-29 | Fri |    543 |   161286.80
+ 2024-12-02 | Mon |    467 |   138270.26
+ 2024-12-01 | Sun |    404 |   112747.98
+ 2025-12-02 | Tue |    388 |   112355.64
+
+== Sanity: day-of-week profile
+  dow  | avg_orders 
+-------+------------
+ 1 Mon |      168.0
+ 2 Tue |      149.1
+ 3 Wed |      147.7
+ 4 Thu |      147.2
+ 5 Fri |      149.4
+ 6 Sat |      157.1
+ 7 Sun |      177.7
+
+== Sanity: order status mix
+  financial_status  | is_cancelled | orders | net_revenue 
+--------------------+--------------+--------+-------------
+ paid               | f            | 110171 | 29842775.30
+ partially_refunded | f            |   3760 |  1292548.58
+ refunded           | f            |   2392 |        0.00
+ voided             | t            |   1894 |        0.00
+ refunded           | t            |    636 |        0.00
+ authorized         | f            |    301 |    88979.48
+ pending            | f            |     72 |    19793.71
+
+== Sanity: customers
+ customers | with_orders | repeat_customers | repeat_pct | avg_ltv 
+-----------+-------------+------------------+------------+---------
+     19205 |       17731 |             9716 |       54.8 | 1728.82
+
+  segment  | customers | net_revenue 
+-----------+-----------+-------------
+ new       |      8007 |  2218660.35
+ returning |      6691 |  7114731.39
+ vip       |      3033 | 21320263.92
+ prospect  |      1474 |        0.00
+
+== Sanity: cohorts (first-order quarter -> customers, avg orders, avg LTV)
+ cohort  | customers | avg_orders | avg_ltv 
+---------+-----------+------------+---------
+ 2024-Q4 |      3533 |       9.62 | 2671.73
+ 2025-Q1 |      1188 |       8.30 | 2280.78
+ 2025-Q2 |      1543 |       7.95 | 2108.68
+ 2025-Q3 |      1739 |       6.89 | 1869.73
+ 2025-Q4 |      3162 |       5.30 | 1543.75
+ 2026-Q1 |      1703 |       5.20 | 1442.68
+ 2026-Q2 |      2309 |       4.63 | 1150.06
+ 2026-Q3 |      2554 |       3.06 |  785.44
+
+== Sanity: category revenue
+  category   | products | orders | units_sold | net_sales  | share_of_net_sales_pct 
+-------------+----------+--------+------------+------------+------------------------
+ Outerwear   |       55 |  25309 |      37278 | 7935196.94 |                  25.65
+ Bags        |       45 |  27058 |      38817 | 5214847.54 |                  16.86
+ Tops        |      120 |  50630 |      83729 | 4036025.92 |                  13.05
+ Camp & Home |       60 |  29561 |      43138 | 4023120.89 |                  13.01
+ Footwear    |       45 |  20349 |      28022 | 3820373.14 |                  12.35
+ Bottoms     |       70 |  31416 |      45735 | 3486734.78 |                  11.27
+ Accessories |      102 |  42607 |      67131 | 2197985.70 |                   7.11
+ Gift Cards  |        3 |   1738 |       1761 |  188275.00 |                   0.61
+ Unknown     |        0 |    436 |        540 |   20784.16 |                   0.07
+ Add-ons     |        0 |   2212 |       2212 |   10496.05 |                   0.03
+
+== Sanity: seasonality of Outerwear vs Camp & Home (units by calendar quarter)
+  category   | q | units 
+-------------+---+-------
+ Camp & Home | 1 |  5423
+ Camp & Home | 2 | 13215
+ Camp & Home | 3 | 14372
+ Camp & Home | 4 | 10128
+ Outerwear   | 1 |  9487
+ Outerwear   | 2 |  4915
+ Outerwear   | 3 |  5855
+ Outerwear   | 4 | 17021
+
+== Sanity: marketing ROAS by channel (paid)
+    channel    |   spend   | orders |  revenue   | roas 
+---------------+-----------+--------+------------+------
+ meta_ads      | 973114.47 |   9492 | 2612226.83 | 2.68
+ google_ads    | 799452.70 |  12065 | 3299988.44 | 4.13
+ tiktok_ads    | 423769.11 |   2245 |  627788.03 | 1.48
+ pinterest_ads | 141533.84 |   1119 |  308360.86 | 2.18
+
+== Sanity: sales channel mix
+ sales_channel | orders | net_revenue 
+---------------+--------+-------------
+ online_store  |  86346 | 23625209.51
+ mobile_app    |  14810 |  4035705.76
+ shop_app      |   7394 |  2001073.32
+ pos           |   4177 |  1159090.36
+ draft_order   |   1577 |   423018.12
+
