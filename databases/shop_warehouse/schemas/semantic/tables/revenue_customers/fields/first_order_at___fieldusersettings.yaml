@@ -1,0 +1,10 @@
+description: First valid order.
+description_set: true
+display_name: First order at
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- first_order_at
+serdes/meta:
+- model: FieldUserSettings

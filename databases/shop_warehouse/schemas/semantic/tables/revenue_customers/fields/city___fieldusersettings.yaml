@@ -1,0 +1,10 @@
+description: City from the default address.
+description_set: true
+display_name: City
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- city
+serdes/meta:
+- model: FieldUserSettings

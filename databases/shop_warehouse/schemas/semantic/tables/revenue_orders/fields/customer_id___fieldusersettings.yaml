@@ -1,0 +1,18 @@
+description: The customer who placed the order, after merging duplicate accounts (guest checkouts are matched to a customer by email). Null for guest checkouts that match nobody.
+description_set: true
+display_name: Customer ID
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- customer_id
+fk_target_field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- customer_id
+fk_target_field_id_set: true
+semantic_type: type/FK
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

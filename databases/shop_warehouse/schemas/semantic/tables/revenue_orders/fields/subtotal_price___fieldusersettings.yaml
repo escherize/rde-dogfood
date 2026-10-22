@@ -1,0 +1,12 @@
+description: Items after discounts, before shipping and tax.
+description_set: true
+display_name: Subtotal
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- subtotal_price
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

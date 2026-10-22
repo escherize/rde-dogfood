@@ -1,0 +1,191 @@
+collection_id: LxgriG4LvGulO22JURaBR
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+description: One row per real Shopify order (latest version; test and deleted orders removed), in USD shop money, with the customer resolved to the merged person. Net revenue = items after discounts + shipping, excluding tax; zero for cancelled, voided and fully refunded orders.
+entity_id: 7vfWZxoTTeDM9pQnI2e0y
+indexes: []
+name: revenue_orders
+owner_user_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+source:
+  query:
+    database: Shop warehouse
+    stages:
+    - native: |
+        -- One row per real Shopify order, in USD shop money, with the customer resolved to the merged person.
+        WITH latest_orders AS (
+          -- Each order lands many times as it changes; keep the version last updated in Shopify.
+          -- Test orders and orders deleted at the source are dropped.
+          SELECT DISTINCT ON (id) *
+          FROM raw_shopify.orders
+          ORDER BY id, updated_at DESC, _fivetran_synced DESC
+        ),
+
+        orders_base AS (
+          SELECT *
+          FROM latest_orders
+          WHERE NOT test
+            AND NOT _fivetran_deleted
+        ),
+
+        latest_accounts AS (
+          SELECT DISTINCT ON (id) *
+          FROM raw_shopify.customers
+          ORDER BY id, updated_at DESC, _fivetran_synced DESC
+        ),
+
+        live_accounts AS (
+          -- Staff and deleted accounts are not customers.
+          SELECT
+            id,
+            created_at,
+            NULLIF(lower(btrim(email)), '') AS email_key
+          FROM latest_accounts
+          WHERE NOT _fivetran_deleted
+            AND COALESCE(tags, '') NOT LIKE '%staff%'
+        ),
+
+        account_to_customer AS (
+          -- Accounts sharing an email (ignoring case and spaces) are one person; the earliest account is the customer.
+          -- Accounts without an email (redacted) are never merged.
+          SELECT
+            id AS account_id,
+            email_key,
+            first_value(id) OVER (PARTITION BY COALESCE(email_key, id::text) ORDER BY created_at, id) AS customer_id
+          FROM live_accounts
+        ),
+
+        customer_by_email AS (
+          SELECT email_key, min(customer_id) AS customer_id
+          FROM account_to_customer
+          WHERE email_key IS NOT NULL
+          GROUP BY email_key
+        ),
+
+        line_totals AS (
+          SELECT
+            order_id,
+            count(*)      AS line_count,
+            sum(quantity) AS units
+          FROM raw_shopify.order_lines
+          GROUP BY order_id
+        ),
+
+        refund_cash AS (
+          -- Money actually returned to the customer (includes the tax on refunded items, and shipping on full refunds).
+          SELECT order_id, sum(amount) AS refunded_amount
+          FROM raw_shopify.transactions
+          WHERE kind = 'refund'
+            AND status = 'success'
+          GROUP BY order_id
+        ),
+
+        refund_items AS (
+          -- Pre-tax value of the merchandise that was refunded.
+          SELECT r.order_id, sum((li.item ->> 'subtotal')::numeric) AS refunded_items_amount
+          FROM raw_shopify.refunds r
+          CROSS JOIN LATERAL jsonb_array_elements(r.refund_line_items) AS li(item)
+          GROUP BY r.order_id
+        ),
+
+        orders_typed AS (
+          SELECT
+            o.id                                                  AS order_id,
+            o.name                                                AS order_name,
+            o.order_number,
+            COALESCE(a.customer_id, ce.customer_id)               AS customer_id,
+            o.customer_id IS NULL                                 AS is_guest_checkout,
+            o.created_at                                          AS ordered_at,
+            (o.created_at AT TIME ZONE 'America/New_York')::date  AS order_date,
+            CASE o.source_name
+              WHEN 'web'                 THEN 'Online store'
+              WHEN 'iphone'              THEN 'Mobile app'
+              WHEN 'android'             THEN 'Mobile app'
+              WHEN '294517'              THEN 'Shop app'
+              WHEN 'pos'                 THEN 'Point of sale'
+              WHEN 'shopify_draft_order' THEN 'Draft order'
+              ELSE 'Other'
+            END                                                   AS sales_channel,
+            o.financial_status,
+            o.fulfillment_status,
+            o.cancelled_at IS NOT NULL                            AS is_cancelled,
+            o.cancelled_at,
+            o.cancel_reason,
+            (o.cancelled_at IS NULL AND o.financial_status NOT IN ('refunded', 'voided')) AS is_valid_order,
+            o.currency,
+            o.presentment_currency,
+            (o.total_price_set -> 'presentment_money' ->> 'amount')::numeric AS presentment_total_price,
+            NULLIF(upper(btrim(o.discount_codes -> 0 ->> 'code')), '') AS discount_code,
+            COALESCE(o.shipping_address ->> 'country_code', o.billing_address ->> 'country_code') AS country_code,
+            o.shipping_address ->> 'province_code'                AS shipping_province,
+            COALESCE(lt.line_count, 0)                            AS line_count,
+            COALESCE(lt.units, 0)                                 AS units,
+            o.total_line_items_price                              AS gross_sales,
+            o.total_discounts,
+            o.subtotal_price,
+            (o.total_shipping_price_set -> 'shop_money' ->> 'amount')::numeric AS shipping_price,
+            o.total_tax,
+            o.total_price,
+            COALESCE(rc.refunded_amount, 0)                       AS refunded_amount,
+            COALESCE(ri.refunded_items_amount, 0)                 AS refunded_items_amount
+          FROM orders_base o
+          LEFT JOIN account_to_customer a ON a.account_id = o.customer_id
+          LEFT JOIN customer_by_email ce ON ce.email_key = NULLIF(lower(btrim(o.email)), '')
+          LEFT JOIN line_totals lt ON lt.order_id = o.id
+          LEFT JOIN refund_cash rc ON rc.order_id = o.id
+          LEFT JOIN refund_items ri ON ri.order_id = o.id
+        )
+
+        SELECT
+          order_id,
+          order_name,
+          order_number,
+          customer_id,
+          is_guest_checkout,
+          ordered_at,
+          order_date,
+          sales_channel,
+          financial_status,
+          fulfillment_status,
+          is_cancelled,
+          cancelled_at,
+          cancel_reason,
+          is_valid_order,
+          -- Position among the customer's valid orders; 1 = the order that made them a customer.
+          CASE WHEN is_valid_order AND customer_id IS NOT NULL
+               THEN row_number() OVER (PARTITION BY customer_id, is_valid_order ORDER BY ordered_at, order_id)
+          END                                                   AS customer_order_number,
+          discount_code,
+          country_code,
+          shipping_province,
+          currency,
+          presentment_currency,
+          presentment_total_price,
+          line_count,
+          units,
+          gross_sales,
+          total_discounts,
+          subtotal_price,
+          shipping_price,
+          total_tax,
+          total_price,
+          -- Net revenue: items after discounts plus shipping, excluding tax; zero for cancelled, voided and fully refunded orders.
+          CASE WHEN is_valid_order THEN subtotal_price + shipping_price ELSE 0 END AS net_revenue,
+          refunded_amount,
+          refunded_items_amount,
+          -- Net revenue minus the pre-tax value of refunded items (only partial refunds matter: full refunds are already zero).
+          CASE WHEN is_valid_order THEN subtotal_price + shipping_price - refunded_items_amount ELSE 0 END AS net_revenue_after_refunds
+        FROM orders_typed
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: Shop warehouse
+tags:
+- entity_id: rIaujv_SW87_ElDetGAff
+  position: 0
+  tag_id: dUW7nvQHQBdA0Rx0gJckI
+target:
+  database: Shop warehouse
+  name: revenue_orders
+  schema: semantic
+  type: table
+serdes/meta:
+- model: Transform

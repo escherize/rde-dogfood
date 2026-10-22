@@ -1,0 +1,12 @@
+description: Shopify product id. One row per catalog product.
+description_set: true
+display_name: Product ID
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- product_id
+semantic_type: type/PK
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

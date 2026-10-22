@@ -1,0 +1,10 @@
+description: Domain of the customer's email (full email is intentionally not carried).
+description_set: true
+display_name: Email domain
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- email_domain
+serdes/meta:
+- model: FieldUserSettings

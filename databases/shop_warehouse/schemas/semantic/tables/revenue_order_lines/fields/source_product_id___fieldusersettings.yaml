@@ -1,0 +1,11 @@
+description: Raw Shopify product id from the order line, kept even when the product is gone from the catalog.
+description_set: true
+display_name: Source product ID
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- source_product_id
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

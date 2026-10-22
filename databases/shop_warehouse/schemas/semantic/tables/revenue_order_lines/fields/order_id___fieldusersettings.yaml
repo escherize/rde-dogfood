@@ -1,0 +1,18 @@
+description: The order this line belongs to.
+description_set: true
+display_name: Order ID
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- order_id
+fk_target_field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- order_id
+fk_target_field_id_set: true
+semantic_type: type/FK
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

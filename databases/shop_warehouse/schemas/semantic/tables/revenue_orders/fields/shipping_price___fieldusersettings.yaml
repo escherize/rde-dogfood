@@ -1,0 +1,12 @@
+description: Shipping charged.
+description_set: true
+display_name: Shipping
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- shipping_price
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

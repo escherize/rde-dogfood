@@ -1,0 +1,12 @@
+description: Gross sales minus discounts on valid orders (before shipping and tax).
+description_set: true
+display_name: Net sales
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- net_sales
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

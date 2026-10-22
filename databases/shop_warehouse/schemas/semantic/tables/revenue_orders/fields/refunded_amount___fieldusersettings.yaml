@@ -1,0 +1,12 @@
+description: Cash returned to the customer, including tax on refunded items (and shipping on full refunds).
+description_set: true
+display_name: Refunded amount
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- refunded_amount
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

@@ -1,0 +1,10 @@
+description: Calendar date of the order in the shop's timezone (America/New_York). Use this for daily/weekly/monthly reporting.
+description_set: true
+display_name: Order date
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- order_date
+serdes/meta:
+- model: FieldUserSettings

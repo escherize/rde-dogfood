@@ -1,0 +1,12 @@
+description: 'What the customer paid: subtotal + shipping + tax (USD).'
+description_set: true
+display_name: Total price
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- total_price
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

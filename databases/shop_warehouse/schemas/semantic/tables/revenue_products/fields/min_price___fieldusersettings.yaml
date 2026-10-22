@@ -1,0 +1,12 @@
+description: Lowest variant price.
+description_set: true
+display_name: Min price
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- min_price
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

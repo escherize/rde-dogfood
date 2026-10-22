@@ -1,0 +1,10 @@
+description: Tagged vip in Shopify (any merged account).
+description_set: true
+display_name: Is VIP tagged
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- is_vip_tagged
+serdes/meta:
+- model: FieldUserSettings

@@ -1,0 +1,12 @@
+description: Highest variant price.
+description_set: true
+display_name: Max price
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- max_price
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

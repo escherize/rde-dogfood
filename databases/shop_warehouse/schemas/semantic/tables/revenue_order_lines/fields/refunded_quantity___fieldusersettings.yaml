@@ -1,0 +1,10 @@
+description: Units refunded on this line.
+description_set: true
+display_name: Refunded quantity
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- refunded_quantity
+serdes/meta:
+- model: FieldUserSettings

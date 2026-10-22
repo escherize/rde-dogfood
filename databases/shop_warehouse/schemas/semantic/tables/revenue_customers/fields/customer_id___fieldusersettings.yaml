@@ -1,0 +1,12 @@
+description: Customer id = id of the earliest Shopify account for the person (duplicate accounts are merged).
+description_set: true
+display_name: Customer ID
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- customer_id
+semantic_type: type/PK
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

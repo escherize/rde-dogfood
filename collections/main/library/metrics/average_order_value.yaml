@@ -1,0 +1,44 @@
+name: Average order value
+description: Net revenue per valid order.
+entity_id: IvwhmMjJ9BUgvA83i1sve
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - /
+      - {}
+      - - sum
+        - {}
+        - - field
+          - {}
+          - - Shop warehouse
+            - semantic
+            - revenue_orders
+            - net_revenue
+      - - count-where
+        - {}
+        - - =
+          - {}
+          - - field
+            - {}
+            - - Shop warehouse
+              - semantic
+              - revenue_orders
+              - is_valid_order
+          - true
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_orders
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings: {}
+card_schema: 24
+serdes/meta:
+- model: Card
+type: metric

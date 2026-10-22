@@ -1,0 +1,10 @@
+description: Units refunded on valid orders.
+description_set: true
+display_name: Units refunded
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- units_refunded
+serdes/meta:
+- model: FieldUserSettings

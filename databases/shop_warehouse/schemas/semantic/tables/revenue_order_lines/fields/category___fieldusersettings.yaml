@@ -1,0 +1,10 @@
+description: Product category. 'Add-ons' = custom items such as gift wrap; 'Unknown' = product no longer in the catalog.
+description_set: true
+display_name: Category
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- category
+serdes/meta:
+- model: FieldUserSettings

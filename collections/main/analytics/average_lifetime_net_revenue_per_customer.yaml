@@ -1,0 +1,46 @@
+name: Average lifetime net revenue per customer
+entity_id: RNmwLxjMjsYqkEOBcgdYK
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: scalar
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - avg
+      - name: avg_ltv
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_customers
+          - lifetime_net_revenue
+    filters:
+    - - '>='
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_customers
+          - order_count
+      - 1
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_customers
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings:
+    '["name","avg_ltv"]':
+      currency: USD
+      currency_style: symbol
+      decimals: 0
+      number_style: currency
+card_schema: 24
+serdes/meta:
+- model: Card
+type: question

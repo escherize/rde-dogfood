@@ -1,0 +1,10 @@
+description: Product was deleted in Shopify (kept so history still resolves).
+description_set: true
+display_name: Is deleted
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- is_deleted
+serdes/meta:
+- model: FieldUserSettings

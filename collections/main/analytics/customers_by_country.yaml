@@ -1,0 +1,52 @@
+name: Customers by country
+entity_id: bZdTB2ynhlE5h5CrFRSoo
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: row
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - count
+      - name: customers
+        lib/uuid: aeb2e9b2-e650-4abd-ab81-cf590fa5684b
+    breakout:
+    - - field
+      - {}
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+    filters:
+    - - '>='
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_customers
+          - order_count
+      - 1
+    order-by:
+    - - desc
+      - {}
+      - - aggregation
+        - {}
+        - aeb2e9b2-e650-4abd-ab81-cf590fa5684b
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_customers
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  graph.dimensions:
+  - country_code
+  graph.metrics:
+  - customers
+card_schema: 24
+serdes/meta:
+- model: Card
+type: question

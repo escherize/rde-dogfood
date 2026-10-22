@@ -1,0 +1,10 @@
+description: True for gift card lines.
+description_set: true
+display_name: Is gift card
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- is_gift_card
+serdes/meta:
+- model: FieldUserSettings

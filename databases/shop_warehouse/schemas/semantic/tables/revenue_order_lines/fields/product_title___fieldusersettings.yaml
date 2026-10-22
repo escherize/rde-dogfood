@@ -1,0 +1,10 @@
+description: Product name as it was on the order.
+description_set: true
+display_name: Product title
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- product_title
+serdes/meta:
+- model: FieldUserSettings

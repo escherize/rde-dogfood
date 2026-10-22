@@ -1,0 +1,11 @@
+collection_id: librarylibrarydatadat
+description: One row per catalog product (including archived, draft and deleted products) with lifetime sales and refunds from valid orders.
+description_set: true
+display_name: Revenue products
+is_published: true
+table_id:
+- Shop warehouse
+- semantic
+- revenue_products
+serdes/meta:
+- model: TableUserSettings

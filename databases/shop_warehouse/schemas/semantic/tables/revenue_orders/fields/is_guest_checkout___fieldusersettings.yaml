@@ -1,0 +1,10 @@
+description: True when the order was placed without a Shopify account.
+description_set: true
+display_name: Is guest checkout
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- is_guest_checkout
+serdes/meta:
+- model: FieldUserSettings

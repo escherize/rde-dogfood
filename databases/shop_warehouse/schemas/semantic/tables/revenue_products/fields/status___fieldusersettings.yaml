@@ -1,0 +1,10 @@
+description: 'Catalog status: active, draft or archived.'
+description_set: true
+display_name: Status
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- status
+serdes/meta:
+- model: FieldUserSettings

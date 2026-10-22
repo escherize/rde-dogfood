@@ -1,0 +1,10 @@
+description: Copied from the order. Filter on this for sales reporting.
+description_set: true
+display_name: Is valid order
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- is_valid_order
+serdes/meta:
+- model: FieldUserSettings

@@ -1,0 +1,11 @@
+collection_id: librarylibrarydatadat
+description: One row per line item of every real order, with product category and line-level refunds. Gross = quantity x unit price; net = gross minus line discount (before shipping and tax).
+description_set: true
+display_name: Revenue order lines
+is_published: true
+table_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+serdes/meta:
+- model: TableUserSettings

@@ -1,0 +1,10 @@
+description: 'Latest payment status: paid, partially_refunded, refunded, voided, authorized, pending.'
+description_set: true
+display_name: Financial status
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- financial_status
+serdes/meta:
+- model: FieldUserSettings

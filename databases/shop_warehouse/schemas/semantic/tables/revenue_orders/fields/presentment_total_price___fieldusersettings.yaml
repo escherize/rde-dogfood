@@ -1,0 +1,12 @@
+description: Order total in the currency the customer saw (see Presentment currency). Not comparable across currencies.
+description_set: true
+display_name: Presentment total price
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- presentment_total_price
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

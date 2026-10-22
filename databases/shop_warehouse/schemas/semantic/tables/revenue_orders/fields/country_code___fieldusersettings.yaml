@@ -1,0 +1,10 @@
+description: Ship-to country; billing country when there is no shipping address (point-of-sale orders).
+description_set: true
+display_name: Country
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- country_code
+serdes/meta:
+- model: FieldUserSettings

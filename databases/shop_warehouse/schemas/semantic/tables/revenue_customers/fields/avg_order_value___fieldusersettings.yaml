@@ -1,0 +1,12 @@
+description: Lifetime net revenue / order count; null when no orders.
+description_set: true
+display_name: Average order value
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- avg_order_value
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

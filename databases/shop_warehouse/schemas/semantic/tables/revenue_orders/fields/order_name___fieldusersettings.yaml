@@ -1,0 +1,10 @@
+description: 'Customer-facing order name, e.g. #1002.'
+description_set: true
+display_name: Order name
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- order_name
+serdes/meta:
+- model: FieldUserSettings

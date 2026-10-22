@@ -1,0 +1,10 @@
+description: Latest valid-order date.
+description_set: true
+display_name: Last sold date
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- last_sold_date
+serdes/meta:
+- model: FieldUserSettings

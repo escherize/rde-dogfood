@@ -1,0 +1,10 @@
+description: 'Where the order came from: Online store, Mobile app, Shop app, Point of sale or Draft order.'
+description_set: true
+display_name: Sales channel
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- sales_channel
+serdes/meta:
+- model: FieldUserSettings

@@ -1,0 +1,10 @@
+description: Number of variants (size/colour).
+description_set: true
+display_name: Variant count
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- variant_count
+serdes/meta:
+- model: FieldUserSettings

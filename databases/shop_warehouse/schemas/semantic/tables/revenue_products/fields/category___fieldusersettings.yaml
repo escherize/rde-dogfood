@@ -1,0 +1,10 @@
+description: Product type from the catalog.
+description_set: true
+display_name: Category
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- category
+serdes/meta:
+- model: FieldUserSettings

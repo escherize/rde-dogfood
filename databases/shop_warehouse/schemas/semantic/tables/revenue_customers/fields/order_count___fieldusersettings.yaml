@@ -1,0 +1,10 @@
+description: Number of valid orders.
+description_set: true
+display_name: Order count
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- order_count
+serdes/meta:
+- model: FieldUserSettings

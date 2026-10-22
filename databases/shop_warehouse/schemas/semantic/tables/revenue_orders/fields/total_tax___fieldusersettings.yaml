@@ -1,0 +1,12 @@
+description: Tax charged.
+description_set: true
+display_name: Tax
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- total_tax
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

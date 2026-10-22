@@ -1,0 +1,12 @@
+description: Net revenue minus the pre-tax value of refunded items. Equals Net revenue when nothing was refunded.
+description_set: true
+display_name: Net revenue after refunds
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- net_revenue_after_refunds
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

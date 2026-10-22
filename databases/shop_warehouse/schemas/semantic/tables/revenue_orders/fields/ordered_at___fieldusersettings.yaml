@@ -1,0 +1,12 @@
+description: When the order was placed (UTC instant).
+description_set: true
+display_name: Ordered at
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- ordered_at
+semantic_type: type/CreationTimestamp
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

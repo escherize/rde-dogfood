@@ -1,0 +1,10 @@
+description: Total quantity of items on the order.
+description_set: true
+display_name: Units
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- units
+serdes/meta:
+- model: FieldUserSettings

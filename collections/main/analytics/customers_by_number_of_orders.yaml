@@ -1,0 +1,96 @@
+name: Customers by number of orders
+entity_id: O_MDGUGWSD_An6k3faxMH
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: bar
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - count
+      - name: customers
+    breakout:
+    - - expression
+      - {}
+      - Orders placed
+    expressions:
+    - - case
+      - lib/expression-name: Orders placed
+      - - - - =
+            - {}
+            - - field
+              - {}
+              - - Shop warehouse
+                - semantic
+                - revenue_customers
+                - order_count
+            - 1
+          - 1 order
+        - - - =
+            - {}
+            - - field
+              - {}
+              - - Shop warehouse
+                - semantic
+                - revenue_customers
+                - order_count
+            - 2
+          - 2 orders
+        - - - =
+            - {}
+            - - field
+              - {}
+              - - Shop warehouse
+                - semantic
+                - revenue_customers
+                - order_count
+            - 3
+          - 3 orders
+        - - - <=
+            - {}
+            - - field
+              - {}
+              - - Shop warehouse
+                - semantic
+                - revenue_customers
+                - order_count
+            - 5
+          - 4 to 5 orders
+        - - - <=
+            - {}
+            - - field
+              - {}
+              - - Shop warehouse
+                - semantic
+                - revenue_customers
+                - order_count
+            - 10
+          - 6 to 10 orders
+      - More than 10 orders
+    filters:
+    - - '>='
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_customers
+          - order_count
+      - 1
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_customers
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  graph.dimensions:
+  - Orders placed
+  graph.metrics:
+  - customers
+card_schema: 24
+serdes/meta:
+- model: Card
+type: question

@@ -1,0 +1,12 @@
+description: Gross sales over valid orders.
+description_set: true
+display_name: Lifetime gross sales
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- lifetime_gross_sales
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

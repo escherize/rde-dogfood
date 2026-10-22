@@ -1,0 +1,12 @@
+description: Pre-tax value of refunded merchandise.
+description_set: true
+display_name: Refunded items
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- refunded_items_amount
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

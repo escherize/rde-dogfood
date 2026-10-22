@@ -1,0 +1,10 @@
+description: Order date in the shop's timezone (copied from the order).
+description_set: true
+display_name: Order date
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- order_date
+serdes/meta:
+- model: FieldUserSettings

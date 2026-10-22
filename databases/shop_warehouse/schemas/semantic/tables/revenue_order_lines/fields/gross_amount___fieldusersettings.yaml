@@ -1,0 +1,12 @@
+description: Quantity x unit price.
+description_set: true
+display_name: Gross amount
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- gross_amount
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings
