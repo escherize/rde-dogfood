@@ -1,3 +1,4 @@
+collection_id: LxgriG4LvGulO22JURaBR
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
 description: One row per line item of every real order in revenue_orders (sales_channel, customer and order date copied on). Gross = quantity x unit price; net = gross minus line discount (before shipping and tax). Category comes from the product catalog; custom items (gift wrap) are 'Add-ons', products no longer in the catalog are 'Unknown'. Refund columns are pre-tax and come from refund line items.
 entity_id: wCn0vYwl6dRC2Nio1bsNX

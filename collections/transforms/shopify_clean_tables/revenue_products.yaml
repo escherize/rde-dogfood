@@ -1,3 +1,4 @@
+collection_id: LxgriG4LvGulO22JURaBR
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
 description: One row per catalog product (archived, draft and deleted products included so history still resolves), with lifetime sales and refunds from valid orders. Unsold products have zero sales.
 entity_id: 69FlzIFsLff2k3MFk8nu6

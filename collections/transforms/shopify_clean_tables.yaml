@@ -1,0 +1,8 @@
+name: Shopify clean tables
+description: 'Transforms that build the revenue semantic layer (schema semantic): revenue_orders, revenue_order_lines, revenue_customers, revenue_products.'
+entity_id: LxgriG4LvGulO22JURaBR
+slug: shopify_clean_tables
+namespace: transforms
+serdes/meta:
+- model: Collection
+is_remote_synced: true

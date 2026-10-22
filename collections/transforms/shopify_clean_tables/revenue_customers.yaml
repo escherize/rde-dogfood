@@ -1,3 +1,4 @@
+collection_id: LxgriG4LvGulO22JURaBR
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
 description: One row per customer (person). Duplicate Shopify accounts (same email ignoring case/spaces) are merged into the earliest account; staff and deleted accounts excluded. Personal details (email, name, phone, street address) are deliberately left out. Order metrics cover valid orders only.
 entity_id: Q7qXKsLN8uG9nOwZgPx-Y
