@@ -1,0 +1,91 @@
+name: Customers by time since last order
+entity_id: JZcsz7og-eOsjPtdVNmz9
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: bar
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - count
+      - name: customers
+    breakout:
+    - - expression
+      - {}
+      - Last order
+    expressions:
+    - - case
+      - lib/expression-name: Last order
+      - - - - <=
+            - {}
+            - - datetime-diff
+              - {}
+              - - field
+                - {}
+                - - Shop warehouse
+                  - semantic
+                  - revenue_customers
+                  - last_order_at
+              - - now
+                - {}
+              - day
+            - 90
+          - 0-3 months ago
+        - - - <=
+            - {}
+            - - datetime-diff
+              - {}
+              - - field
+                - {}
+                - - Shop warehouse
+                  - semantic
+                  - revenue_customers
+                  - last_order_at
+              - - now
+                - {}
+              - day
+            - 180
+          - 3-6 months ago
+        - - - <=
+            - {}
+            - - datetime-diff
+              - {}
+              - - field
+                - {}
+                - - Shop warehouse
+                  - semantic
+                  - revenue_customers
+                  - last_order_at
+              - - now
+                - {}
+              - day
+            - 365
+          - 6-12 months ago
+      - Over 12 months ago
+    filters:
+    - - '>='
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_customers
+          - order_count
+      - 1
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_customers
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  graph.dimensions:
+  - Last order
+  graph.metrics:
+  - customers
+card_schema: 24
+serdes/meta:
+- model: Card
+type: question

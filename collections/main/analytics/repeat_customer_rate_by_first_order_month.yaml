@@ -1,0 +1,71 @@
+name: Repeat customer rate by first-order month
+entity_id: XrP0TFAs85tqP7GWk5fue
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: line
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - /
+      - name: repeat_rate
+      - - count-where
+        - {}
+        - - =
+          - {}
+          - - field
+            - {}
+            - - Shop warehouse
+              - semantic
+              - revenue_customers
+              - is_repeat_customer
+          - true
+      - - count-where
+        - {}
+        - - '>='
+          - {}
+          - - field
+            - {}
+            - - Shop warehouse
+              - semantic
+              - revenue_customers
+              - order_count
+          - 1
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+    filters:
+    - - '>='
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_customers
+          - order_count
+      - 1
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_customers
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings:
+    '["name","repeat_rate"]':
+      decimals: 1
+      number_style: percent
+  graph.dimensions:
+  - first_order_date
+  graph.metrics:
+  - repeat_rate
+card_schema: 24
+serdes/meta:
+- model: Card
+type: question

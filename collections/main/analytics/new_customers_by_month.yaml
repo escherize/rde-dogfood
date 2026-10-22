@@ -1,0 +1,45 @@
+name: New customers by month
+entity_id: c3QCAuw3LaifcjFlwmnKN
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: bar
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - count
+      - name: new_customers
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+    filters:
+    - - '>='
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_customers
+          - order_count
+      - 1
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_customers
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  graph.dimensions:
+  - first_order_date
+  graph.metrics:
+  - new_customers
+card_schema: 24
+serdes/meta:
+- model: Card
+type: question
