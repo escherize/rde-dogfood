@@ -48,6 +48,12 @@ dataset_query:
     lib/type: mbql.stage/mbql
   lib/type: mbql/query
 visualization_settings:
+  column_settings:
+    '["name","net_sales"]':
+      currency: USD
+      currency_style: symbol
+      decimals: 0
+      number_style: currency
   graph.dimensions:
   - category
   graph.metrics:
