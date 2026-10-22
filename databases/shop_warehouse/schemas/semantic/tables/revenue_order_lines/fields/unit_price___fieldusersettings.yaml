@@ -1,0 +1,12 @@
+description: Price per unit before discount.
+description_set: true
+display_name: Unit price
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- unit_price
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

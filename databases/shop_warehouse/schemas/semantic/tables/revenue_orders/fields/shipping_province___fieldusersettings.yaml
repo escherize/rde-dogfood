@@ -1,0 +1,10 @@
+description: Ship-to state or province code.
+description_set: true
+display_name: Shipping province
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- shipping_province
+serdes/meta:
+- model: FieldUserSettings

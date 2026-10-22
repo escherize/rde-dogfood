@@ -1,0 +1,12 @@
+description: Item list value before discounts (quantity x unit price), before shipping and tax. Present on all orders - filter to valid orders for reporting.
+description_set: true
+display_name: Gross sales
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- gross_sales
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

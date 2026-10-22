@@ -1,0 +1,10 @@
+description: Most recent valid order.
+description_set: true
+display_name: Last order at
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- last_order_at
+serdes/meta:
+- model: FieldUserSettings

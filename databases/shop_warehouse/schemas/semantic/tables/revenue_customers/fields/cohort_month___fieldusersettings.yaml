@@ -1,0 +1,10 @@
+description: Month of the first valid order (shop timezone); null if never ordered.
+description_set: true
+display_name: Cohort month
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- cohort_month
+serdes/meta:
+- model: FieldUserSettings

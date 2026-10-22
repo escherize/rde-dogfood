@@ -1,0 +1,12 @@
+description: Shopify line item id. One row per line item of a real order.
+description_set: true
+display_name: Order line ID
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- order_line_id
+semantic_type: type/PK
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

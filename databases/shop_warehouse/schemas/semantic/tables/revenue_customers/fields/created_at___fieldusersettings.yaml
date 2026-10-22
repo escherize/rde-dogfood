@@ -1,0 +1,12 @@
+description: When the earliest account was created.
+description_set: true
+display_name: Customer since
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- created_at
+semantic_type: type/CreationTimestamp
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

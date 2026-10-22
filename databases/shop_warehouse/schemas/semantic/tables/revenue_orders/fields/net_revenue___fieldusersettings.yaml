@@ -1,0 +1,12 @@
+description: 'THE revenue number: items after discounts plus shipping, excluding tax. Zero for cancelled, voided and fully refunded orders. Partial refunds are NOT subtracted here (see Net revenue after refunds).'
+description_set: true
+display_name: Net revenue
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- net_revenue
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

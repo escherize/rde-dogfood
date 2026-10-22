@@ -1,0 +1,10 @@
+description: Position of this order among the customer's valid orders (1 = the order that made them a customer). Null for invalid orders and guests with no customer.
+description_set: true
+display_name: Customer order number
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- customer_order_number
+serdes/meta:
+- model: FieldUserSettings

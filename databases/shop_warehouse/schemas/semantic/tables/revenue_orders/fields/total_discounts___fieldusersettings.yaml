@@ -1,0 +1,12 @@
+description: Total discounts applied to items.
+description_set: true
+display_name: Discounts
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- total_discounts
+semantic_type: type/Discount
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

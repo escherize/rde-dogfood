@@ -1,0 +1,10 @@
+description: Number of Shopify accounts merged into this customer.
+description_set: true
+display_name: Account count
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- account_count
+serdes/meta:
+- model: FieldUserSettings

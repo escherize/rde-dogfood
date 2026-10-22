@@ -1,0 +1,11 @@
+collection_id: librarylibrarydatadat
+description: One row per customer (person). Duplicate Shopify accounts are merged into the earliest account; staff and deleted accounts excluded. No personal details (name, email, phone, street) are carried. Order metrics cover valid orders only.
+description_set: true
+display_name: Revenue customers
+is_published: true
+table_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+serdes/meta:
+- model: TableUserSettings

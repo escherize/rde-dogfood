@@ -1,0 +1,10 @@
+description: First valid-order date.
+description_set: true
+display_name: First sold date
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- first_sold_date
+serdes/meta:
+- model: FieldUserSettings

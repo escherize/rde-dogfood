@@ -1,0 +1,10 @@
+description: Date of the first valid order (shop timezone).
+description_set: true
+display_name: First order date
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- first_order_date
+serdes/meta:
+- model: FieldUserSettings

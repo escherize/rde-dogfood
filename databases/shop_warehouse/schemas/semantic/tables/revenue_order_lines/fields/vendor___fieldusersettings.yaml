@@ -1,0 +1,10 @@
+description: Brand/vendor of the product.
+description_set: true
+display_name: Vendor
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- vendor
+serdes/meta:
+- model: FieldUserSettings

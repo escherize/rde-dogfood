@@ -1,0 +1,10 @@
+description: Personal data was erased on request; the customer has no email.
+description_set: true
+display_name: Is redacted
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- is_redacted
+serdes/meta:
+- model: FieldUserSettings

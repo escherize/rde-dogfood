@@ -1,0 +1,12 @@
+description: Lifetime net revenue minus refunded items.
+description_set: true
+display_name: Lifetime net revenue after refunds
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- lifetime_net_revenue_after_refunds
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

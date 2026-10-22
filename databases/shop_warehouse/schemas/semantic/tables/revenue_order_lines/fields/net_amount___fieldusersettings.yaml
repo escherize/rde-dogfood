@@ -1,0 +1,12 @@
+description: Gross amount minus discount, before shipping and tax.
+description_set: true
+display_name: Net amount
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- net_amount
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

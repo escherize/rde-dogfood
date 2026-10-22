@@ -1,0 +1,12 @@
+description: Quantity x price on valid orders.
+description_set: true
+display_name: Gross sales
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- gross_sales
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

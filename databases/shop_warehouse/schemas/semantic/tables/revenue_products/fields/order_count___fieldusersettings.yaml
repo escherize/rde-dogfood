@@ -1,0 +1,10 @@
+description: Valid orders containing the product.
+description_set: true
+display_name: Order count
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- order_count
+serdes/meta:
+- model: FieldUserSettings

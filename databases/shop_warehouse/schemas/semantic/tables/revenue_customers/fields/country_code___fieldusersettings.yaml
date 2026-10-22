@@ -1,0 +1,10 @@
+description: Country from the default address.
+description_set: true
+display_name: Country
+field_id:
+- Shop warehouse
+- semantic
+- revenue_customers
+- country_code
+serdes/meta:
+- model: FieldUserSettings

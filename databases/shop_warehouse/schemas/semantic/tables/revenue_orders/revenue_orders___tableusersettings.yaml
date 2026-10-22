@@ -1,0 +1,11 @@
+collection_id: librarylibrarydatadat
+description: One row per real Shopify order. Latest version of each order; test and deleted orders removed; amounts in USD. Net revenue = items after discounts + shipping, excluding tax, zero for cancelled/voided/fully refunded orders. Filter on Is valid order for sales reporting.
+description_set: true
+display_name: Revenue orders
+is_published: true
+table_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+serdes/meta:
+- model: TableUserSettings

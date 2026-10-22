@@ -86,7 +86,10 @@ source:
     lib/type: mbql/query
   type: query
 source_database_id: Shop warehouse
-tags: []
+tags:
+- entity_id: of8AubI_8Prm4qQXDFD7u
+  position: 0
+  tag_id: dUW7nvQHQBdA0Rx0gJckI
 target:
   database: Shop warehouse
   name: revenue_customers

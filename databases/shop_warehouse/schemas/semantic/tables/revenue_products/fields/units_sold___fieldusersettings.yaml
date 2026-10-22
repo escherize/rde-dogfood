@@ -1,0 +1,10 @@
+description: Units on valid orders.
+description_set: true
+display_name: Units sold
+field_id:
+- Shop warehouse
+- semantic
+- revenue_products
+- units_sold
+serdes/meta:
+- model: FieldUserSettings

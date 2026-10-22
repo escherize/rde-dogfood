@@ -1,0 +1,10 @@
+description: Discount code used (upper-cased); null when none.
+description_set: true
+display_name: Discount code
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- discount_code
+serdes/meta:
+- model: FieldUserSettings

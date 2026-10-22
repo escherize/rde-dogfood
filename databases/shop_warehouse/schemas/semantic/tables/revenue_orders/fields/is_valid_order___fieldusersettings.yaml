@@ -1,0 +1,10 @@
+description: 'True for orders that count as sales: not cancelled, voided or fully refunded.'
+description_set: true
+display_name: Is valid order
+field_id:
+- Shop warehouse
+- semantic
+- revenue_orders
+- is_valid_order
+serdes/meta:
+- model: FieldUserSettings

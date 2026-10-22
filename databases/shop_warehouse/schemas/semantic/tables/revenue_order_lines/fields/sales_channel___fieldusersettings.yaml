@@ -1,0 +1,10 @@
+description: Copied from the order.
+description_set: true
+display_name: Sales channel
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- sales_channel
+serdes/meta:
+- model: FieldUserSettings

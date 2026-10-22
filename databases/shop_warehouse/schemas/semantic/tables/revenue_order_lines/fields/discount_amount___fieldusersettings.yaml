@@ -1,0 +1,12 @@
+description: Discount on the whole line.
+description_set: true
+display_name: Discount amount
+field_id:
+- Shop warehouse
+- semantic
+- revenue_order_lines
+- discount_amount
+semantic_type: type/Discount
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings
