@@ -1,5 +1,5 @@
 name: Revenue overview
-description: Revenue performance from the semantic layer (revenue_orders, revenue_order_lines, revenue_customers, revenue_products). Net revenue = items after discounts + shipping, excluding tax; cancelled, voided and fully refunded orders count as zero.
+description: test-desc2
 entity_id: TjL4WxxyvN3DNR0fwd2vg
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
 collection_id: pJM9EQHhCliP2zUGibkmH
