@@ -1,0 +1,30 @@
+creator_id: api-key-user-d49c2db1-1f4d-4ff5-b5fa-d2cbf28cbb44@api-key.invalid
+entity_id: 31-nsPi4gg9E8ryM-ip3Q
+indexes: []
+name: web daily sales recheck
+owner_user_id: api-key-user-d49c2db1-1f4d-4ff5-b5fa-d2cbf28cbb44@api-key.invalid
+source:
+  query:
+    database: Shop warehouse
+    stages:
+    - native: |-
+        SELECT order_date,
+               count(*) AS orders,
+               sum(units) AS units_sold,
+               sum(net_revenue) AS net_revenue,
+               round(avg(total_price), 2) AS avg_order_value
+        FROM shop_analytics.stg_shopify_orders
+        WHERE is_valid_order AND sales_channel = 'online_store'
+        GROUP BY order_date
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: Shop warehouse
+tags: []
+target:
+  database: Shop warehouse
+  name: web_daily_sales_recheck
+  schema: shop_analytics
+  type: table
+serdes/meta:
+- model: Transform
