@@ -1,0 +1,38 @@
+collection_id: Wy3QbeDZmT_I5bd8C0Hxk
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+description: |
+  One row (single-row constants table). Sources: none. Definition: constants read by mart_shopify_fct_order. Caveats: last_complete_period = 2026-09-01, pinned to the data extract (latest raw order 2026-10-01 03:45 UTC), not to today's date; shop_timezone = America/New_York (D5, matches the existing shop_analytics build on all 119,226 orders). Change a constant with a transform update and run the domain's tests first.
+entity_id: EDBOHDwR9k0sr6Uyza4oN
+indexes: []
+name: cfg_shopify
+owner_user_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+source:
+  query:
+    database: Shop warehouse
+    stages:
+    - native: |
+        -- One row per: configuration set (exactly one row)
+        -- Key:         none (single row)
+        -- Sources:     none (constants)
+        -- Definition:  constants the Shopify order model reads; each has a <constant>_note column naming its STATE.md decision
+        -- Caveats:     last_complete_period pinned to the 2026-10-01 extract, not current_date (user accepted 2026-10-22); shop_timezone D5
+        SELECT
+          DATE '2026-09-01'            AS last_complete_period,
+          'pinned to extract (max order 2026-10-01 03:45 UTC)' AS last_complete_period_note,
+          'America/New_York'           AS shop_timezone,
+          'D5'                         AS shop_timezone_note
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: Shop warehouse
+tags:
+- entity_id: 2xYm40hZBK3h2WiFqJQKl
+  position: 0
+  tag_id: 5dfCj6K3F-y9rRfL-jQmQ
+target:
+  database: Shop warehouse
+  name: cfg_shopify
+  schema: shopify_clean
+  type: table
+serdes/meta:
+- model: Transform
