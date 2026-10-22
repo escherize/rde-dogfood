@@ -1,0 +1,96 @@
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+description: One row per customer (person). Duplicate Shopify accounts (same email ignoring case/spaces) are merged into the earliest account; staff and deleted accounts excluded. Personal details (email, name, phone, street address) are deliberately left out. Order metrics cover valid orders only.
+entity_id: Q7qXKsLN8uG9nOwZgPx-Y
+indexes: []
+name: revenue_customers
+owner_user_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+source:
+  query:
+    database: Shop warehouse
+    stages:
+    - native: |
+        -- One row per customer (person). Duplicate Shopify accounts are merged into the earliest account.
+        WITH latest_accounts AS (
+          SELECT DISTINCT ON (id) *
+          FROM raw_shopify.customers
+          ORDER BY id, updated_at DESC, _fivetran_synced DESC
+        ),
+
+        live_accounts AS (
+          -- Staff and deleted accounts are not customers.
+          SELECT
+            *,
+            NULLIF(lower(btrim(email)), '') AS email_key
+          FROM latest_accounts
+          WHERE NOT _fivetran_deleted
+            AND COALESCE(tags, '') NOT LIKE '%staff%'
+        ),
+
+        ranked AS (
+          -- Accounts sharing an email (ignoring case and spaces) are one person; accounts without an email are never merged.
+          SELECT
+            *,
+            first_value(id) OVER (PARTITION BY COALESCE(email_key, id::text) ORDER BY created_at, id) AS customer_id,
+            count(*)        OVER (PARTITION BY COALESCE(email_key, id::text))                         AS account_count,
+            bool_or(COALESCE(tags, '') LIKE '%vip%') OVER (PARTITION BY COALESCE(email_key, id::text)) AS is_vip_tagged
+          FROM live_accounts
+        ),
+
+        people AS (
+          SELECT *
+          FROM ranked
+          WHERE id = customer_id
+        ),
+
+        order_stats AS (
+          SELECT
+            customer_id,
+            count(*)                 AS order_count,
+            min(ordered_at)          AS first_order_at,
+            max(ordered_at)          AS last_order_at,
+            sum(net_revenue)         AS lifetime_net_revenue,
+            sum(gross_sales)         AS lifetime_gross_sales,
+            sum(refunded_items_amount) FILTER (WHERE is_valid_order) AS lifetime_refunded_items_amount
+          FROM semantic.revenue_orders
+          WHERE is_valid_order
+            AND customer_id IS NOT NULL
+          GROUP BY customer_id
+        )
+
+        SELECT
+          p.customer_id,
+          split_part(p.email_key, '@', 2)                             AS email_domain,
+          p.default_address ->> 'country_code'                        AS country_code,
+          p.default_address ->> 'province_code'                       AS province_code,
+          p.default_address ->> 'city'                                AS city,
+          p.accepts_marketing,
+          p.currency                                                  AS preferred_currency,
+          p.is_vip_tagged,
+          p.email_key IS NULL                                         AS is_redacted,
+          p.account_count,
+          p.created_at,
+          o.first_order_at,
+          (o.first_order_at AT TIME ZONE 'America/New_York')::date    AS first_order_date,
+          date_trunc('month', o.first_order_at AT TIME ZONE 'America/New_York')::date AS cohort_month,
+          o.last_order_at,
+          COALESCE(o.order_count, 0)                                  AS order_count,
+          COALESCE(o.order_count, 0) >= 2                             AS is_repeat_customer,
+          COALESCE(o.lifetime_gross_sales, 0)                         AS lifetime_gross_sales,
+          COALESCE(o.lifetime_net_revenue, 0)                         AS lifetime_net_revenue,
+          COALESCE(o.lifetime_refunded_items_amount, 0)               AS lifetime_refunded_items_amount,
+          COALESCE(o.lifetime_net_revenue, 0) - COALESCE(o.lifetime_refunded_items_amount, 0) AS lifetime_net_revenue_after_refunds,
+          o.lifetime_net_revenue / NULLIF(o.order_count, 0)           AS avg_order_value
+        FROM people p
+        LEFT JOIN order_stats o ON o.customer_id = p.customer_id
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: Shop warehouse
+tags: []
+target:
+  database: Shop warehouse
+  name: revenue_customers
+  schema: semantic
+  type: table
+serdes/meta:
+- model: Transform
