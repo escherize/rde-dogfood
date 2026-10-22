@@ -57,7 +57,7 @@ dataset_query:
                 - revenue_customers
                 - order_count
             - 5
-          - 4-5 orders
+          - 4 to 5 orders
         - - - <=
             - {}
             - - field
@@ -67,8 +67,8 @@ dataset_query:
                 - revenue_customers
                 - order_count
             - 10
-          - 6-10 orders
-      - 11+ orders
+          - 6 to 10 orders
+      - More than 10 orders
     filters:
     - - '>='
       - {}

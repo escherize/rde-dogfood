@@ -1,0 +1,351 @@
+name: Customers and retention
+description: Who the customers are and whether they come back, powered by revenue_customers. A customer is a person (duplicate Shopify accounts merged) with at least one valid order. Repeat = two or more valid orders. Dates are in the shop timezone (US Eastern). No names or emails are shown.
+entity_id: lz2bQXQyyqZaVtO8W5Uhi
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters:
+- id: country
+  name: Country
+  position: 1
+  slug: country
+  type: string/=
+- id: first_order_date
+  name: First order date
+  position: 0
+  slug: first_order_date
+  type: date/all-options
+serdes/meta:
+- model: Dashboard
+dashcards:
+- entity_id: roBobac20Fk4W7KZ4cq4W
+  card_id: gRDbWBojIds0fXENsud6M
+  row: 0
+  col: 0
+  size_x: 6
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: gRDbWBojIds0fXENsud6M
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: gRDbWBojIds0fXENsud6M
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: eQqxvOOWviUI2mQBPZ0ul
+  card_id: bOGvQcKm7ShueMoBhRbbS
+  row: 0
+  col: 6
+  size_x: 6
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: bOGvQcKm7ShueMoBhRbbS
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: bOGvQcKm7ShueMoBhRbbS
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: zJpSLJch-oGj3V93dGmtU
+  card_id: LwAM2xDUaNGAhxbTW66d9
+  row: 0
+  col: 12
+  size_x: 6
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: LwAM2xDUaNGAhxbTW66d9
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: LwAM2xDUaNGAhxbTW66d9
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: vi0XuTzG1oerw88fSkoOJ
+  card_id: RNmwLxjMjsYqkEOBcgdYK
+  row: 0
+  col: 18
+  size_x: 6
+  size_y: 3
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: RNmwLxjMjsYqkEOBcgdYK
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: RNmwLxjMjsYqkEOBcgdYK
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: H_R2IJ3zkFH-WaFCZIyPv
+  card_id: c3QCAuw3LaifcjFlwmnKN
+  row: 3
+  col: 0
+  size_x: 16
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: c3QCAuw3LaifcjFlwmnKN
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: c3QCAuw3LaifcjFlwmnKN
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: _A2fg9MkFSyFbnwYBQOjd
+  card_id: O_MDGUGWSD_An6k3faxMH
+  row: 3
+  col: 16
+  size_x: 8
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: O_MDGUGWSD_An6k3faxMH
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: O_MDGUGWSD_An6k3faxMH
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: Rc5AyJfyrQ9LFz-pqrRHS
+  card_id: XrP0TFAs85tqP7GWk5fue
+  row: 9
+  col: 0
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: XrP0TFAs85tqP7GWk5fue
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: XrP0TFAs85tqP7GWk5fue
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: 4tecSWUtQxFFWPWMIonem
+  card_id: LEeG8bhwhBDAgCFtRI-tY
+  row: 9
+  col: 12
+  size_x: 12
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: LEeG8bhwhBDAgCFtRI-tY
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: LEeG8bhwhBDAgCFtRI-tY
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: cV9dgZIykxGh_LwIscowN
+  card_id: JZcsz7og-eOsjPtdVNmz9
+  row: 15
+  col: 0
+  size_x: 8
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: JZcsz7og-eOsjPtdVNmz9
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: JZcsz7og-eOsjPtdVNmz9
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: 2WOoLN066sp8U1GqNZIc7
+  card_id: bZdTB2ynhlE5h5CrFRSoo
+  row: 15
+  col: 8
+  size_x: 8
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: bZdTB2ynhlE5h5CrFRSoo
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: bZdTB2ynhlE5h5CrFRSoo
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+- entity_id: XLUCequKtobO3O3Kg4mMT
+  card_id: eEx4ZgDXMJKSDx3eDfXVC
+  row: 15
+  col: 16
+  size_x: 8
+  size_y: 6
+  inline_parameters: []
+  parameter_mappings:
+  - card_id: eEx4ZgDXMJKSDx3eDfXVC
+    parameter_id: country
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - country_code
+      - null
+  - card_id: eEx4ZgDXMJKSDx3eDfXVC
+    parameter_id: first_order_date
+    target:
+    - dimension
+    - - field
+      - - Shop warehouse
+        - semantic
+        - revenue_customers
+        - first_order_date
+      - null
+  series: []
+  visualization_settings: {}
+tabs: []
+width: fixed
