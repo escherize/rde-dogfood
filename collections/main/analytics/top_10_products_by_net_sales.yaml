@@ -1,5 +1,5 @@
 name: Top 10 products by net sales
-entity_id: lTwlhIIZkBKOfoHgBrstJ
+entity_id: Da2gHOLYG_oiSeg9hGFHj
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
 display: row
 collection_id: pJM9EQHhCliP2zUGibkmH
@@ -11,7 +11,7 @@ dataset_query:
   - aggregation:
     - - sum
       - name: net_sales
-        lib/uuid: 2c1f2472-60e3-4318-8efc-39fc4d4b8ea5
+        lib/uuid: 4d6f5d58-94e8-4105-a0fb-9e7e3b000dee
       - - field
         - {}
         - - Shop warehouse
@@ -41,7 +41,7 @@ dataset_query:
       - {}
       - - aggregation
         - {}
-        - 2c1f2472-60e3-4318-8efc-39fc4d4b8ea5
+        - 4d6f5d58-94e8-4105-a0fb-9e7e3b000dee
     source-table:
     - Shop warehouse
     - semantic
@@ -62,5 +62,4 @@ visualization_settings:
 card_schema: 24
 serdes/meta:
 - model: Card
-dashboard_id: TjL4WxxyvN3DNR0fwd2vg
 type: question

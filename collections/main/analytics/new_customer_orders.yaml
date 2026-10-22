@@ -1,5 +1,5 @@
-name: Net revenue
-entity_id: aItBEKcGiFjctLHg_Uf5g
+name: New customer orders
+entity_id: nLM101pCUopFDNRdiS9Rd
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
 display: scalar
 collection_id: pJM9EQHhCliP2zUGibkmH
@@ -11,22 +11,15 @@ dataset_query:
   - aggregation:
     - - metric
       - {}
-      - ojSqLZZOvA4-29W5Cf628
+      - t5-iuU-W-87i9aQYMc_C9
     source-table:
     - Shop warehouse
     - semantic
     - revenue_orders
     lib/type: mbql.stage/mbql
   lib/type: mbql/query
-visualization_settings:
-  column_settings:
-    '["name","sum"]':
-      currency: USD
-      currency_style: symbol
-      decimals: 0
-      number_style: currency
+visualization_settings: {}
 card_schema: 24
 serdes/meta:
 - model: Card
-dashboard_id: TjL4WxxyvN3DNR0fwd2vg
 type: question

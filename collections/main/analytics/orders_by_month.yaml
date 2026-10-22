@@ -1,5 +1,5 @@
 name: Orders by month
-entity_id: 60xGbCFSSpBb2to5YTbOf
+entity_id: QYuYSOTBaoWHVz4pLIy6P
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
 display: line
 collection_id: pJM9EQHhCliP2zUGibkmH
@@ -33,5 +33,4 @@ visualization_settings:
 card_schema: 24
 serdes/meta:
 - model: Card
-dashboard_id: TjL4WxxyvN3DNR0fwd2vg
 type: question

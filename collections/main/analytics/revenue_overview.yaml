@@ -1,6 +1,6 @@
 name: Revenue overview
-description: test-desc2
-entity_id: TjL4WxxyvN3DNR0fwd2vg
+description: Revenue performance, powered by the semantic layer (revenue_orders, revenue_order_lines, revenue_customers, revenue_products). Net revenue = items after discounts plus shipping, excluding tax; cancelled, voided and fully refunded orders count as zero. Dates are in the shop timezone (US Eastern).
+entity_id: S9uQqAzC-f9leS-5T8P7e
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
 collection_id: pJM9EQHhCliP2zUGibkmH
 parameters:
@@ -22,27 +22,15 @@ parameters:
 serdes/meta:
 - model: Dashboard
 dashcards:
-- entity_id: yPynD9pv9XqM5WfrQOyJz
+- entity_id: 3_h8ewV3MmJrKhaRE_0t4
+  card_id: 28TgkX1QBcfmZBKuWLHPE
   row: 0
-  col: 0
-  size_x: 24
-  size_y: 2
-  inline_parameters: []
-  parameter_mappings: []
-  series: []
-  visualization_settings:
-    text: '**Net revenue** = items after discounts plus shipping, excluding tax. Cancelled, voided and fully refunded orders count as zero. Dates are in the shop timezone (US Eastern). Source: the `semantic` revenue tables.'
-    virtual_card:
-      display: text
-- entity_id: R8UE1tSBQtcCvbV2GfNeq
-  card_id: aItBEKcGiFjctLHg_Uf5g
-  row: 2
   col: 0
   size_x: 6
   size_y: 3
   inline_parameters: []
   parameter_mappings:
-  - card_id: aItBEKcGiFjctLHg_Uf5g
+  - card_id: 28TgkX1QBcfmZBKuWLHPE
     parameter_id: country
     target:
     - dimension
@@ -52,7 +40,7 @@ dashcards:
         - revenue_orders
         - country_code
       - null
-  - card_id: aItBEKcGiFjctLHg_Uf5g
+  - card_id: 28TgkX1QBcfmZBKuWLHPE
     parameter_id: order_date
     target:
     - dimension
@@ -62,7 +50,7 @@ dashcards:
         - revenue_orders
         - order_date
       - null
-  - card_id: aItBEKcGiFjctLHg_Uf5g
+  - card_id: 28TgkX1QBcfmZBKuWLHPE
     parameter_id: sales_channel
     target:
     - dimension
@@ -74,15 +62,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: 8BQIOzYbtqpq03g5Bbtym
-  card_id: -vFS_dNcpXf1VPoycUwop
-  row: 2
+- entity_id: p4esjsj4b-L3kxuVwLpAi
+  card_id: ISOsQh-5klm46zt1NxSEu
+  row: 0
   col: 6
   size_x: 6
   size_y: 3
   inline_parameters: []
   parameter_mappings:
-  - card_id: -vFS_dNcpXf1VPoycUwop
+  - card_id: ISOsQh-5klm46zt1NxSEu
     parameter_id: country
     target:
     - dimension
@@ -92,7 +80,7 @@ dashcards:
         - revenue_orders
         - country_code
       - null
-  - card_id: -vFS_dNcpXf1VPoycUwop
+  - card_id: ISOsQh-5klm46zt1NxSEu
     parameter_id: order_date
     target:
     - dimension
@@ -102,7 +90,7 @@ dashcards:
         - revenue_orders
         - order_date
       - null
-  - card_id: -vFS_dNcpXf1VPoycUwop
+  - card_id: ISOsQh-5klm46zt1NxSEu
     parameter_id: sales_channel
     target:
     - dimension
@@ -114,15 +102,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: Z55dmlfgI5NsKxj3GxurZ
-  card_id: O-xxCUpfSuEi3Evhd8DgH
-  row: 2
+- entity_id: yJ7coaA3XzFFqiPq7_pNm
+  card_id: HGA5LQxmZhtaoF89AvB-S
+  row: 0
   col: 12
   size_x: 6
   size_y: 3
   inline_parameters: []
   parameter_mappings:
-  - card_id: O-xxCUpfSuEi3Evhd8DgH
+  - card_id: HGA5LQxmZhtaoF89AvB-S
     parameter_id: country
     target:
     - dimension
@@ -132,7 +120,7 @@ dashcards:
         - revenue_orders
         - country_code
       - null
-  - card_id: O-xxCUpfSuEi3Evhd8DgH
+  - card_id: HGA5LQxmZhtaoF89AvB-S
     parameter_id: order_date
     target:
     - dimension
@@ -142,7 +130,7 @@ dashcards:
         - revenue_orders
         - order_date
       - null
-  - card_id: O-xxCUpfSuEi3Evhd8DgH
+  - card_id: HGA5LQxmZhtaoF89AvB-S
     parameter_id: sales_channel
     target:
     - dimension
@@ -154,15 +142,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: t1nVDwmQrjEk2K3bklQg5
-  card_id: xiVh4CQpE0QrXYXH5ikPp
-  row: 2
+- entity_id: IrYAowhEU9Z-t0fz8ruNg
+  card_id: nLM101pCUopFDNRdiS9Rd
+  row: 0
   col: 18
   size_x: 6
   size_y: 3
   inline_parameters: []
   parameter_mappings:
-  - card_id: xiVh4CQpE0QrXYXH5ikPp
+  - card_id: nLM101pCUopFDNRdiS9Rd
     parameter_id: country
     target:
     - dimension
@@ -172,7 +160,7 @@ dashcards:
         - revenue_orders
         - country_code
       - null
-  - card_id: xiVh4CQpE0QrXYXH5ikPp
+  - card_id: nLM101pCUopFDNRdiS9Rd
     parameter_id: order_date
     target:
     - dimension
@@ -182,7 +170,7 @@ dashcards:
         - revenue_orders
         - order_date
       - null
-  - card_id: xiVh4CQpE0QrXYXH5ikPp
+  - card_id: nLM101pCUopFDNRdiS9Rd
     parameter_id: sales_channel
     target:
     - dimension
@@ -194,15 +182,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: UPpCAaYifatU4JEnLn4xg
-  card_id: u3TBt5NzUht8pa-03oz32
-  row: 5
+- entity_id: NSAVy7e0fpIrfpDJfEPGK
+  card_id: tsxHRT0lVtdaMYBPxoMfw
+  row: 3
   col: 0
   size_x: 16
   size_y: 6
   inline_parameters: []
   parameter_mappings:
-  - card_id: u3TBt5NzUht8pa-03oz32
+  - card_id: tsxHRT0lVtdaMYBPxoMfw
     parameter_id: country
     target:
     - dimension
@@ -212,7 +200,7 @@ dashcards:
         - revenue_orders
         - country_code
       - null
-  - card_id: u3TBt5NzUht8pa-03oz32
+  - card_id: tsxHRT0lVtdaMYBPxoMfw
     parameter_id: order_date
     target:
     - dimension
@@ -222,7 +210,7 @@ dashcards:
         - revenue_orders
         - order_date
       - null
-  - card_id: u3TBt5NzUht8pa-03oz32
+  - card_id: tsxHRT0lVtdaMYBPxoMfw
     parameter_id: sales_channel
     target:
     - dimension
@@ -234,15 +222,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: rzfL5Gf_sJcCRRzcPXNCY
-  card_id: AZGDnjevZopY33StTZJU4
-  row: 5
+- entity_id: fpVRg75NFHla4ZHTL4kq8
+  card_id: 4U1yOVCjMo_c7XRIlavRb
+  row: 3
   col: 16
   size_x: 8
   size_y: 6
   inline_parameters: []
   parameter_mappings:
-  - card_id: AZGDnjevZopY33StTZJU4
+  - card_id: 4U1yOVCjMo_c7XRIlavRb
     parameter_id: country
     target:
     - dimension
@@ -252,7 +240,7 @@ dashcards:
         - revenue_orders
         - country_code
       - null
-  - card_id: AZGDnjevZopY33StTZJU4
+  - card_id: 4U1yOVCjMo_c7XRIlavRb
     parameter_id: order_date
     target:
     - dimension
@@ -262,7 +250,7 @@ dashcards:
         - revenue_orders
         - order_date
       - null
-  - card_id: AZGDnjevZopY33StTZJU4
+  - card_id: 4U1yOVCjMo_c7XRIlavRb
     parameter_id: sales_channel
     target:
     - dimension
@@ -274,15 +262,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: D1MZFYlg9H2ZMCez8wTfy
-  card_id: skRNiOTRHi2Ypnv4SbB6B
-  row: 11
+- entity_id: ki_MIo1EjzyKLLXJJGFyj
+  card_id: H9r2-k2n83pQ5IKjYAl0i
+  row: 9
   col: 0
   size_x: 12
   size_y: 6
   inline_parameters: []
   parameter_mappings:
-  - card_id: skRNiOTRHi2Ypnv4SbB6B
+  - card_id: H9r2-k2n83pQ5IKjYAl0i
     parameter_id: country
     target:
     - dimension
@@ -292,7 +280,7 @@ dashcards:
         - revenue_orders
         - country_code
       - null
-  - card_id: skRNiOTRHi2Ypnv4SbB6B
+  - card_id: H9r2-k2n83pQ5IKjYAl0i
     parameter_id: order_date
     target:
     - dimension
@@ -302,7 +290,7 @@ dashcards:
         - revenue_orders
         - order_date
       - null
-  - card_id: skRNiOTRHi2Ypnv4SbB6B
+  - card_id: H9r2-k2n83pQ5IKjYAl0i
     parameter_id: sales_channel
     target:
     - dimension
@@ -314,15 +302,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: I8ZB8ZqU5hwpsGqQxycpU
-  card_id: 60xGbCFSSpBb2to5YTbOf
-  row: 11
+- entity_id: 9qrOw3AqO_vLA-BTaJ8VN
+  card_id: QYuYSOTBaoWHVz4pLIy6P
+  row: 9
   col: 12
   size_x: 12
   size_y: 6
   inline_parameters: []
   parameter_mappings:
-  - card_id: 60xGbCFSSpBb2to5YTbOf
+  - card_id: QYuYSOTBaoWHVz4pLIy6P
     parameter_id: country
     target:
     - dimension
@@ -332,7 +320,7 @@ dashcards:
         - revenue_orders
         - country_code
       - null
-  - card_id: 60xGbCFSSpBb2to5YTbOf
+  - card_id: QYuYSOTBaoWHVz4pLIy6P
     parameter_id: order_date
     target:
     - dimension
@@ -342,7 +330,7 @@ dashcards:
         - revenue_orders
         - order_date
       - null
-  - card_id: 60xGbCFSSpBb2to5YTbOf
+  - card_id: QYuYSOTBaoWHVz4pLIy6P
     parameter_id: sales_channel
     target:
     - dimension
@@ -354,15 +342,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: fbZlppmwSSXLJQSSql2l3
-  card_id: p7ApCy9jDZQz5iKsF5m52
-  row: 17
+- entity_id: PBSOxPtNyG6KZpH_xKfqq
+  card_id: wE8ZzJon4uewIEkXPMmtR
+  row: 15
   col: 0
   size_x: 12
   size_y: 7
   inline_parameters: []
   parameter_mappings:
-  - card_id: p7ApCy9jDZQz5iKsF5m52
+  - card_id: wE8ZzJon4uewIEkXPMmtR
     parameter_id: country
     target:
     - dimension
@@ -376,7 +364,7 @@ dashcards:
         - semantic
         - revenue_order_lines
         - order_id
-  - card_id: p7ApCy9jDZQz5iKsF5m52
+  - card_id: wE8ZzJon4uewIEkXPMmtR
     parameter_id: order_date
     target:
     - dimension
@@ -386,7 +374,7 @@ dashcards:
         - revenue_order_lines
         - order_date
       - null
-  - card_id: p7ApCy9jDZQz5iKsF5m52
+  - card_id: wE8ZzJon4uewIEkXPMmtR
     parameter_id: sales_channel
     target:
     - dimension
@@ -398,15 +386,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: maMuQE_DXyeAHmTNVTWmT
-  card_id: XDq8xlStXFIEH1zxkWhXo
-  row: 17
+- entity_id: Idga2OAq6h9Q99HtEHKZV
+  card_id: rhad3_9wUGscbWuTvBIhO
+  row: 15
   col: 12
   size_x: 12
   size_y: 7
   inline_parameters: []
   parameter_mappings:
-  - card_id: XDq8xlStXFIEH1zxkWhXo
+  - card_id: rhad3_9wUGscbWuTvBIhO
     parameter_id: country
     target:
     - dimension
@@ -416,7 +404,7 @@ dashcards:
         - revenue_orders
         - country_code
       - null
-  - card_id: XDq8xlStXFIEH1zxkWhXo
+  - card_id: rhad3_9wUGscbWuTvBIhO
     parameter_id: order_date
     target:
     - dimension
@@ -426,7 +414,7 @@ dashcards:
         - revenue_orders
         - order_date
       - null
-  - card_id: XDq8xlStXFIEH1zxkWhXo
+  - card_id: rhad3_9wUGscbWuTvBIhO
     parameter_id: sales_channel
     target:
     - dimension
@@ -438,15 +426,15 @@ dashcards:
       - null
   series: []
   visualization_settings: {}
-- entity_id: wrtC8sCY-FGegQJUCmJJo
-  card_id: lTwlhIIZkBKOfoHgBrstJ
-  row: 24
+- entity_id: aterQ_eEL7d1VXQ0udKng
+  card_id: Da2gHOLYG_oiSeg9hGFHj
+  row: 22
   col: 0
   size_x: 24
   size_y: 8
   inline_parameters: []
   parameter_mappings:
-  - card_id: lTwlhIIZkBKOfoHgBrstJ
+  - card_id: Da2gHOLYG_oiSeg9hGFHj
     parameter_id: country
     target:
     - dimension
@@ -460,7 +448,7 @@ dashcards:
         - semantic
         - revenue_order_lines
         - order_id
-  - card_id: lTwlhIIZkBKOfoHgBrstJ
+  - card_id: Da2gHOLYG_oiSeg9hGFHj
     parameter_id: order_date
     target:
     - dimension
@@ -470,7 +458,7 @@ dashcards:
         - revenue_order_lines
         - order_date
       - null
-  - card_id: lTwlhIIZkBKOfoHgBrstJ
+  - card_id: Da2gHOLYG_oiSeg9hGFHj
     parameter_id: sales_channel
     target:
     - dimension

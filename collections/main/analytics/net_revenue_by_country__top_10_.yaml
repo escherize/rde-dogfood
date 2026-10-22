@@ -1,7 +1,7 @@
-name: Net revenue by month
-entity_id: u3TBt5NzUht8pa-03oz32
+name: Net revenue by country (top 10)
+entity_id: rhad3_9wUGscbWuTvBIhO
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
-display: line
+display: row
 collection_id: pJM9EQHhCliP2zUGibkmH
 parameters: []
 parameter_mappings: []
@@ -10,15 +10,22 @@ dataset_query:
   stages:
   - aggregation:
     - - metric
-      - {}
+      - lib/uuid: a3832c79-fe1b-48f2-854b-b1ea1838a348
       - ojSqLZZOvA4-29W5Cf628
     breakout:
     - - field
-      - temporal-unit: month
+      - {}
       - - Shop warehouse
         - semantic
         - revenue_orders
-        - order_date
+        - country_code
+    limit: 10
+    order-by:
+    - - desc
+      - {}
+      - - aggregation
+        - {}
+        - a3832c79-fe1b-48f2-854b-b1ea1838a348
     source-table:
     - Shop warehouse
     - semantic
@@ -33,11 +40,10 @@ visualization_settings:
       decimals: 0
       number_style: currency
   graph.dimensions:
-  - order_date
+  - country_code
   graph.metrics:
   - sum
 card_schema: 24
 serdes/meta:
 - model: Card
-dashboard_id: TjL4WxxyvN3DNR0fwd2vg
 type: question

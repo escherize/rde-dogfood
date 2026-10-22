@@ -1,5 +1,5 @@
-name: Orders
-entity_id: -vFS_dNcpXf1VPoycUwop
+name: Average order value
+entity_id: HGA5LQxmZhtaoF89AvB-S
 creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
 display: scalar
 collection_id: pJM9EQHhCliP2zUGibkmH
@@ -11,16 +11,21 @@ dataset_query:
   - aggregation:
     - - metric
       - {}
-      - 4yj1miPoQ4ainBzi_-dwx
+      - IvwhmMjJ9BUgvA83i1sve
     source-table:
     - Shop warehouse
     - semantic
     - revenue_orders
     lib/type: mbql.stage/mbql
   lib/type: mbql/query
-visualization_settings: {}
+visualization_settings:
+  column_settings:
+    '["name","expression"]':
+      currency: USD
+      currency_style: symbol
+      decimals: 2
+      number_style: currency
 card_schema: 24
 serdes/meta:
 - model: Card
-dashboard_id: TjL4WxxyvN3DNR0fwd2vg
 type: question
