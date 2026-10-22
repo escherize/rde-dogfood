@@ -1,0 +1,68 @@
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+description: One row per line item of every real order in revenue_orders (sales_channel, customer and order date copied on). Gross = quantity x unit price; net = gross minus line discount (before shipping and tax). Category comes from the product catalog; custom items (gift wrap) are 'Add-ons', products no longer in the catalog are 'Unknown'. Refund columns are pre-tax and come from refund line items.
+entity_id: wCn0vYwl6dRC2Nio1bsNX
+indexes: []
+name: revenue_order_lines
+owner_user_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+source:
+  query:
+    database: Shop warehouse
+    stages:
+    - native: |
+        -- One row per line item of every real order (see revenue_orders), with product details and refunds at line level.
+        WITH refunded_lines AS (
+          SELECT
+            (li.item ->> 'line_item_id')::bigint        AS order_line_id,
+            sum((li.item ->> 'quantity')::int)          AS refunded_quantity,
+            sum((li.item ->> 'subtotal')::numeric)      AS refunded_amount
+          FROM raw_shopify.refunds r
+          CROSS JOIN LATERAL jsonb_array_elements(r.refund_line_items) AS li(item)
+          GROUP BY 1
+        )
+
+        SELECT
+          l.id                                                AS order_line_id,
+          l.order_id,
+          l.index                                             AS line_number,
+          o.customer_id,
+          o.ordered_at,
+          o.order_date,
+          o.sales_channel,
+          o.is_valid_order,
+          -- Lines whose product is no longer in the catalog (deleted before the first sync) keep the raw id in source_product_id.
+          p.id                                                AS product_id,
+          l.product_id                                        AS source_product_id,
+          l.variant_id,
+          l.title                                             AS product_title,
+          l.variant_title,
+          l.sku,
+          l.vendor,
+          CASE
+            WHEN l.product_id IS NULL THEN 'Add-ons'
+            WHEN p.id IS NULL         THEN 'Unknown'
+            ELSE p.product_type
+          END                                                 AS category,
+          l.gift_card                                         AS is_gift_card,
+          l.quantity,
+          l.price                                             AS unit_price,
+          l.quantity * l.price                                AS gross_amount,
+          l.total_discount                                    AS discount_amount,
+          l.quantity * l.price - l.total_discount             AS net_amount,
+          COALESCE(rl.refunded_quantity, 0)                   AS refunded_quantity,
+          COALESCE(rl.refunded_amount, 0)                     AS refunded_amount
+        FROM raw_shopify.order_lines l
+        JOIN semantic.revenue_orders o ON o.order_id = l.order_id
+        LEFT JOIN raw_shopify.products p ON p.id = l.product_id
+        LEFT JOIN refunded_lines rl ON rl.order_line_id = l.id
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: Shop warehouse
+tags: []
+target:
+  database: Shop warehouse
+  name: revenue_order_lines
+  schema: semantic
+  type: table
+serdes/meta:
+- model: Transform
