@@ -1,0 +1,34 @@
+name: New customer orders
+description: Valid orders that were the customer's first (the order that made them a customer).
+entity_id: t5-iuU-W-87i9aQYMc_C9
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - count-where
+      - {}
+      - - =
+        - {}
+        - - field
+          - {}
+          - - Shop warehouse
+            - semantic
+            - revenue_orders
+            - customer_order_number
+        - 1
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_orders
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings: {}
+card_schema: 24
+serdes/meta:
+- model: Card
+type: metric

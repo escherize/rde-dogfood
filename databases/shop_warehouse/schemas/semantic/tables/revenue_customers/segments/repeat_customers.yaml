@@ -1,0 +1,25 @@
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+definition:
+  database: Shop warehouse
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_customers
+          - is_repeat_customer
+      - true
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_customers
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: Customers with two or more valid orders.
+entity_id: X2h86sfjvgaOoz5AuAKi_
+name: Repeat customers
+serdes/meta:
+- model: Segment
