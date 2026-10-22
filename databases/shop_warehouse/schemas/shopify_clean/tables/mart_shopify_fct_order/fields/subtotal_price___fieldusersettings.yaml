@@ -1,0 +1,11 @@
+description: Line items after discounts, before tax and shipping (USD).
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- subtotal_price
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

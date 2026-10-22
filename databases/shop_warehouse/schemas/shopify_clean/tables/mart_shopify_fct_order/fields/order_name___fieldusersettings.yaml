@@ -1,0 +1,9 @@
+description: 'Order name as shown to customers (for example #1001).'
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- order_name
+serdes/meta:
+- model: FieldUserSettings

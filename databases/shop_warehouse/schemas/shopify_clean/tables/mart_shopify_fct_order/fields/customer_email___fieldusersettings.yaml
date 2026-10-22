@@ -1,0 +1,10 @@
+description: 'Customer email, trimmed and lower-cased. Personal data: hidden by default.'
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- customer_email
+visibility_type: sensitive
+serdes/meta:
+- model: FieldUserSettings

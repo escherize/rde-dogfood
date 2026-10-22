@@ -1,0 +1,9 @@
+description: Raw Shopify customer id; null for guest checkouts. Duplicate customer accounts are not merged yet.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- customer_id
+serdes/meta:
+- model: FieldUserSettings

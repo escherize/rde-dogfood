@@ -1,0 +1,11 @@
+description: Shopify order id. One row per real order.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- order_id
+semantic_type: type/PK
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

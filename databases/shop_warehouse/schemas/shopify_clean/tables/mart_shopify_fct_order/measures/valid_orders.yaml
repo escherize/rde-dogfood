@@ -1,0 +1,27 @@
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+definition:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - count-where
+      - name: valid_orders
+      - - =
+        - {}
+        - - field
+          - {}
+          - - Shop warehouse
+            - shopify_clean
+            - mart_shopify_fct_order
+            - is_valid_order
+        - true
+    source-table:
+    - Shop warehouse
+    - shopify_clean
+    - mart_shopify_fct_order
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft. Count of valid Shopify orders: not cancelled and status authorized, paid, partially_refunded or pending. Excludes refunded, voided and cancelled orders (about 4.1% of real orders), test orders and deleted orders.'
+entity_id: m30KC3jQYieTOOkTyYFGb
+name: Valid orders
+serdes/meta:
+- model: Measure

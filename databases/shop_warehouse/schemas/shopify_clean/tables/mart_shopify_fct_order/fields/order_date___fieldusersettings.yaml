@@ -1,0 +1,9 @@
+description: Order date in the shop time zone (America/New_York). The date basis for every revenue number.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- order_date
+serdes/meta:
+- model: FieldUserSettings

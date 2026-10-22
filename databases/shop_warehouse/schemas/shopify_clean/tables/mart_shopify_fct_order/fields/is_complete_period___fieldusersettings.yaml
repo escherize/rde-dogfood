@@ -1,0 +1,10 @@
+description: False for the partial month after the last complete period (cfg_shopify, pinned to the 2026-10-01 extract). Rates and trends should use complete periods only.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- is_complete_period
+has_field_values: list
+serdes/meta:
+- model: FieldUserSettings

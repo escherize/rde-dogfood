@@ -1,0 +1,10 @@
+description: Shop currency (all orders are USD in shop money).
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- currency
+has_field_values: list
+serdes/meta:
+- model: FieldUserSettings
