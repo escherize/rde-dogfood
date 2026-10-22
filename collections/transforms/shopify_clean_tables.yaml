@@ -1,0 +1,6 @@
+name: Shopify clean tables
+entity_id: Wy3QbeDZmT_I5bd8C0Hxk
+slug: shopify_clean_tables
+namespace: transforms
+serdes/meta:
+- model: Collection
