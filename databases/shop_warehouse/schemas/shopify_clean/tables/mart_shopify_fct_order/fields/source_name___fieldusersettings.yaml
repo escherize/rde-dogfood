@@ -1,0 +1,9 @@
+description: Raw Shopify source_name (web, iphone, android, pos, shopify_draft_order, or the Shop app id 294517).
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- source_name
+serdes/meta:
+- model: FieldUserSettings

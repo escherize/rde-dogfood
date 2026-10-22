@@ -1,0 +1,4 @@
+entity_id: 5dfCj6K3F-y9rRfL-jQmQ
+name: rde_shopify
+serdes/meta:
+- model: TransformTag

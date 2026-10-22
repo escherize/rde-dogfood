@@ -1,0 +1,11 @@
+description: Sum of line item prices before discounts, tax and shipping (USD).
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- gross_sales
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

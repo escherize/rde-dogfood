@@ -1,0 +1,10 @@
+description: Shopify fulfillment status; null when nothing has shipped.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- fulfillment_status
+has_field_values: list
+serdes/meta:
+- model: FieldUserSettings

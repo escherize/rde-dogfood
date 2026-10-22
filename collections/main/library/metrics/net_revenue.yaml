@@ -1,0 +1,43 @@
+name: Net revenue
+description: 'Reconciled to shop_analytics.daily_sales (the existing warehouse build of the same Shopify data, not a finance figure) on 2026-10-22: equal on all 730 days, total 31,244,097.07 USD. Net revenue of valid Shopify orders: order total minus tax, shipping included, 0 for refunded, voided and cancelled orders (4,922 of 119,226 real orders). Partial refunds are not subtracted (subtracting them would cut 1.2%). Dated by shop-local order date (America/New_York). Complete months only; September 2026 is the last. Not comparable to payments received or Stripe payouts. Owner: to be named.'
+entity_id: MgaN3omJcGovVYDEZKAaK
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+display: line
+collection_id: librarylibrarymetrics
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - measure
+      - {}
+      - V_iMW6a4rLApf7IxlJCd_
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - Shop warehouse
+        - shopify_clean
+        - mart_shopify_fct_order
+        - order_date
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - shopify_clean
+          - mart_shopify_fct_order
+          - is_complete_period
+      - true
+    source-table:
+    - Shop warehouse
+    - shopify_clean
+    - mart_shopify_fct_order
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings: {}
+card_schema: 24
+serdes/meta:
+- model: Card
+type: metric

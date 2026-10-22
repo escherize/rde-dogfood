@@ -1,0 +1,11 @@
+description: total_price minus total_tax for valid orders, 0 otherwise (USD). Shipping is included; partial refunds are not subtracted.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- net_revenue
+semantic_type: type/Currency
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

@@ -1,0 +1,9 @@
+description: True when the order has no Shopify customer account (customer_id is null).
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- is_guest_checkout
+serdes/meta:
+- model: FieldUserSettings

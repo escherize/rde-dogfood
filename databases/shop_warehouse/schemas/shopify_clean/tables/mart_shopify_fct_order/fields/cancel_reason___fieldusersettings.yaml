@@ -1,0 +1,8 @@
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- cancel_reason
+has_field_values: list
+serdes/meta:
+- model: FieldUserSettings

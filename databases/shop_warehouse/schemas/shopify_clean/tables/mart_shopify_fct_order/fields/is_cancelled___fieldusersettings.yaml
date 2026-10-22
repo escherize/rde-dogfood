@@ -1,0 +1,10 @@
+description: True when the order has a cancelled_at timestamp.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- is_cancelled
+has_field_values: list
+serdes/meta:
+- model: FieldUserSettings
