@@ -113,7 +113,7 @@ source:
             o.presentment_currency,
             (o.total_price_set -> 'presentment_money' ->> 'amount')::numeric AS presentment_total_price,
             NULLIF(upper(btrim(o.discount_codes -> 0 ->> 'code')), '') AS discount_code,
-            o.shipping_address ->> 'country_code'                 AS shipping_country,
+            COALESCE(o.shipping_address ->> 'country_code', o.billing_address ->> 'country_code') AS country_code,
             o.shipping_address ->> 'province_code'                AS shipping_province,
             COALESCE(lt.line_count, 0)                            AS line_count,
             COALESCE(lt.units, 0)                                 AS units,
@@ -153,7 +153,7 @@ source:
                THEN row_number() OVER (PARTITION BY customer_id, is_valid_order ORDER BY ordered_at, order_id)
           END                                                   AS customer_order_number,
           discount_code,
-          shipping_country,
+          country_code,
           shipping_province,
           currency,
           presentment_currency,
