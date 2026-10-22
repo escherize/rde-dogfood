@@ -1,0 +1,59 @@
+name: Net sales by category
+entity_id: p7ApCy9jDZQz5iKsF5m52
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: bar
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - sum
+      - name: net_sales
+        lib/uuid: efb4f4fa-c348-4616-83be-f1ec134af874
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_order_lines
+          - net_amount
+    breakout:
+    - - field
+      - {}
+      - - Shop warehouse
+        - semantic
+        - revenue_order_lines
+        - category
+    filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_order_lines
+          - is_valid_order
+      - true
+    order-by:
+    - - desc
+      - {}
+      - - aggregation
+        - {}
+        - efb4f4fa-c348-4616-83be-f1ec134af874
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_order_lines
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  graph.dimensions:
+  - category
+  graph.metrics:
+  - net_sales
+card_schema: 24
+serdes/meta:
+- model: Card
+dashboard_id: TjL4WxxyvN3DNR0fwd2vg
+type: question

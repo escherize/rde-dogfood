@@ -1,0 +1,43 @@
+name: Net revenue by sales channel
+entity_id: AZGDnjevZopY33StTZJU4
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: bar
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - metric
+      - lib/uuid: 4d445621-6e77-47b1-9b54-5ad9859e96e2
+      - ojSqLZZOvA4-29W5Cf628
+    breakout:
+    - - field
+      - {}
+      - - Shop warehouse
+        - semantic
+        - revenue_orders
+        - sales_channel
+    order-by:
+    - - desc
+      - {}
+      - - aggregation
+        - {}
+        - 4d445621-6e77-47b1-9b54-5ad9859e96e2
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_orders
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  graph.dimensions:
+  - sales_channel
+  graph.metrics:
+  - sum
+card_schema: 24
+serdes/meta:
+- model: Card
+dashboard_id: TjL4WxxyvN3DNR0fwd2vg
+type: question

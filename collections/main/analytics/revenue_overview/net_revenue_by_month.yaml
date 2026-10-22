@@ -1,0 +1,37 @@
+name: Net revenue by month
+entity_id: u3TBt5NzUht8pa-03oz32
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: line
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - metric
+      - {}
+      - ojSqLZZOvA4-29W5Cf628
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - Shop warehouse
+        - semantic
+        - revenue_orders
+        - order_date
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_orders
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  graph.dimensions:
+  - order_date
+  graph.metrics:
+  - sum
+card_schema: 24
+serdes/meta:
+- model: Card
+dashboard_id: TjL4WxxyvN3DNR0fwd2vg
+type: question

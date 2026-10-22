@@ -1,0 +1,71 @@
+name: 'Net revenue by month: new vs returning customers'
+entity_id: skRNiOTRHi2Ypnv4SbB6B
+creator_id: api-key-user-8393af6f-9147-4c79-b07c-b1a04fb0e832@api-key.invalid
+display: bar
+collection_id: pJM9EQHhCliP2zUGibkmH
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - sum
+      - name: net_revenue
+      - - field
+        - {}
+        - - Shop warehouse
+          - semantic
+          - revenue_orders
+          - net_revenue
+    breakout:
+    - - field
+      - temporal-unit: month
+      - - Shop warehouse
+        - semantic
+        - revenue_orders
+        - order_date
+    - - expression
+      - {}
+      - Customer type
+    expressions:
+    - - case
+      - lib/expression-name: Customer type
+      - - - - =
+            - {}
+            - - field
+              - {}
+              - - Shop warehouse
+                - semantic
+                - revenue_orders
+                - customer_order_number
+            - 1
+          - New customer
+        - - - '>'
+            - {}
+            - - field
+              - {}
+              - - Shop warehouse
+                - semantic
+                - revenue_orders
+                - customer_order_number
+            - 1
+          - Returning customer
+      - Guest checkout
+    source-table:
+    - Shop warehouse
+    - semantic
+    - revenue_orders
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  graph.dimensions:
+  - order_date
+  - Customer type
+  graph.metrics:
+  - net_revenue
+  stackable.stack_type: stacked
+card_schema: 24
+serdes/meta:
+- model: Card
+dashboard_id: TjL4WxxyvN3DNR0fwd2vg
+type: question
