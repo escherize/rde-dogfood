@@ -1,0 +1,34 @@
+creator_id: api-key-user-f37e8de8-927f-47dc-ac9d-e777dc16ce43@api-key.invalid
+entity_id: pHu3Fii7-gQiuyDiNgnZg
+indexes: []
+name: category revenue from raw products
+owner_user_id: api-key-user-f37e8de8-927f-47dc-ac9d-e777dc16ce43@api-key.invalid
+source:
+  query:
+    database: Shop warehouse
+    stages:
+    - native: |-
+        SELECT coalesce(p.product_type, l.category, 'Custom') AS category,
+               count(DISTINCT l.product_id) AS products,
+               count(DISTINCT l.order_id) AS orders,
+               sum(l.quantity) AS units_sold,
+               sum(l.net_amount) AS net_sales
+        FROM shop_analytics.stg_shopify_order_lines l
+        LEFT JOIN (SELECT DISTINCT ON (id) id, product_type
+                   FROM raw_shopify.products
+                   WHERE NOT _fivetran_deleted
+                   ORDER BY id, updated_at DESC) p ON p.id = l.source_product_id
+        WHERE l.is_valid_order
+        GROUP BY 1
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: Shop warehouse
+tags: []
+target:
+  database: Shop warehouse
+  name: category_revenue_raw
+  schema: analytics
+  type: table
+serdes/meta:
+- model: Transform
