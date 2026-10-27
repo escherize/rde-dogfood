@@ -1,0 +1,99 @@
+collection_id: Wy3QbeDZmT_I5bd8C0Hxk
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+description: |
+  One row per Shopify order (key: order_id). Sources: raw_shopify.orders, cfg_shopify. Definition: latest version of each order by updated_at, ties by load time (D1); test and deleted orders removed; valid order = not cancelled and status authorized, paid, partially_refunded or pending (D3, D6); net_revenue = total_price minus total_tax for valid orders, 0 otherwise (D2, D4). Caveats: shipping is inside net_revenue (D4: excluding it would cut 310,257, 0.99%); partial refunds are not subtracted (D2); order_date is shop-local America/New_York (D5); sales_channel is mapped from source_name (D7); country_code is the shipping country, else the billing country (D8); customer_id is the raw Shopify id (duplicate accounts are not merged yet); refunds and order lines are not on this table yet; is_complete_period is false for the partial month after cfg_shopify.last_complete_period (2026-09-01, pinned to the extract). Draft.
+entity_id: OdJmmhpMpWx5Iwc1FhIZa
+indexes: []
+name: mart_shopify_fct_order
+owner_user_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+source:
+  query:
+    database: Shop warehouse
+    stages:
+    - native: |
+        -- One row per: Shopify order (real orders only)
+        -- Key:         order_id
+        -- Sources:     raw_shopify.orders, shopify_clean.cfg_shopify
+        -- Definition:  latest version of each order by updated_at, ties by load time (D1); test and deleted orders removed; valid order = not cancelled and financial status authorized/paid/partially_refunded/pending (D3, D6); net_revenue = total_price - total_tax for valid orders, else 0 (D2, D4)
+        -- Caveats:     shipping is inside net_revenue (D4); partial refunds are not subtracted (D2); order_date is shop-local America/New_York (D5); sales_channel from source_name (D7); country_code is the shipping country, else the billing country (4,339 POS orders have only billing; D8); customer_id is the raw Shopify id, duplicate accounts not merged yet; refunds and order lines not on this table yet; is_complete_period uses cfg_shopify.last_complete_period
+        WITH latest AS (
+          SELECT DISTINCT ON (o.id)
+            o.id, o.name, o.order_number, o.customer_id, o.email, o.created_at, o.cancelled_at, o.cancel_reason,
+            o.currency, o.total_line_items_price, o.subtotal_price, o.total_discounts, o.total_tax, o.total_price,
+            o.total_shipping_price_set, o.financial_status, o.fulfillment_status, o.source_name, o.test,
+            o.shipping_address, o.billing_address, o._fivetran_deleted
+          FROM raw_shopify.orders o
+          ORDER BY o.id, o.updated_at DESC, o._fivetran_synced DESC
+        ),
+        real_orders AS (
+          SELECT l.*
+          FROM latest l
+          WHERE NOT COALESCE(l.test, FALSE)
+            AND NOT COALESCE(l._fivetran_deleted, FALSE)
+        ),
+        typed AS (
+          SELECT
+            r.id                                           AS order_id,
+            r.name                                         AS order_name,
+            r.order_number                                 AS order_number,
+            r.customer_id                                  AS customer_id,
+            (r.customer_id IS NULL)                        AS is_guest_checkout,
+            LOWER(TRIM(r.email))                           AS customer_email,
+            r.created_at                                   AS ordered_at,
+            (r.created_at AT TIME ZONE c.shop_timezone)::date AS order_date,
+            r.source_name                                  AS source_name,
+            CASE
+              WHEN r.source_name = 'web' THEN 'online_store'
+              WHEN r.source_name IN ('iphone', 'android') THEN 'mobile_app'
+              WHEN r.source_name = '294517' THEN 'shop_app'
+              WHEN r.source_name = 'pos' THEN 'pos'
+              WHEN r.source_name = 'shopify_draft_order' THEN 'draft_order'
+              ELSE 'other'
+            END                                            AS sales_channel,
+            r.financial_status                             AS financial_status,
+            r.fulfillment_status                           AS fulfillment_status,
+            (r.cancelled_at IS NOT NULL)                   AS is_cancelled,
+            r.cancelled_at                                 AS cancelled_at,
+            r.cancel_reason                                AS cancel_reason,
+            r.currency                                     AS currency,
+            COALESCE(r.shipping_address ->> 'country_code', r.billing_address ->> 'country_code') AS country_code,
+            r.total_line_items_price                       AS gross_sales,
+            r.total_discounts                              AS total_discounts,
+            r.subtotal_price                               AS subtotal_price,
+            COALESCE((r.total_shipping_price_set -> 'shop_money' ->> 'amount')::numeric, 0) AS shipping_price,
+            r.total_tax                                    AS total_tax,
+            r.total_price                                  AS total_price,
+            c.last_complete_period                         AS last_complete_period
+          FROM real_orders r
+          CROSS JOIN shopify_clean.cfg_shopify c
+        )
+        SELECT
+          t.order_id, t.order_name, t.order_number, t.customer_id, t.is_guest_checkout, t.customer_email,
+          t.ordered_at, t.order_date,
+          DATE_TRUNC('month', t.order_date)::date          AS order_month,
+          (DATE_TRUNC('month', t.order_date)::date <= t.last_complete_period) AS is_complete_period,
+          t.source_name, t.sales_channel, t.financial_status, t.fulfillment_status,
+          t.is_cancelled, t.cancelled_at, t.cancel_reason, t.currency, t.country_code,
+          t.gross_sales, t.total_discounts, t.subtotal_price, t.shipping_price, t.total_tax, t.total_price,
+          (NOT t.is_cancelled AND t.financial_status IN ('authorized', 'paid', 'partially_refunded', 'pending')) AS is_valid_order,
+          CASE
+            WHEN NOT t.is_cancelled AND t.financial_status IN ('authorized', 'paid', 'partially_refunded', 'pending')
+              THEN t.total_price - t.total_tax
+            ELSE 0
+          END                                              AS net_revenue
+        FROM typed t
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: Shop warehouse
+tags:
+- entity_id: RcK-x3b52N3JigdQ1kb6K
+  position: 0
+  tag_id: 5dfCj6K3F-y9rRfL-jQmQ
+target:
+  database: Shop warehouse
+  name: mart_shopify_fct_order
+  schema: shopify_clean
+  type: table
+serdes/meta:
+- model: Transform
