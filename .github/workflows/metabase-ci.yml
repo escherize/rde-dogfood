@@ -38,10 +38,14 @@ jobs:
           fetch-depth: 0
 
       - name: Install mb
-        # ponytail: built from the CI branch until `mb ci` ships in a release; then `npm i -g @metabase/cli`.
+        # ponytail: built from a pinned commit of the `mb ci` PR stack (metabase-cli#96) until it ships in a
+        # release; then `npm i -g @metabase/cli@<version>`.
+        env:
+          MB_CLI_SHA: 6f886fd3c8fd05fde612308ec3c8eeb5f341b13f
         run: |
-          git clone --depth 1 --branch bryan/rci-6-coverage https://github.com/metabase/metabase-cli.git "$RUNNER_TEMP/metabase-cli"
-          cd "$RUNNER_TEMP/metabase-cli"
+          mkdir "$RUNNER_TEMP/metabase-cli" && cd "$RUNNER_TEMP/metabase-cli"
+          git init -q && git fetch -q --depth 1 https://github.com/metabase/metabase-cli.git "$MB_CLI_SHA"
+          git checkout -q FETCH_HEAD
           npm i -g bun
           bun install --frozen-lockfile
           bun run build
