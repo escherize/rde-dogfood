@@ -1,7 +1,7 @@
 collection_id: Wy3QbeDZmT_I5bd8C0Hxk
 creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
 description: |
-  One row per Shopify order (key: order_id). Sources: raw_shopify.orders, cfg_shopify. Definition: latest version of each order by updated_at, ties by load time (D1); test and deleted orders removed; valid order = not cancelled and status authorized, paid, partially_refunded or pending (D3, D6); net_revenue = total_price minus total_tax for valid orders, 0 otherwise (D2, D4). Caveats: shipping is inside net_revenue (D4: excluding it would cut 310,257, 0.99%); partial refunds are not subtracted (D2); order_date is shop-local America/New_York (D5); sales_channel is mapped from source_name (D7); country_code is the shipping country, else the billing country (D8); customer_id is the raw Shopify id (duplicate accounts are not merged yet); refunds and order lines are not on this table yet; is_complete_period is false for the partial month after cfg_shopify.last_complete_period (2026-09-01, pinned to the extract). Draft.
+  One row per Shopify order (key: order_id). Sources: raw_shopify.orders, cfg_shopify. Definition: latest version of each order by updated_at, ties by load time (D1); test and deleted orders removed; valid order = not cancelled and status authorized, paid, partially_refunded or pending (D3, D6); net_revenue = total_price minus total_tax for valid orders, 0 otherwise (D2, D4). Caveats: shipping is inside net_revenue (D4: excluding it would cut 310,257, 0.99%); partial refunds are not subtracted (D2); order_date is shop-local America/New_York (D5); sales_channel is mapped from source_name (D7); country_code is the shipping country, else the billing country (D8); has_discount is true when total_discounts is above 0, and a missing total_discounts counts as no discount; customer_id is the raw Shopify id (duplicate accounts are not merged yet); refunds and order lines are not on this table yet; is_complete_period is false for the partial month after cfg_shopify.last_complete_period (2026-09-01, pinned to the extract). Draft.
 entity_id: OdJmmhpMpWx5Iwc1FhIZa
 indexes: []
 name: mart_shopify_fct_order
@@ -15,7 +15,7 @@ source:
         -- Key:         order_id
         -- Sources:     raw_shopify.orders, shopify_clean.cfg_shopify
         -- Definition:  latest version of each order by updated_at, ties by load time (D1); test and deleted orders removed; valid order = not cancelled and financial status authorized/paid/partially_refunded/pending (D3, D6); net_revenue = total_price - total_tax for valid orders, else 0 (D2, D4)
-        -- Caveats:     shipping is inside net_revenue (D4); partial refunds are not subtracted (D2); order_date is shop-local America/New_York (D5); sales_channel from source_name (D7); country_code is the shipping country, else the billing country (4,339 POS orders have only billing; D8); customer_id is the raw Shopify id, duplicate accounts not merged yet; refunds and order lines not on this table yet; is_complete_period uses cfg_shopify.last_complete_period
+        -- Caveats:     shipping is inside net_revenue (D4); partial refunds are not subtracted (D2); order_date is shop-local America/New_York (D5); sales_channel from source_name (D7); country_code is the shipping country, else the billing country (4,339 POS orders have only billing; D8); has_discount = total_discounts > 0, NULL counts as no discount; customer_id is the raw Shopify id, duplicate accounts not merged yet; refunds and order lines not on this table yet; is_complete_period uses cfg_shopify.last_complete_period
         WITH latest AS (
           SELECT DISTINCT ON (o.id)
             o.id, o.name, o.order_number, o.customer_id, o.email, o.created_at, o.cancelled_at, o.cancel_reason,
@@ -75,6 +75,7 @@ source:
           t.source_name, t.sales_channel, t.financial_status, t.fulfillment_status,
           t.is_cancelled, t.cancelled_at, t.cancel_reason, t.currency, t.country_code,
           t.gross_sales, t.total_discounts, t.subtotal_price, t.shipping_price, t.total_tax, t.total_price,
+          (COALESCE(t.total_discounts, 0) > 0)             AS has_discount,
           (NOT t.is_cancelled AND t.financial_status IN ('authorized', 'paid', 'partially_refunded', 'pending')) AS is_valid_order,
           CASE
             WHEN NOT t.is_cancelled AND t.financial_status IN ('authorized', 'paid', 'partially_refunded', 'pending')

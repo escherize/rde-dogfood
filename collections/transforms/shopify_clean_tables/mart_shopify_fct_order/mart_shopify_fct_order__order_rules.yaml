@@ -1,5 +1,5 @@
 creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
-description: 'Cases by order id: 1 NY-local date at a UTC month edge, shipping kept inside net revenue; 2 newer version supersedes; 3 older version landed later does not win (updated_at); 4 voided+cancelled; 5 fully refunded; 6 partial refund not subtracted; 7 authorized valid; 8 pending valid; 9 test order; 10 deleted; 11 latest version deleted; 12 POS billing-country fallback; 13-16 channel mapping; 17 guest + email normalised; 18/19 last complete period boundary (23:59 vs 00:00 New York); 20 no address.'
+description: 'Cases by order id: 1 NY-local date at a UTC month edge, shipping kept inside net revenue; 2 newer version supersedes; 3 older version landed later does not win (updated_at); 4 voided+cancelled; 5 fully refunded; 6 partial refund not subtracted; 7 authorized valid; 8 pending valid; 9 test order; 10 deleted; 11 latest version deleted; 12 POS billing-country fallback; 13-16 channel mapping; 17 guest + email normalised; 18/19 last complete period boundary (23:59 vs 00:00 New York); 20 no address; 21 discounted order (has_discount, net revenue after discount); 22 missing total_discounts counts as no discount.'
 entity_id: Mn4UlzyCPboMynIsOfoun
 expectations:
 - columns:
@@ -27,12 +27,15 @@ expectations:
     name: is_guest_checkout
   - cast_type: TEXT
     name: customer_email
+  - cast_type: BOOLEAN
+    name: has_discount
   format: rows
   name: one row per real order with the decided rules
   rows:
   - country_code: US
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -45,6 +48,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -57,6 +61,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: refunded
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: false
@@ -69,6 +74,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: voided
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: false
@@ -81,6 +87,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: refunded
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: false
@@ -93,6 +100,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: partially_refunded
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -105,6 +113,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: authorized
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -117,6 +126,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: pending
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -129,6 +139,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: true
     is_valid_order: true
@@ -141,6 +152,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -153,6 +165,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -165,6 +178,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -177,6 +191,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -189,6 +204,7 @@ expectations:
   - country_code: US
     customer_email: mixed@case.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: true
     is_valid_order: true
@@ -201,6 +217,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
@@ -213,6 +230,7 @@ expectations:
   - country_code: US
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: false
     is_guest_checkout: false
     is_valid_order: true
@@ -225,12 +243,39 @@ expectations:
   - country_code: null
     customer_email: a@b.com
     financial_status: paid
+    has_discount: false
     is_complete_period: true
     is_guest_checkout: false
     is_valid_order: true
     net_revenue: 100
     order_date: '2026-03-10'
     order_id: 20
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    has_discount: true
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 85
+    order_date: '2026-03-10'
+    order_id: 21
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    has_discount: false
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 22
     order_month: '2026-03-01'
     sales_channel: online_store
     shipping_price: 0
@@ -852,6 +897,54 @@ inputs:
     subtotal_price: 100
     test: false
     total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 21
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 85
+    test: false
+    total_discounts: 15
+    total_line_items_price: 100
+    total_price: 93.5
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 8.5
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 22
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: null
     total_line_items_price: 100
     total_price: 110
     total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
