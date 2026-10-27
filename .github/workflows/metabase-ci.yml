@@ -1,0 +1,66 @@
+name: Metabase CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+concurrency:
+  group: metabase-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        # Explicit bash adds -o pipefail, so `mb ci run | tee` keeps mb's exit code.
+        shell: bash
+    services:
+      metabase:
+        image: metabase/metabase-enterprise-head:latest
+        env:
+          MB_DB_TYPE: h2
+          MB_LOAD_SAMPLE_CONTENT: "false"
+          MB_CHECK_FOR_UPDATES: "false"
+          MB_ANON_TRACKING_ENABLED: "false"
+          MB_WAREHOUSE_ALLOWED_NETWORKS: allow-all
+          # `dev` makes Metabase honor METASTORE_DEV_SERVER_URL, where the dev token is checked.
+          MB_RUN_MODE: dev
+          METASTORE_DEV_SERVER_URL: https://token-check.staging.metabase.com
+          MB_PREMIUM_EMBEDDING_TOKEN: ${{ secrets.MB_PREMIUM_EMBEDDING_TOKEN }}
+        ports: ["3000:3000"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install mb
+        # The `mb ci` alpha (metabase-cli#96); pinned to an exact version, since dist-tags move.
+        run: npm i -g @metabase/cli@0.5.7-alpha.bryan-rci-6-coverage.6f886fd
+
+      - name: Load this commit into Metabase
+        env:
+          MB_URL: http://localhost:3000
+          # The name the content's YAML uses for the warehouse.
+          WH_NAME: Shop warehouse
+          WH_URL: ${{ secrets.WAREHOUSE_URL }}
+          CONTENT_DIR: ${{ github.workspace }}
+        run: |
+          key=$(ci/prepare.sh | tail -1 | sed 's/^export MB_API_KEY=//')
+          echo "::add-mask::$key"
+          echo "MB_API_KEY=$key" >> "$GITHUB_ENV"
+
+      - name: mb ci run
+        env:
+          MB_URL: http://localhost:3000
+          BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
+        run: mb ci run --repo . --base "$BASE" | tee results.ndjson
+
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mb-ci-results
+          path: results.ndjson
