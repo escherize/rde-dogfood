@@ -38,18 +38,8 @@ jobs:
           fetch-depth: 0
 
       - name: Install mb
-        # ponytail: built from a pinned commit of the `mb ci` PR stack (metabase-cli#96) until it ships in a
-        # release; then `npm i -g @metabase/cli@<version>`.
-        env:
-          MB_CLI_SHA: 6f886fd3c8fd05fde612308ec3c8eeb5f341b13f
-        run: |
-          mkdir "$RUNNER_TEMP/metabase-cli" && cd "$RUNNER_TEMP/metabase-cli"
-          git init -q && git fetch -q --depth 1 https://github.com/metabase/metabase-cli.git "$MB_CLI_SHA"
-          git checkout -q FETCH_HEAD
-          npm i -g bun
-          bun install --frozen-lockfile
-          bun run build
-          echo "MB_CLI=$RUNNER_TEMP/metabase-cli/packages/cli/dist/cli.mjs" >> "$GITHUB_ENV"
+        # The `mb ci` alpha (metabase-cli#96); pinned to an exact version, since dist-tags move.
+        run: npm i -g @metabase/cli@0.5.7-alpha.bryan-rci-6-coverage.6f886fd
 
       - name: Load this commit into Metabase
         env:
@@ -67,7 +57,7 @@ jobs:
         env:
           MB_URL: http://localhost:3000
           BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
-        run: node "$MB_CLI" ci run --repo . --base "$BASE" | tee results.ndjson
+        run: mb ci run --repo . --base "$BASE" | tee results.ndjson
 
       - if: always()
         uses: actions/upload-artifact@v4
