@@ -23,7 +23,7 @@ source:
             o.total_shipping_price_set, o.financial_status, o.fulfillment_status, o.source_name, o.test,
             o.shipping_address, o.billing_address, o._fivetran_deleted
           FROM raw_shopify.orders o
-          ORDER BY o.id, o.updated_at DESC, o._fivetran_synced DESC
+          ORDER BY o.id, o.updated_at ASC, o._fivetran_synced DESC
         ),
         real_orders AS (
           SELECT l.*
