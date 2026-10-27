@@ -20,7 +20,8 @@ jobs:
         shell: bash
     services:
       metabase:
-        image: metabase/metabase-enterprise-head:latest
+        # Pinned to the build behind the Oct 27 red/green runs, so a new nightly can't change the demo.
+        image: metabase/metabase-enterprise-head@sha256:e125e521da6cec54c44e70db2b8179df6aae55619e9936f6796e979dcd130906
         env:
           MB_DB_TYPE: h2
           MB_LOAD_SAMPLE_CONTENT: "false"
