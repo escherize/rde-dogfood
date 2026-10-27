@@ -1,0 +1,866 @@
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+description: 'Cases by order id: 1 NY-local date at a UTC month edge, shipping kept inside net revenue; 2 newer version supersedes; 3 older version landed later does not win (updated_at); 4 voided+cancelled; 5 fully refunded; 6 partial refund not subtracted; 7 authorized valid; 8 pending valid; 9 test order; 10 deleted; 11 latest version deleted; 12 POS billing-country fallback; 13-16 channel mapping; 17 guest + email normalised; 18/19 last complete period boundary (23:59 vs 00:00 New York); 20 no address.'
+entity_id: Mn4UlzyCPboMynIsOfoun
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: order_id
+  - cast_type: DATE
+    name: order_date
+  - cast_type: DATE
+    name: order_month
+  - cast_type: BOOLEAN
+    name: is_complete_period
+  - cast_type: TEXT
+    name: sales_channel
+  - cast_type: TEXT
+    name: financial_status
+  - cast_type: BOOLEAN
+    name: is_valid_order
+  - cast_type: NUMERIC(12,2)
+    name: net_revenue
+  - cast_type: NUMERIC(12,2)
+    name: shipping_price
+  - cast_type: TEXT
+    name: country_code
+  - cast_type: BOOLEAN
+    name: is_guest_checkout
+  - cast_type: TEXT
+    name: customer_email
+  format: rows
+  name: one row per real order with the decided rules
+  rows:
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-02-28'
+    order_id: 1
+    order_month: '2026-02-01'
+    sales_channel: online_store
+    shipping_price: 5
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 2
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: refunded
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: false
+    net_revenue: 0
+    order_date: '2026-03-10'
+    order_id: 3
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: voided
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: false
+    net_revenue: 0
+    order_date: '2026-03-10'
+    order_id: 4
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: refunded
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: false
+    net_revenue: 0
+    order_date: '2026-03-10'
+    order_id: 5
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: partially_refunded
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 453.85
+    order_date: '2026-03-10'
+    order_id: 6
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: authorized
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 7
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: pending
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 8
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: true
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 12
+    order_month: '2026-03-01'
+    sales_channel: pos
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 13
+    order_month: '2026-03-01'
+    sales_channel: shop_app
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 14
+    order_month: '2026-03-01'
+    sales_channel: mobile_app
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 15
+    order_month: '2026-03-01'
+    sales_channel: other
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 16
+    order_month: '2026-03-01'
+    sales_channel: draft_order
+    shipping_price: 0
+  - country_code: US
+    customer_email: mixed@case.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: true
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 17
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-09-30'
+    order_id: 18
+    order_month: '2026-09-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: US
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: false
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-10-01'
+    order_id: 19
+    order_month: '2026-10-01'
+    sales_channel: online_store
+    shipping_price: 0
+  - country_code: null
+    customer_email: a@b.com
+    financial_status: paid
+    is_complete_period: true
+    is_guest_checkout: false
+    is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 20
+    order_month: '2026-03-01'
+    sales_channel: online_store
+    shipping_price: 0
+  type: equals
+- name: order_id is unique
+  sql: SELECT m.order_id FROM shopify_clean.mart_shopify_fct_order m GROUP BY m.order_id HAVING COUNT(*) > 1
+  type: empty
+- name: invalid orders carry zero net revenue
+  sql: SELECT m.order_id FROM shopify_clean.mart_shopify_fct_order m WHERE NOT m.is_valid_order AND m.net_revenue <> 0
+  type: empty
+inputs:
+- columns:
+  - cast_type: DATE
+    name: last_complete_period
+  - cast_type: TEXT
+    name: shop_timezone
+  format: rows
+  rows:
+  - last_complete_period: '2026-09-01'
+    shop_timezone: America/New_York
+  table:
+    name: cfg_shopify
+    schema: shopify_clean
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: TEXT
+    name: name
+  - cast_type: INTEGER
+    name: order_number
+  - cast_type: BIGINT
+    name: customer_id
+  - cast_type: TEXT
+    name: email
+  - cast_type: TIMESTAMPTZ
+    name: created_at
+  - cast_type: TIMESTAMPTZ
+    name: updated_at
+  - cast_type: TIMESTAMPTZ
+    name: _fivetran_synced
+  - cast_type: TIMESTAMPTZ
+    name: cancelled_at
+  - cast_type: TEXT
+    name: cancel_reason
+  - cast_type: TEXT
+    name: currency
+  - cast_type: NUMERIC(12,2)
+    name: total_line_items_price
+  - cast_type: NUMERIC(12,2)
+    name: subtotal_price
+  - cast_type: NUMERIC(12,2)
+    name: total_discounts
+  - cast_type: NUMERIC(12,2)
+    name: total_tax
+  - cast_type: NUMERIC(12,2)
+    name: total_price
+  - cast_type: JSONB
+    name: total_shipping_price_set
+  - cast_type: TEXT
+    name: financial_status
+  - cast_type: TEXT
+    name: fulfillment_status
+  - cast_type: TEXT
+    name: source_name
+  - cast_type: BOOLEAN
+    name: test
+  - cast_type: JSONB
+    name: shipping_address
+  - cast_type: JSONB
+    name: billing_address
+  - cast_type: BOOLEAN
+    name: _fivetran_deleted
+  format: rows
+  rows:
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-01T03:30:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 1
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"5.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-02T11:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: authorized
+    fulfillment_status: null
+    id: 2
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-02T10:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-02T12:30:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 2
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-02T12:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-03T03:07:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: '2026-03-03T01:11:00+00:00'
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: refunded
+    fulfillment_status: null
+    id: 3
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-03T01:20:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-03T03:54:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 3
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-02T22:10:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: '2026-03-04T07:00:00+00:00'
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: voided
+    fulfillment_status: null
+    id: 4
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: refunded
+    fulfillment_status: null
+    id: 5
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: partially_refunded
+    fulfillment_status: null
+    id: 6
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 540.08
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 86.23
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: authorized
+    fulfillment_status: null
+    id: 7
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: pending
+    fulfillment_status: null
+    id: 8
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 9
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: true
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: true
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 10
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 11
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-05T10:00:00+00:00'
+  - _fivetran_deleted: true
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 11
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-05T12:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: null
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 12
+    name: '#0'
+    order_number: 0
+    shipping_address: null
+    source_name: pos
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 13
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: 294517.0
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 14
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: iphone
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 15
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: mystery
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 16
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: shopify_draft_order
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: null
+    email: '  Mixed@Case.COM '
+    financial_status: paid
+    fulfillment_status: null
+    id: 17
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-10-01T03:59:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 18
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: '{"country_code":"US"}'
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-10-01T04:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 19
+    name: '#0'
+    order_number: 0
+    shipping_address: '{"country_code":"US"}'
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  - _fivetran_deleted: false
+    _fivetran_synced: '2026-03-10T16:00:00+00:00'
+    billing_address: null
+    cancel_reason: null
+    cancelled_at: null
+    created_at: '2026-03-10T15:00:00+00:00'
+    currency: USD
+    customer_id: 100
+    email: a@b.com
+    financial_status: paid
+    fulfillment_status: null
+    id: 20
+    name: '#0'
+    order_number: 0
+    shipping_address: null
+    source_name: web
+    subtotal_price: 100
+    test: false
+    total_discounts: 0
+    total_line_items_price: 100
+    total_price: 110
+    total_shipping_price_set: '{"shop_money":{"amount":"0.00","currency_code":"USD"}}'
+    total_tax: 10
+    updated_at: '2026-03-10T15:00:00+00:00'
+  table:
+    name: orders
+    schema: raw_shopify
+name: 'mart_shopify_fct_order: order rules'
+transform_id: OdJmmhpMpWx5Iwc1FhIZa
+serdes/meta:
+- model: TransformTest
