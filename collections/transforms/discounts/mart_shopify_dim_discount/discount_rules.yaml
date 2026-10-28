@@ -1,0 +1,188 @@
+created_at: '2026-10-28T16:51:08.859282Z'
+creator_id: api-key-user-4fa708cd-e2da-4245-98d4-161322109820@api-key.invalid
+description: 'Cases by id: 1 percentage creator (negative value flips to percent_off, kind creator); 2 fixed-amount creator with no end date (amount_off_usd, creator beats evergreen); 3 STAFF40 with no end date (internal beats evergreen); 4 BFCM2024 with end (seasonal); 5 WELCOME10 with no end (evergreen); 6 unknown code with an end date (other); 7 zero-use SPRING23 (seasonal, redemption_count 0 kept).'
+entity_id: ZJFBpVfcxmhw7S1tqzh8o
+expectations:
+- columns:
+  - cast_type: BIGINT
+    name: discount_id
+  - cast_type: TEXT
+    name: discount_kind
+  - cast_type: NUMERIC
+    name: percent_off
+  - cast_type: NUMERIC
+    name: amount_off_usd
+  - cast_type: INTEGER
+    name: redemption_count
+  format: rows
+  name: kind, sign flip and type split per case
+  rows:
+  - amount_off_usd: null
+    discount_id: 1
+    discount_kind: creator
+    percent_off: 15
+    redemption_count: 10
+  - amount_off_usd: 10
+    discount_id: 2
+    discount_kind: creator
+    percent_off: null
+    redemption_count: 20
+  - amount_off_usd: null
+    discount_id: 3
+    discount_kind: internal
+    percent_off: 40
+    redemption_count: 0
+  - amount_off_usd: null
+    discount_id: 4
+    discount_kind: seasonal
+    percent_off: 25
+    redemption_count: 2381
+  - amount_off_usd: null
+    discount_id: 5
+    discount_kind: evergreen
+    percent_off: 10
+    redemption_count: 5377
+  - amount_off_usd: 5
+    discount_id: 6
+    discount_kind: other
+    percent_off: null
+    redemption_count: 3
+  - amount_off_usd: null
+    discount_id: 7
+    discount_kind: seasonal
+    percent_off: 15
+    redemption_count: 0
+  type: equals
+- name: no duplicate keys, no negatives, one value column per row
+  sql: SELECT m.discount_id FROM shop_analytics.mart_shopify_dim_discount m WHERE m.percent_off < 0 OR m.amount_off_usd < 0 OR (m.percent_off IS NOT NULL AND m.amount_off_usd IS NOT NULL) OR (m.percent_off IS NULL AND m.amount_off_usd IS NULL) OR m.discount_id IN (SELECT k.discount_id FROM shop_analytics.mart_shopify_dim_discount k GROUP BY 1 HAVING count(*) > 1)
+  type: empty
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: id
+  - cast_type: TEXT
+    name: code
+  - cast_type: TEXT
+    name: title
+  - cast_type: TEXT
+    name: value_type
+  - cast_type: NUMERIC
+    name: value
+  - cast_type: TEXT
+    name: target_type
+  - cast_type: BOOLEAN
+    name: once_per_customer
+  - cast_type: INTEGER
+    name: usage_count
+  - cast_type: TIMESTAMPTZ
+    name: starts_at
+  - cast_type: TIMESTAMPTZ
+    name: ends_at
+  - cast_type: TIMESTAMPTZ
+    name: created_at
+  - cast_type: TIMESTAMPTZ
+    name: updated_at
+  - cast_type: TIMESTAMPTZ
+    name: _fivetran_synced
+  format: rows
+  rows:
+  - _fivetran_synced: '2025-06-01T00:00:00Z'
+    code: CREATORA15
+    created_at: '2024-12-30T00:00:00Z'
+    ends_at: '2025-06-01T00:00:00Z'
+    id: 1
+    once_per_customer: false
+    starts_at: '2025-01-01T00:00:00Z'
+    target_type: line_item
+    title: Creator code A
+    updated_at: '2025-06-01T00:00:00Z'
+    usage_count: 10
+    value: -15
+    value_type: percentage
+  - _fivetran_synced: '2025-06-01T00:00:00Z'
+    code: CREATORB10
+    created_at: '2024-12-30T00:00:00Z'
+    ends_at: null
+    id: 2
+    once_per_customer: false
+    starts_at: '2025-01-01T00:00:00Z'
+    target_type: line_item
+    title: Creator code B $10
+    updated_at: '2025-06-01T00:00:00Z'
+    usage_count: 20
+    value: -10
+    value_type: fixed_amount
+  - _fivetran_synced: '2023-04-01T00:00:00Z'
+    code: STAFF40
+    created_at: '2023-04-01T00:00:00Z'
+    ends_at: null
+    id: 3
+    once_per_customer: false
+    starts_at: '2023-04-01T00:00:00Z'
+    target_type: line_item
+    title: Staff discount
+    updated_at: '2023-04-01T00:00:00Z'
+    usage_count: 0
+    value: -40
+    value_type: percentage
+  - _fivetran_synced: '2024-12-04T00:00:00Z'
+    code: BFCM2024
+    created_at: '2024-11-07T00:00:00Z'
+    ends_at: '2024-12-04T00:00:00Z'
+    id: 4
+    once_per_customer: false
+    starts_at: '2024-11-18T00:00:00Z'
+    target_type: line_item
+    title: Black Friday Cyber Monday 2024
+    updated_at: '2024-12-04T00:00:00Z'
+    usage_count: 2381
+    value: -25
+    value_type: percentage
+  - _fivetran_synced: '2026-10-01T00:00:00Z'
+    code: WELCOME10
+    created_at: '2023-02-24T00:00:00Z'
+    ends_at: null
+    id: 5
+    once_per_customer: true
+    starts_at: '2023-03-01T00:00:00Z'
+    target_type: line_item
+    title: Welcome 10% off first order
+    updated_at: '2026-10-01T00:00:00Z'
+    usage_count: 5377
+    value: -10
+    value_type: percentage
+  - _fivetran_synced: '2025-03-01T00:00:00Z'
+    code: MYSTERY5
+    created_at: '2025-02-01T00:00:00Z'
+    ends_at: '2025-03-01T00:00:00Z'
+    id: 6
+    once_per_customer: false
+    starts_at: '2025-02-01T00:00:00Z'
+    target_type: line_item
+    title: Unlabelled promo
+    updated_at: '2025-03-01T00:00:00Z'
+    usage_count: 3
+    value: -5
+    value_type: fixed_amount
+  - _fivetran_synced: '2023-04-01T00:00:00Z'
+    code: SPRING23
+    created_at: '2023-04-01T00:00:00Z'
+    ends_at: '2023-06-30T00:00:00Z'
+    id: 7
+    once_per_customer: false
+    starts_at: '2023-04-01T00:00:00Z'
+    target_type: line_item
+    title: Spring 2023
+    updated_at: '2023-04-01T00:00:00Z'
+    usage_count: 0
+    value: -15
+    value_type: percentage
+  table:
+    name: discounts
+    schema: raw_shopify
+name: discount rules
+transform_id: VSXaaPNah2J2fsGW_dimi
+serdes/meta:
+- id: ZJFBpVfcxmhw7S1tqzh8o
+  label: discount_rules
+  model: TransformTest

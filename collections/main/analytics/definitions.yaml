@@ -1,0 +1,11 @@
+name: Definitions
+description: Draft metrics and definitions for Shopify discounts.
+entity_id: yiyvlfwXlyTgcD4zbP_U3
+slug: definitions
+created_at: '2026-10-28T16:53:18.36622Z'
+parent_id: zUtBlrh6X3si4SdzixPgl
+serdes/meta:
+- id: yiyvlfwXlyTgcD4zbP_U3
+  label: definitions
+  model: Collection
+is_remote_synced: true

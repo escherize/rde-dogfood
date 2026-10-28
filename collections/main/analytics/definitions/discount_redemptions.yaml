@@ -1,0 +1,35 @@
+name: Discount redemptions
+description: 'Draft, provisional decisions: D4. Total times discount codes have been used, lifetime (sum of Redemptions (lifetime) on the discounts table). Includes all 30 codes; the 3 internal codes add 0. Lifetime total as of 1 Oct 2026, so it cannot be sliced by month: only slice by code, kind or type. Checked against orders carrying a code: 34,804 vs 34,817 (0.04% apart; per-code gaps at most 4). Shopify counts uses on cancelled and refunded orders too: orders with a code that are valid orders number 33,395 (4% lower). Do not compare to net revenue or order counts. Also found as: promo code usage, coupon uses, discount uses. Owner: not yet assigned.'
+entity_id: 0RAb1U0zbWBwUl62gZfH3
+created_at: '2026-10-28T16:53:47.805268Z'
+creator_id: api-key-user-4fa708cd-e2da-4245-98d4-161322109820@api-key.invalid
+display: scalar
+collection_id: yiyvlfwXlyTgcD4zbP_U3
+parameters: []
+parameter_mappings: []
+dataset_query:
+  database: warehouse
+  stages:
+  - aggregation:
+    - - sum
+      - name: redemptions
+      - - field
+        - {}
+        - - warehouse
+          - shop_analytics
+          - mart_shopify_dim_discount
+          - redemption_count
+    source-table:
+    - warehouse
+    - shop_analytics
+    - mart_shopify_dim_discount
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+visualization_settings:
+  column_settings: null
+card_schema: 24
+serdes/meta:
+- id: 0RAb1U0zbWBwUl62gZfH3
+  label: discount_redemptions
+  model: Card
+type: metric

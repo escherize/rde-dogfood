@@ -1,0 +1,85 @@
+collection_id: yiyvlfwXlyTgcD4zbP_U3
+content_type: application/json+vnd.prose-mirror
+created_at: '2026-10-28T16:56:00.378864Z'
+creator_id: api-key-user-4fa708cd-e2da-4245-98d4-161322109820@api-key.invalid
+document:
+  content:
+  - attrs:
+      _id: 685af5de-fabe-4f45-b273-3b2aee6a0b01
+      level: 2
+    content:
+    - text: Discount numbers (Draft)
+      type: text
+    type: heading
+  - attrs:
+      _id: c0c09182-31b7-4b3b-9c61-55326afb44a7
+    content:
+    - text: 'Everything here is Draft: it rests on four defaults nobody has confirmed yet (D1 to D4 below). Source: Shopify discount codes, table Discounts, one row per code (30 codes). Data as of 1 Oct 2026.'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: 09aebede-c451-47d5-8bd8-420ebb88c208
+      level: 2
+    content:
+    - text: Metrics
+      type: text
+    type: heading
+  - attrs:
+      _id: 1651a655-a8e5-48bd-9802-15efd5485987
+    content:
+    - text: 'Discount redemptions (34,804, Draft D4): lifetime uses of all codes. Within 0.04% of orders carrying a code (34,817). Counts uses on cancelled and refunded orders too; valid orders only would be 33,395. Cannot be sliced by month. Discount codes (30, Draft D2): number of codes, by month each starts. Includes 3 internal codes; customer-facing only is 27.'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: a27cd129-8898-46fa-a0e7-c22a15a1db11
+      level: 2
+    content:
+    - text: Segments
+      type: text
+    type: heading
+  - attrs:
+      _id: b561dac7-085b-47e7-8e5c-673d0bc00aa9
+    content:
+    - text: 'Currently active codes (6, D1): started and not yet ended as of today. 3 of the 6 are internal. As of the 1 Oct data it would be 7. Customer-facing codes (27, D2): everything except STAFF40, SORRY15, FREESHIPJUNE. Creator codes (20): creator and affiliate codes, 5,835 redemptions.'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: 06a9bbb5-05a4-4a87-86a1-3f69c8102e4d
+      level: 2
+    content:
+    - text: Decisions made on your behalf
+      type: text
+    type: heading
+  - attrs:
+      _id: f07e69c3-275d-4c0f-94b9-70cc7ef5d289
+    content:
+    - text: D1 active is judged as of today, not the data date. D2 internal codes kept and flagged, not removed. D3 values shown positive, split into percent off and amount off (USD). D4 redemptions come from the code own usage count.
+      type: text
+    type: paragraph
+  - attrs:
+      _id: 7ac0791f-0f58-4ae3-9ba2-0a1bd045a65c
+      level: 2
+    content:
+    - text: Owner and questions
+      type: text
+    type: heading
+  - attrs:
+      _id: a192f229-7b45-482d-a854-d21de2b4dc5c
+    content:
+    - text: 'Owner of definitions: not yet assigned. To ask a new question, start from the Discounts table and use the segments above. If a number looks wrong, check Usage synced at on the table first, then ask the owner.'
+      type: text
+    type: paragraph
+  - attrs:
+      _id: be8f7dfa-2ec6-4f99-b902-d575387b9cdb
+    content:
+    - text: 'Not yet in the Library: publishing waits until D1 to D4 are confirmed.'
+      type: text
+    type: paragraph
+  type: doc
+entity_id: QsR_lthGYnmPgIjSDIJ_a
+name: How to use discount numbers
+updated_at: '2026-10-28T16:56:00.378864Z'
+serdes/meta:
+- id: QsR_lthGYnmPgIjSDIJ_a
+  label: how_to_use_discount_numbers
+  model: Document
