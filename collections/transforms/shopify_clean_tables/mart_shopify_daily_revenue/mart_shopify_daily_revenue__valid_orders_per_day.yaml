@@ -1,0 +1,150 @@
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+description: 'Input rows are mart_shopify_fct_order''s expected output from its order-rules test (orders 1-8, 12-20), plus 21 (refunded, alone on 2026-03-11: a day with no valid order gets no row) and 22 (NULL is_valid_order on 2026-02-28: not counted). 2026-02-28: 1 order / 100.00. 2026-03-10: 11 of 14 orders valid (3, 4, 5 invalid) / 10 x 100.00 + 453.85 = 1453.85. 2026-09-30 and 2026-10-01: 1 / 100.00 each.'
+entity_id: rQLrsAeR8QrfDyjTn_EBN
+expectations:
+- columns:
+  - cast_type: DATE
+    name: order_date
+  - cast_type: BIGINT
+    name: valid_orders
+  - cast_type: NUMERIC(12,2)
+    name: net_revenue
+  format: rows
+  name: one row per day with a valid order, hand-counted
+  rows:
+  - net_revenue: 100
+    order_date: '2026-02-28'
+    valid_orders: 1
+  - net_revenue: 1453.85
+    order_date: '2026-03-10'
+    valid_orders: 11
+  - net_revenue: 100
+    order_date: '2026-09-30'
+    valid_orders: 1
+  - net_revenue: 100
+    order_date: '2026-10-01'
+    valid_orders: 1
+  type: equals
+- name: order_date is unique
+  sql: |-
+    -- Grain: one row per order_date. Catches a GROUP BY on a finer key.
+    SELECT d.order_date FROM shopify_clean.mart_shopify_daily_revenue d GROUP BY d.order_date HAVING COUNT(*) > 1
+  type: empty
+- name: order count and net revenue tie to the valid input orders
+  sql: |-
+    -- Conservation: totals equal the valid orders in mart_shopify_fct_order.
+    -- Catches dropped days, counting invalid or NULL-validity orders, and fan-out.
+    SELECT o.valid_orders, o.net_revenue, i.valid_orders AS input_valid_orders, i.net_revenue AS input_net_revenue
+    FROM (SELECT SUM(d.valid_orders) AS valid_orders, SUM(d.net_revenue) AS net_revenue FROM shopify_clean.mart_shopify_daily_revenue d) o
+    CROSS JOIN (SELECT COUNT(*) AS valid_orders, SUM(m.net_revenue) AS net_revenue FROM shopify_clean.mart_shopify_fct_order m WHERE m.is_valid_order) i
+    WHERE o.valid_orders IS DISTINCT FROM i.valid_orders OR o.net_revenue IS DISTINCT FROM i.net_revenue
+  type: empty
+- name: days are exactly the days with a valid order
+  sql: |-
+    -- Zero-group policy: a day with no valid order has no row, and every day with one has a row.
+    -- Catches dropping the WHERE (invalid-only days appear) and losing days.
+    (SELECT d.order_date FROM shopify_clean.mart_shopify_daily_revenue d EXCEPT SELECT m.order_date FROM shopify_clean.mart_shopify_fct_order m WHERE m.is_valid_order)
+    UNION ALL
+    (SELECT m.order_date FROM shopify_clean.mart_shopify_fct_order m WHERE m.is_valid_order EXCEPT SELECT d.order_date FROM shopify_clean.mart_shopify_daily_revenue d)
+  type: empty
+- name: every day has at least one valid order and non-negative revenue
+  sql: |-
+    -- Range screen: valid_orders >= 1, net_revenue >= 0 and neither is NULL.
+    SELECT d.order_date, d.valid_orders, d.net_revenue FROM shopify_clean.mart_shopify_daily_revenue d
+    WHERE d.order_date IS NULL OR d.valid_orders IS NULL OR d.valid_orders < 1 OR d.net_revenue IS NULL OR d.net_revenue < 0
+  type: empty
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: order_id
+  - cast_type: DATE
+    name: order_date
+  - cast_type: BOOLEAN
+    name: is_valid_order
+  - cast_type: NUMERIC(12,2)
+    name: net_revenue
+  format: rows
+  rows:
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-02-28'
+    order_id: 1
+  - is_valid_order:
+    net_revenue: 0
+    order_date: '2026-02-28'
+    order_id: 22
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 2
+  - is_valid_order: false
+    net_revenue: 0
+    order_date: '2026-03-10'
+    order_id: 3
+  - is_valid_order: false
+    net_revenue: 0
+    order_date: '2026-03-10'
+    order_id: 4
+  - is_valid_order: false
+    net_revenue: 0
+    order_date: '2026-03-10'
+    order_id: 5
+  - is_valid_order: true
+    net_revenue: 453.85
+    order_date: '2026-03-10'
+    order_id: 6
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 7
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 8
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 12
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 13
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 14
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 15
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 16
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 17
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-03-10'
+    order_id: 20
+  - is_valid_order: false
+    net_revenue: 0
+    order_date: '2026-03-11'
+    order_id: 21
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-09-30'
+    order_id: 18
+  - is_valid_order: true
+    net_revenue: 100
+    order_date: '2026-10-01'
+    order_id: 19
+  table:
+    name: mart_shopify_fct_order
+    schema: shopify_clean
+name: 'mart_shopify_daily_revenue: valid orders per day'
+transform_id: 1IeLc5ydb0MK8k89LubLd
+serdes/meta:
+- model: TransformTest
