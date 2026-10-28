@@ -40,6 +40,6 @@ inputs:
     name: mart_shopify_fct_order
     schema: shopify_clean
 name: 'mart_shopify_daily_revenue: refund-only day'
-transform_id: Dr7vQ2nW9kLmX4pZt1bYe
+transform_id: 1IeLc5ydb0MK8k89LubLd
 serdes/meta:
 - model: TransformTest
