@@ -20,7 +20,6 @@ source:
           COUNT(*)           AS valid_orders,
           SUM(m.net_revenue) AS net_revenue
         FROM shopify_clean.mart_shopify_fct_order m
-        WHERE m.is_valid_order
         GROUP BY m.order_date
       lib/type: mbql.stage/native
     lib/type: mbql/query
