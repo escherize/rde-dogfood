@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 20
     defaults:
       run:
-        # Explicit bash adds -o pipefail, so `mb ci run | tee` keeps mb's exit code.
+        # Explicit bash adds -o pipefail.
         shell: bash
     services:
       metabase:
@@ -39,8 +39,8 @@ jobs:
           fetch-depth: 0
 
       - name: Install mb
-        # The `mb ci` alpha (metabase-cli#96); pinned to an exact version, since dist-tags move.
-        run: npm i -g @metabase/cli@0.5.7-alpha.bryan-rci-6-coverage.6f886fd
+        # The `mb ci` alpha with the representation lint (metabase-cli#97); pinned to an exact version, since dist-tags move.
+        run: npm i -g @metabase/cli@0.5.8-alpha.bryan-rci-28-lint-stage.198256c
 
       - name: Load this commit into Metabase
         env:
@@ -58,10 +58,10 @@ jobs:
         env:
           MB_URL: http://localhost:3000
           BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
-        run: mb ci run --repo . --base "$BASE" | tee results.ndjson
+        run: mb ci run --repo . --base "$BASE" --format text --results results.json
 
       - if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mb-ci-results
-          path: results.ndjson
+          path: results.json
