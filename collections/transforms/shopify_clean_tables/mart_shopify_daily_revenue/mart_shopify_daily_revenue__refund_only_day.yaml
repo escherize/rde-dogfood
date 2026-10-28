@@ -1,0 +1,45 @@
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+description: 'Cases: a day whose only order is refunded gets no row; the valid order on the next day still does.'
+entity_id: 8uVZqX2kTf1cNw0LrP4sA
+expectations:
+- columns:
+  - cast_type: DATE
+    name: order_date
+  - cast_type: BIGINT
+    name: valid_orders
+  - cast_type: NUMERIC(12,2)
+    name: net_revenue
+  format: rows
+  name: a refund-only day has no row
+  rows:
+  - order_date: '2026-03-12'
+    valid_orders: 1
+    net_revenue: 42.0
+  type: equals
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: order_id
+  - cast_type: DATE
+    name: order_date
+  - cast_type: BOOLEAN
+    name: is_valid_order
+  - cast_type: NUMERIC(12,2)
+    name: net_revenue
+  format: rows
+  rows:
+  - order_id: 31
+    order_date: '2026-03-11'
+    is_valid_order: false
+    net_revenue: 0
+  - order_id: 32
+    order_date: '2026-03-12'
+    is_valid_order: true
+    net_revenue: 42
+  table:
+    name: mart_shopify_fct_order
+    schema: shopify_clean
+name: 'mart_shopify_daily_revenue: refund-only day'
+transform_id: 1IeLc5ydb0MK8k89LubLd
+serdes/meta:
+- model: TransformTest

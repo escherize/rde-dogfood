@@ -1,0 +1,35 @@
+collection_id: Wy3QbeDZmT_I5bd8C0Hxk
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+description: |
+  One row per order date (shop time zone) with at least one valid order. Sources: mart_shopify_fct_order. Definition: count and net revenue of valid orders per day. Caveats: days with no valid order have no row.
+entity_id: 1IeLc5ydb0MK8k89LubLd
+indexes: []
+name: mart_shopify_daily_revenue
+owner_user_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+source:
+  query:
+    database: Shop warehouse
+    stages:
+    - native: |
+        -- One row per: order date with at least one valid order
+        -- Key:         order_date
+        -- Sources:     shopify_clean.mart_shopify_fct_order
+        -- Definition:  valid orders and their net revenue per day
+        SELECT
+          m.order_date,
+          COUNT(*)           AS valid_orders,
+          SUM(m.net_revenue) AS net_revenue
+        FROM shopify_clean.mart_shopify_fct_order m
+        WHERE m.is_valid_order
+        GROUP BY m.order_date
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: Shop warehouse
+target:
+  database: Shop warehouse
+  name: mart_shopify_daily_revenue
+  schema: shopify_clean
+  type: table
+serdes/meta:
+- model: Transform
