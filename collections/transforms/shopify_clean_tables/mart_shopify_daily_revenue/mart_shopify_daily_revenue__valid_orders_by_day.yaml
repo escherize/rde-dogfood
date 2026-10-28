@@ -1,0 +1,66 @@
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+description: 'Cases by order id: 1 and 2 valid on 2026-09-01 are summed; 3 cancelled on the same day is left out; 4 alone on 2026-09-02; 5 invalid alone on 2026-09-03 gives that day no row.'
+entity_id: AfObu0B3EggXM94YzErLl
+expectations:
+- columns:
+  - cast_type: DATE
+    name: order_date
+  - cast_type: BIGINT
+    name: valid_orders
+  - cast_type: NUMERIC(12,2)
+    name: net_revenue
+  format: rows
+  name: valid orders and net revenue per day
+  rows:
+  - order_date: '2026-09-01'
+    valid_orders: 2
+    net_revenue: 120.5
+  - order_date: '2026-09-02'
+    valid_orders: 1
+    net_revenue: 5.25
+  type: equals
+- name: one row per order date
+  sql: SELECT d.order_date FROM shopify_clean.mart_shopify_daily_revenue d GROUP BY d.order_date HAVING COUNT(*) > 1
+  type: empty
+- name: every day has a valid order
+  sql: SELECT d.order_date FROM shopify_clean.mart_shopify_daily_revenue d WHERE d.valid_orders < 1
+  type: empty
+inputs:
+- columns:
+  - cast_type: BIGINT
+    name: order_id
+  - cast_type: DATE
+    name: order_date
+  - cast_type: BOOLEAN
+    name: is_valid_order
+  - cast_type: NUMERIC(12,2)
+    name: net_revenue
+  format: rows
+  rows:
+  - order_id: 1
+    order_date: '2026-09-01'
+    is_valid_order: true
+    net_revenue: 100
+  - order_id: 2
+    order_date: '2026-09-01'
+    is_valid_order: true
+    net_revenue: 20.5
+  - order_id: 3
+    order_date: '2026-09-01'
+    is_valid_order: false
+    net_revenue: 0
+  - order_id: 4
+    order_date: '2026-09-02'
+    is_valid_order: true
+    net_revenue: 5.25
+  - order_id: 5
+    order_date: '2026-09-03'
+    is_valid_order: false
+    net_revenue: 0
+  table:
+    name: mart_shopify_fct_order
+    schema: shopify_clean
+name: 'mart_shopify_daily_revenue: valid orders by day'
+transform_id: 1IeLc5ydb0MK8k89LubLd
+serdes/meta:
+- model: TransformTest
