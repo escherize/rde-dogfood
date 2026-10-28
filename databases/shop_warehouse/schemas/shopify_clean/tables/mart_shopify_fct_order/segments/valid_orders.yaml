@@ -1,0 +1,25 @@
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+definition:
+  database: Shop warehouse
+  stages:
+  - filters:
+    - - =
+      - {}
+      - - field
+        - {}
+        - - Shop warehouse
+          - shopify_clean
+          - mart_shopify_fct_order
+          - is_valid_order
+      - true
+    source-table:
+    - Shop warehouse
+    - shopify_clean
+    - mart_shopify_fct_order
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft. Orders that count: not cancelled and status authorized, paid, partially_refunded or pending. Excludes refunded, voided and cancelled orders (4,922 of 119,226). Use it to slice any column by valid orders only.'
+entity_id: ohx4_C-jVj7i-RI6aZAmV
+name: Valid orders
+serdes/meta:
+- model: Segment

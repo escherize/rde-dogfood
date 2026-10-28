@@ -1,0 +1,10 @@
+description: True when the order is not cancelled and its status is authorized, paid, partially_refunded or pending. Refunded, voided and cancelled orders are not valid orders.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- is_valid_order
+has_field_values: list
+serdes/meta:
+- model: FieldUserSettings

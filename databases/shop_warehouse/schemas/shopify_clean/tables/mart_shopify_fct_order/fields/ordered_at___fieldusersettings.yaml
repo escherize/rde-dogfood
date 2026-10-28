@@ -1,0 +1,11 @@
+description: When the order was placed, in UTC.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- ordered_at
+semantic_type: type/CreationTimestamp
+semantic_type_set: true
+serdes/meta:
+- model: FieldUserSettings

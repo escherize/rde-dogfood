@@ -1,0 +1,9 @@
+description: First day of the order month in shop time.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- order_month
+serdes/meta:
+- model: FieldUserSettings

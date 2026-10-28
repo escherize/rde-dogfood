@@ -1,0 +1,10 @@
+description: Shipping country code, else the billing country code (POS orders only have billing). Null for 8 orders with neither.
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- country_code
+has_field_values: list
+serdes/meta:
+- model: FieldUserSettings

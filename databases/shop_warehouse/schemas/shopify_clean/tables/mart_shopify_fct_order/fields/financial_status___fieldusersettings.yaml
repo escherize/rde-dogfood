@@ -1,0 +1,10 @@
+description: 'Shopify financial status of the latest version of the order: authorized, paid, partially_refunded, pending, refunded, voided.'
+description_set: true
+field_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+- financial_status
+has_field_values: list
+serdes/meta:
+- model: FieldUserSettings

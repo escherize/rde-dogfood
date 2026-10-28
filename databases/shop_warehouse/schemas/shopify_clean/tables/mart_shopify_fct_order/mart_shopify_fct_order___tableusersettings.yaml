@@ -1,0 +1,15 @@
+caveats: Shipping is inside net revenue; partial refunds are not subtracted; refunds and order lines are not on this table yet; customer accounts are not merged; Sept 2026 is the last complete month (pinned to the 1 Oct 2026 extract).
+caveats_set: true
+collection_id: librarylibrarydatadat
+description: |
+  One row per Shopify order (key: order_id). Sources: raw_shopify.orders, cfg_shopify. Definition: latest version of each order by updated_at, ties by load time (D1); test and deleted orders removed; valid order = not cancelled and status authorized, paid, partially_refunded or pending (D3, D6); net_revenue = total_price minus total_tax for valid orders, 0 otherwise (D2, D4). Caveats: shipping is inside net_revenue (D4: excluding it would cut 310,257, 0.99%); partial refunds are not subtracted (D2); order_date is shop-local America/New_York (D5); sales_channel is mapped from source_name (D7); country_code is the shipping country, else the billing country (D8); customer_id is the raw Shopify id (duplicate accounts are not merged yet); refunds and order lines are not on this table yet; is_complete_period is false for the partial month after cfg_shopify.last_complete_period (2026-09-01, pinned to the extract). Draft.
+description_set: true
+display_name: Shopify Orders
+entity_type: entity/TransactionTable
+is_published: true
+table_id:
+- Shop warehouse
+- shopify_clean
+- mart_shopify_fct_order
+serdes/meta:
+- model: TableUserSettings

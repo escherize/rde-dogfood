@@ -1,0 +1,24 @@
+creator_id: api-key-user-84a2dbf4-5771-40c5-b30c-8cc45056569d@api-key.invalid
+definition:
+  database: Shop warehouse
+  stages:
+  - aggregation:
+    - - sum
+      - name: net_revenue
+      - - field
+        - {}
+        - - Shop warehouse
+          - shopify_clean
+          - mart_shopify_fct_order
+          - net_revenue
+    source-table:
+    - Shop warehouse
+    - shopify_clean
+    - mart_shopify_fct_order
+    lib/type: mbql.stage/mbql
+  lib/type: mbql/query
+description: 'Draft. Sum of net_revenue on valid Shopify orders: order total minus tax (shipping included), 0 for refunded, voided and cancelled orders. Partial refunds are not subtracted. USD.'
+entity_id: V_iMW6a4rLApf7IxlJCd_
+name: Net revenue
+serdes/meta:
+- model: Measure
