@@ -43,6 +43,10 @@ jobs:
         run: npm i -g @metabase/cli@0.5.8-alpha.bryan-rci-28-lint-stage.198256c
 
       - name: Load this commit into Metabase
+        id: load
+        # A failed import must not hide what `mb ci run` finds (lint explains most import failures);
+        # the last step fails the job when the import failed.
+        continue-on-error: true
         env:
           MB_URL: http://localhost:3000
           # The name the content's YAML uses for the warehouse.
@@ -50,15 +54,28 @@ jobs:
           WH_URL: ${{ secrets.WAREHOUSE_URL }}
           CONTENT_DIR: ${{ github.workspace }}
         run: |
-          key=$(ci/prepare.sh | tail -1 | sed 's/^export MB_API_KEY=//')
-          echo "::add-mask::$key"
-          echo "MB_API_KEY=$key" >> "$GITHUB_ENV"
+          set +e
+          ci/prepare.sh > prepare.out
+          status=$?
+          key=$(sed -n 's/^export MB_API_KEY=//p' prepare.out)
+          rm -f prepare.out
+          if [ -n "$key" ]; then
+            echo "::add-mask::$key"
+            echo "MB_API_KEY=$key" >> "$GITHUB_ENV"
+          fi
+          exit $status
 
       - name: mb ci run
         env:
           MB_URL: http://localhost:3000
           BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
         run: mb ci run --repo . --base "$BASE" --format text --results results.json
+
+      - name: Fail if the import failed
+        if: always() && steps.load.outcome == 'failure'
+        run: |
+          echo "::error::Metabase could not import this commit; see the 'Load this commit into Metabase' step."
+          exit 1
 
       - if: always()
         uses: actions/upload-artifact@v4

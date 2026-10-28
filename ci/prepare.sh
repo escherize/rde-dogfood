@@ -2,7 +2,7 @@
 # Set up a fresh Metabase for `mb ci run`: admin, API key, warehouse, transforms on, import content.
 # Env: MB_URL, WH_NAME, WH_URL (postgresql://user:password@host:port/dbname[?sslmode=require]),
 #      CONTENT_DIR (optional: skip import)
-# Prints `export MB_API_KEY=...` on stdout's last line.
+# Prints `export MB_API_KEY=...` on stdout, before importing; exits non-zero if the import fails.
 set -euo pipefail
 api() { curl -fsS -H 'content-type: application/json' ${SESSION:+-H "X-Metabase-Session: $SESSION"} "$@"; }
 
@@ -23,6 +23,10 @@ db_id=$(api -X POST "$MB_URL/api/database" -d "$(jq -n --arg n "$WH_NAME" --arg 
 until [ "$(api "$MB_URL/api/database/$db_id" | jq -r .initial_sync_status)" = complete ]; do sleep 2; done
 echo "warehouse $WH_NAME synced as database $db_id" >&2
 
+# The key comes before the import, so `mb ci run` can still run (and lint) when the import fails.
+key=$(api -X POST "$MB_URL/api/api-key" -d '{"name":"mb-ci","group_id":2}' | jq -r .unmasked_key)
+echo "export MB_API_KEY=$key"
+
 if [ -n "${CONTENT_DIR:-}" ]; then
   archive=$(mktemp -d)/content.tgz
   tar czf "$archive" -C "$CONTENT_DIR" --exclude .git .
@@ -35,5 +39,3 @@ if [ -n "${CONTENT_DIR:-}" ]; then
   fi
 fi
 
-key=$(api -X POST "$MB_URL/api/api-key" -d '{"name":"mb-ci","group_id":2}' | jq -r .unmasked_key)
-echo "export MB_API_KEY=$key"
