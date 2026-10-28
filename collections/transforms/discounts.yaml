@@ -1,0 +1,9 @@
+name: Discounts
+entity_id: eLxpnbZ7LsFwEc_oddB-G
+slug: discounts
+created_at: '2026-10-28T16:50:40.685899Z'
+namespace: transforms
+serdes/meta:
+- id: eLxpnbZ7LsFwEc_oddB-G
+  label: discounts
+  model: Collection

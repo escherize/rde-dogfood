@@ -1,0 +1,80 @@
+collection_id: eLxpnbZ7LsFwEc_oddB-G
+created_at: '2026-10-28T16:50:45.051338Z'
+creator_id: api-key-user-4fa708cd-e2da-4245-98d4-161322109820@api-key.invalid
+description: |
+  One row per discount code (key: discount_id). Sources: raw_shopify.discounts. Definition: Shopify discount codes with positive percent_off (percentage codes) or amount_off_usd (fixed-amount codes), a discount_kind label (creator, seasonal, evergreen, internal, other) and the lifetime redemption_count. Caveats: Draft, provisional decisions D1-D4. No rows removed; internal codes STAFF40, SORRY15, FREESHIPJUNE flagged by discount_kind (D2). redemption_count is a lifetime total as of usage_synced_at, so it cannot be sliced by period (D4). Value flipped from negative to positive and split by type (D3). USD only. Active status is not stored; Metabase segments evaluate it at query time (D1). discount_kind rules: title starts 'Creator code' = creator; the three internal codes; code starts BFCM/SUMMER/SPRING = seasonal; no end date = evergreen; else other.
+entity_id: VSXaaPNah2J2fsGW_dimi
+indexes: []
+name: mart_shopify_dim_discount
+owner_user_id: api-key-user-4fa708cd-e2da-4245-98d4-161322109820@api-key.invalid
+source:
+  query:
+    database: warehouse
+    stages:
+    - native: |
+        -- One row per: discount code
+        -- Key:         discount_id
+        -- Sources:     raw_shopify.discounts
+        -- Definition:  Shopify discount codes with positive percent_off / amount_off_usd, a kind label and lifetime redemption count.
+        -- Caveats:     redemption_count is a lifetime total as of usage_synced_at, not an event stream. kind is a rule (D2).
+        --              No filter: all rows kept, internal codes flagged. USD only. Active status is NOT stored; computed at query time (D1).
+        WITH src AS (
+          SELECT
+            d.id                    AS discount_id,
+            d.code                  AS discount_code,
+            d.title                 AS discount_title,
+            d.value_type            AS discount_type,
+            abs(d.value)            AS abs_value,
+            d.target_type           AS applies_to,
+            d.once_per_customer     AS is_once_per_customer,
+            d.usage_count           AS redemption_count,
+            d.starts_at             AS starts_at,
+            d.ends_at               AS ends_at,
+            d.created_at            AS created_at,
+            d.updated_at            AS updated_at,
+            d._fivetran_synced      AS usage_synced_at
+          FROM raw_shopify.discounts d
+        )
+        SELECT
+          s.discount_id,
+          s.discount_code,
+          s.discount_title,
+          CASE
+            WHEN s.discount_title ILIKE 'Creator code%'                                   THEN 'creator'
+            WHEN s.discount_code IN ('STAFF40', 'SORRY15', 'FREESHIPJUNE')                THEN 'internal'
+            WHEN s.discount_code ~ '^(BFCM|SUMMER|SPRING)'                                THEN 'seasonal'
+            WHEN s.ends_at IS NULL                                                        THEN 'evergreen'
+            ELSE 'other'
+          END                                                                             AS discount_kind,
+          s.discount_type,
+          CASE WHEN s.discount_type = 'percentage'   THEN s.abs_value END                 AS percent_off,
+          CASE WHEN s.discount_type = 'fixed_amount' THEN s.abs_value END                 AS amount_off_usd,
+          s.applies_to,
+          s.is_once_per_customer,
+          s.redemption_count,
+          s.starts_at,
+          s.ends_at,
+          s.created_at,
+          s.updated_at,
+          s.usage_synced_at
+        FROM src s
+      lib/type: mbql.stage/native
+    lib/type: mbql/query
+  type: query
+source_database_id: warehouse
+tags:
+- entity_id: 9mnFFTdBk6sc6Tv41Ebns
+  position: 0
+  tag_id: L_-vIKd8n8aYVxvMjR6mx
+  serdes/meta:
+  - id: 9mnFFTdBk6sc6Tv41Ebns
+    model: TransformTransformTag
+target:
+  database: warehouse
+  name: mart_shopify_dim_discount
+  schema: shop_analytics
+  type: table
+serdes/meta:
+- id: VSXaaPNah2J2fsGW_dimi
+  label: mart_shopify_dim_discount
+  model: Transform

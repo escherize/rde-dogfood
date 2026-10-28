@@ -1,0 +1,7 @@
+created_at: '2026-10-28T16:50:42.388858Z'
+entity_id: L_-vIKd8n8aYVxvMjR6mx
+name: rde_discounts
+serdes/meta:
+- id: L_-vIKd8n8aYVxvMjR6mx
+  label: rde_discounts
+  model: TransformTag
